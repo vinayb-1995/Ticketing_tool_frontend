@@ -1,13 +1,8 @@
 const Admin=()=>{
     return(
-    <>
-      <h2 className="text-black mt-5 bg-primary">Admin</h2>
-      <h2 className="text-black mt-5 bg-primary">Admin</h2>
-      <h2 className="text-black mt-5 bg-primary">Admin</h2>
-      <h2 className="text-black mt-5 bg-primary">Admin</h2>
-      <h2 className="text-black mt-5 bg-primary">Admin</h2>
-      <h2 className="text-black mt-5 bg-primary">Admin</h2>
-    </>
+        <>
+        Admin
+        </>
     )
 }
-export default Admin;
+export default Admin
