@@ -1,11 +1,11 @@
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 const Header=()=>{
     return(
         <>
           <div className="d-flex justify-content-around bg-black">
-            <Link to="/">login</Link>
-            <Link to="/admin">admin</Link>
+            <NavLink to="/">login</NavLink>
+            <NavLink to="/admin">admin</NavLink>
           </div>
         </>
     )
