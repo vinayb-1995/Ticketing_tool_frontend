@@ -1,10 +1,13 @@
 import {  Route, Routes } from "react-router-dom";
-import Home from "../pages/Home/Home";
+import Login from "../pages/Lgoin/Login";
+import SignUp from "../pages/Signup/SignUP";
+
 
 const AppRoute=()=>{
     return(
         <Routes>
-            <Route path="/" element={<Home/>}/>
+            <Route path="/" element={<Login/>}/>
+            <Route path="/signup" element={<SignUp/>}/>
            
        
         </Routes>

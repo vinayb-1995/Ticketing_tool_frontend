@@ -1,0 +1,80 @@
+/*------------- common colors ------------- */
+$primary-color:#4267B2;
+$white-color:#fff;
+$black-color:#000;
+/*------------- common colors ------------- */
+/* dancing font */
+$dancing-font: "Dancing Script", cursive;
+$great-font:  "Great Vibes", cursive;
+$Pacifico-font:   "Pacifico", cursive;
+$lobster-font:"Lobster Two", sans-serif;
+/* dancing font */
+/* ----------- common font size-------------- */
+$small-font-size:12px;
+$medium-font-size:18px;
+$large-font-size:24px;
+$extra-large-font-size:28px;
+/* ----------- common font size-------------- */
+
+/*=================styles for component=============== */
+
+/* --------common styel----- */
+.link{
+    text-decoration: none;
+}
+/* --------common styel----- */
+
+
+/* ----------------- header style starts ----------*/
+.header{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: $primary-color;
+    padding: 10px;
+    p{
+        margin: 0;
+    
+       }
+/* logo start  */
+.logo{
+    p{
+        color: $white-color;
+        font-size: $medium-font-size;
+        cursor: pointer;
+    }
+}
+/* logo end*/
+/* companyheading */
+.companyheading{
+    display: flex;
+    // justify-content: end;
+p{
+    color: $white-color;
+    font-size: $extra-large-font-size;  
+    // font-family: $dancing-font;
+    // font-family:$Pacifico-font;
+    font-family:$lobster-font;
+    font-weight: 400;
+    text-wrap: nowrap;
+}
+}
+/* companyheading */
+
+/* auth-links */
+.auth-links{
+    display: flex;
+    
+    .link{
+        color: $white-color;
+        margin-right: 10px;
+        p{
+            font-size: $medium-font-size;
+        }
+    }
+}
+
+/* auth-links */
+
+}
+/* -------- header style ends -------------- */
