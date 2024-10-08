@@ -45,7 +45,7 @@ export const InputField = ({
           readOnly={readOnly}
         />
       </div>
-      {error && <p className="mt-1 text-sm">{error}</p>}
+      {error && <p className="text-danger error">{error}</p>}
     </div>
   );
 };

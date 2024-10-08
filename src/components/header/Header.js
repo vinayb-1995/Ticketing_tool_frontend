@@ -30,7 +30,7 @@ const Header = () => {
           lg={4}
           className="auth-links d-flex justify-content-end"
         >
-          <Link className="link me-4 d-flex align-items-center" to="/">
+          <Link className="link me-4 d-flex align-items-center" to="/login">
             <p className="me-2">Login</p>
             <BsBoxArrowLeft className="icons" />
           </Link>
