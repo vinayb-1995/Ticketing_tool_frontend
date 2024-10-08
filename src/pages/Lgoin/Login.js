@@ -8,28 +8,27 @@ import { useState } from "react";
 
 const Login = () => {
   /* store input changes */
- const [getLoignAdmin,setLoignAdmin]=useState({
-  email:"",
-  password:"",
- })
+  const [getLoignAdmin, setLoignAdmin] = useState({
+    email: "",
+    password: "",
+  });
 
- /* handel input changes */
-  const handelChange=(e)=>{
-    const name=e.target.name;
-    const value=e.target.value;
+  /* handel input changes */
+  const handelChange = (e) => {
+    const name = e.target.name;
+    const value = e.target.value;
 
-   setLoignAdmin({
+    setLoignAdmin({
       ...getLoignAdmin,
-      [name]:value,
-    })
- }
+      [name]: value,
+    });
+  };
 
- /* on click submit  */
-const handelSubmit=(e)=>{
-e.preventDefault()
-console.log("getLoignAdmin>>",getLoignAdmin)
-
-}
+  /* on click submit  */
+  const handelSubmit = (e) => {
+    e.preventDefault();
+    console.log("getLoignAdmin>>", getLoignAdmin);
+  };
   return (
     <>
       <div className="container d-flex justify-content-center align-items-center login-form">
