@@ -43,6 +43,7 @@ export const InputField = ({
           required={required}
           maxLength={maxLength}
           readOnly={readOnly}
+          autoComplete="off"
         />
       </div>
       {error && <p className="text-danger error">{error}</p>}

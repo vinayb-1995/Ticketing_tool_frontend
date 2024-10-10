@@ -7,15 +7,28 @@ import { MdAlternateEmail } from "react-icons/md";
 import { IoLockClosedOutline } from "react-icons/io5";
 import { FiEye } from "react-icons/fi";
 import { useState } from "react";
+import ModalComponentSuccess from "../../components/Modals/ModalComponentSuccess";
+import { useDisclosure } from "@chakra-ui/react";
+import ModalComponentError from "../../components/Modals/ModalComponentError";
+import WarningToast from "../../components/Toast/WarningToast";
 
 const SignUp = () => {
+  const { showToast } = WarningToast();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isErrorOpen,
+    onOpen: onErrorOpen,
+    onClose: onErrorClose,
+  } = useDisclosure();
+
   const navigate = useNavigate();
   /*storing input field  */
   const [getAdminRegister, setAdminRegister] = useState({
-    userName: "",
+    username: "",
     email: "",
     password: "",
     confomr_passowrd: "",
+    role: "admin",
   });
   const [errors, setErrors] = useState({});
 
@@ -27,14 +40,13 @@ const SignUp = () => {
       ...getAdminRegister,
       [name]: value,
     });
-
     setErrors({ ...errors, [name]: "" });
   };
 
   /* Validation */
   const validate = () => {
     const newErrors = {};
-    if (!getAdminRegister.userName) newErrors.userName = "Name is required";
+    if (!getAdminRegister.username) newErrors.username = "Name is required";
     if (!getAdminRegister.email) {
       newErrors.email = "Email is required";
     } else if (!/\S+@\S+\.\S+/.test(getAdminRegister.email)) {
@@ -52,18 +64,61 @@ const SignUp = () => {
   };
 
   /* handel submit */
-  const hndelSubmit = (e) => {
+  const hndelSubmit = async (e) => {
     e.preventDefault();
     const newErrors = validate();
     if (Object.keys(newErrors).length === 0) {
       console.log("getAdminRegister>>", getAdminRegister);
       /* use fetch here to post the data */
-      navigate("/login");
+      try {
+        const response = await fetch(
+          `http://localhost:5000/api/register/adminregister`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(getAdminRegister),
+          }
+        );
+        console.log("response>>", response);
+        if (response.ok) {
+          // alert("login succefull please login");
+          onOpen();
+        } else if (response.status === 400) {
+          // alert("email already exists please login")
+          onErrorOpen();
+        } else {
+          alert("some thing went wrong");
+        }
+      } catch (err) {
+        // alert("login fiaild");
+
+        showToast({ 
+          title: "Error", 
+          message: "Something went wrong during registration.", 
+          position: "bottom-right",  // You can specify any position
+        });
+
+        // console.log("register", err);
+      }
     } else {
       setErrors(newErrors);
     }
   };
 
+  /* modal conformation success  */
+  const handleOk = () => {
+    onClose();
+    navigate("/login");
+    // Additional actions can be added here if needed
+  };
+  /* modal error for showin admin alred exisist */
+  const handleErrorOk = () => {
+    onErrorClose();
+    navigate("/login");
+    // Additional actions can be added here if needed
+  };
   return (
     <>
       <div className="container d-flex justify-content-center align-items-center signup-form">
@@ -75,12 +130,12 @@ const SignUp = () => {
               </div>
               <InputField
                 label="Name"
-                name="userName"
+                name="username"
                 placeholder="Name"
                 type="text"
                 onChange={handelChange}
                 icon={<IoPersonOutline />}
-                error={errors.userName}
+                error={errors.username}
               />
               <InputField
                 label="Email"
@@ -117,7 +172,7 @@ const SignUp = () => {
                 {/* <span className="span">Forgot password?</span> */}
               </div>
               {/* <ButtonStyle1 children="Sign Up" type="submit" /> */}
-              <ButtonStyle1 type="submit">Submit</ButtonStyle1>
+              <ButtonStyle1 type="submit">Register</ButtonStyle1>
               <p className="p">
                 Do you have an account?
                 <span className="span">
@@ -128,6 +183,22 @@ const SignUp = () => {
           </Col>
         </Row>
       </div>
+      {/* success modal */}
+      <ModalComponentSuccess
+        isOpen={isOpen}
+        onClose={onClose}
+        title="Registration Successful"
+        bodyText="Your account has been registered successfully please login."
+        onOk={handleOk}
+      />
+      {/* show modal for alradey email exsist */}
+      <ModalComponentError
+        isOpen={isErrorOpen}
+        onClose={onErrorClose}
+        title="Registration Failed"
+        bodyText="user Alredy exisist please login"
+        onOk={handleErrorOk}
+      />
     </>
   );
 };
