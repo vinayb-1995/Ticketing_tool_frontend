@@ -25,9 +25,10 @@ const Login = () => {
   };
 
   /* on click submit  */
-  const handelSubmit = (e) => {
+  const handelSubmit = async (e) => {
     e.preventDefault();
     console.log("getLoignAdmin>>", getLoignAdmin);
+    
   };
   return (
     <>
