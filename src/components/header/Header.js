@@ -1,16 +1,56 @@
 import { Col, Row } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { BsBoxArrowLeft } from "react-icons/bs";
-// import { BsBoxArrowRight } from "react-icons/bs";
 import { TiUserAddOutline } from "react-icons/ti";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import Logout from "../../pages/logout/Logout";
+import { fetchAdminData } from "../../features/slice/adminDataSlice";
+
 const Header = () => {
+  const navigate = useNavigate();
+  /* role from redux */
+  const role = useSelector((state) => state.auth.role);
+  const [getRole, setRole] = useState(null);
+  useEffect(() => {
+    setRole(role);
+  }, [role]);
+  // console.log("role>>", getRole);
+
+  /* admin data from redux */
+  const dispatch = useDispatch();
+  const adminData = useSelector((state) => state.admin.adminData);
+  useEffect(() => {
+    if (getRole === "admin") {
+      dispatch(fetchAdminData());
+    }
+  }, [dispatch, getRole]);
+
+  useEffect(() => {
+    console.log("Admin Data in Component:", adminData); // Debug log
+  }, [adminData]);
+
+  // const status = useSelector((state) => state.user.status);
+  // const error = useSelector((state) => state.user.error);
+  //handel log click
+  const handleLogoClick = () => {
+    if (role === "admin") {
+      navigate("/adminhome");
+    } else {
+      navigate("/login");
+    }
+  };
   return (
     <div className="container-fluid header">
       <Row className="container d-flex align-items-center">
         {/* Logo Column */}
-        <Col xs={6} md={2} lg={2} className="logo">
+        <Col xs={6} md={2} lg={2} className="logo" onClick={handleLogoClick}>
           {/* <p>Logo</p> */}
-          <img className="img-fluid m-0 p-0 w-25" src="./assets/images/Aatral_LOGO_PNG.png" alt="logo" />
+          <img
+            className="img-fluid m-0 p-0 w-25"
+            src="./assets/images/Aatral_LOGO_PNG.png"
+            alt="logo"
+          />
         </Col>
 
         {/* Heading Column */}
@@ -28,16 +68,39 @@ const Header = () => {
           xs={6}
           md={4}
           lg={4}
-          className="auth-links d-flex justify-content-end"
+          className="auth-links d-flex justify-content-end align-items-center"
         >
-          <Link className="link me-4 d-flex align-items-center" to="/login">
-            <p className="me-2">Login</p>
-            <BsBoxArrowLeft className="icons" />
-          </Link>
-          <Link className="link d-flex align-items-center" to="/signup">
-            <p className="me-2">Register</p>
-            <TiUserAddOutline className="icons" />
-          </Link>
+          {getRole === "admin" ? (
+            <>
+              {/* Render admin-specific content here */}
+              <div>
+                <p>
+                  {adminData ? (
+                    <p className="fs-4 fw-medium text-light me-4">
+                      {" "}
+                      <span className="fs-5 text-light me-2">Admin:</span>
+                      {adminData.adminBody.username}
+                    </p>
+                  ) : (
+                    <p>no data found</p>
+                  )}
+                </p>
+              </div>
+              <Logout />
+            </>
+          ) : (
+            <>
+              {/* Render other roles' content here */}
+              <Link className="link me-4 d-flex align-items-center" to="/login">
+                <p className="me-2">Login</p>
+                <BsBoxArrowLeft className="icons" />
+              </Link>
+              <Link className="link d-flex align-items-center" to="/signup">
+                <p className="me-2">Register</p>
+                <TiUserAddOutline className="icons" />
+              </Link>
+            </>
+          )}
         </Col>
       </Row>
     </div>
