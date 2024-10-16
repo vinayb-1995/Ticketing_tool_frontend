@@ -3,7 +3,7 @@ import { useToast } from "@chakra-ui/react";
 const WarningToast = () => {
   const toast = useToast();
 
-  const showToast = ({ title, message, duration = 5000 }) => {
+  const showToast = ({ title, message, duration = 2000 }) => {
     toast({
       title: title,
       description: message,

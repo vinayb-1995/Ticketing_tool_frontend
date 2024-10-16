@@ -72,7 +72,7 @@ const SignUp = () => {
       /* use fetch here to post the data */
       try {
         const response = await fetch(
-          `http://localhost:5000/api/register/adminregister`,
+          `http://localhost:5000/api/admin/adminregister`,
           {
             method: "POST",
             headers: {
@@ -89,15 +89,17 @@ const SignUp = () => {
           // alert("email already exists please login")
           onErrorOpen();
         } else {
-          alert("some thing went wrong");
+          // alert("some thing went wrong");
+          showToast({ 
+            title: "Error", 
+            message: "Something went wrong during registration.", 
+          });
         }
       } catch (err) {
         // alert("login fiaild");
-
         showToast({ 
           title: "Error", 
           message: "Something went wrong during registration.", 
-          position: "bottom-right",  // You can specify any position
         });
 
         // console.log("register", err);
@@ -188,7 +190,7 @@ const SignUp = () => {
         isOpen={isOpen}
         onClose={onClose}
         title="Registration Successful"
-        bodyText="Your account has been registered successfully please login."
+        bodyText={`${getAdminRegister.username} has been successfully registered as an admin. Click 'OK' to proceed to the login page.`}
         onOk={handleOk}
       />
       {/* show modal for alradey email exsist */}
@@ -196,7 +198,7 @@ const SignUp = () => {
         isOpen={isErrorOpen}
         onClose={onErrorClose}
         title="Registration Failed"
-        bodyText="user Alredy exisist please login"
+        bodyText={`${getAdminRegister.email} already exists. Please log in with a different email address or click 'OK' to proceed to the login page.`}
         onOk={handleErrorOk}
       />
     </>
