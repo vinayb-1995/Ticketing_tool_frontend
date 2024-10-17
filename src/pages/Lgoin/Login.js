@@ -7,12 +7,13 @@ import { IoLockClosedOutline } from "react-icons/io5";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { setToken } from "../../features/slice/authSlice";
+import Toast from "../../components/Toast/Toast";
 
 const Login = () => {
   /* Store input changes */
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  const { showToast } = Toast();
   const [getLoginAdmin, setLoginAdmin] = useState({
     email: "",
     password: "",
@@ -78,29 +79,46 @@ const Login = () => {
 
           if (role === "admin") {
             navigate("/adminhome");
+            showToast({ 
+              title: "", 
+              message: "login succeful", 
+              status:"success"
+            });
           } else if (role === "user") {
+            
             navigate("/user");
           } else {
-            alert("invalid credential");
+            // alert("invalid credential");
+            showToast({ 
+              title: "Error", 
+              message: "invalid credential", 
+              status:"warning"
+            });
           }
           // onOpen();
         } else if (response.status === 400) {
-          alert("Some thing went wrong pleas login again");
+          // alert("Some thing went wrong pleas login again");
+          showToast({ 
+            title: "Error", 
+            message: "Some thing went wrong pleas login again.", 
+            status:"warning"
+          });
           // onErrorOpen();
         } else {
-          alert("some thing went wrong");
-          // showToast({
-          //   title: "Error",
-          //   message: "Something went wrong during registration.",
-          // });
+          // alert("some thing went wrong");
+          showToast({ 
+            title: "Error", 
+            message: "Some thing went wrong pleas login again.", 
+            status:"warning"
+          });
         }
       } catch (err) {
-        alert("login fiaild");
-        // showToast({
-        //   title: "Error",
-        //   message: "Something went wrong during registration.",
-        // });
-        // console.log("register", err);
+        // alert("login fiaild");
+        showToast({ 
+          title: "Error", 
+          message: "Some thing went wrong pleas login again.", 
+          status:"warning"
+        });
       }
     } else {
       setErrors(newErrors);
