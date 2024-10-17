@@ -2,6 +2,7 @@
 $primary-color: #4267b2;
 $white-color: #fff;
 $black-color: #000;
+$blue-shadow:rgba(165, 193, 253, 0.5);
 /*------------- common colors ------------- */
 /* dancing font */
 $dancing-font: "Dancing Script", cursive;
@@ -73,7 +74,9 @@ $extra-large-font-size: 28px;
       &:hover {
         text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
         .icons {
-          font-size: 24px;
+          // font-size: 24px;
+          text-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+
           transition: font-size 0.1s ease; // Optional smooth transition
         }
       }
@@ -180,7 +183,7 @@ $extra-large-font-size: 28px;
     margin: 5px 0;
   }
 }
-.error{
+.error {
   font-size: $medium-font-size;
   margin-top: 4px;
   margin-bottom: 0;
@@ -242,3 +245,19 @@ $extra-large-font-size: 28px;
 }
 
 /* --------------buttonstyle1 end -------------- */
+
+/* --------------NavigationBackButton start -------------- */
+.navigation-button{
+  color: $white-color;
+  font-size: 20px;
+  background-color: $primary-color;
+  margin: 0 ;
+  padding: 4px 16px;
+  border: 1px solid $primary-color;
+  border-radius: 6px;
+  &:hover {
+    box-shadow: 0 4px 8px $blue-shadow; 
+  }
+}
+/* --------------NavigationBackButton end -------------- */
+

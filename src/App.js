@@ -1,7 +1,7 @@
 // import logo from "./logo.svg";
 import "./App.css";
-import "./common.scss";
-import "./style.scss";
+import "./component.scss";
+import "./pages.scss";
 import Header from "./components/header/Header";
 import AppRoute from "./Routers/AppRoute";
 

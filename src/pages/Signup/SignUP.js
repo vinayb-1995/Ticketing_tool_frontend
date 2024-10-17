@@ -10,10 +10,10 @@ import { useState } from "react";
 import ModalComponentSuccess from "../../components/Modals/ModalComponentSuccess";
 import { useDisclosure } from "@chakra-ui/react";
 import ModalComponentError from "../../components/Modals/ModalComponentError";
-import WarningToast from "../../components/Toast/WarningToast";
+import Toast from "../../components/Toast/Toast";
 
 const SignUp = () => {
-  const { showToast } = WarningToast();
+  const { showToast } = Toast();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
     isOpen: isErrorOpen,
@@ -93,6 +93,7 @@ const SignUp = () => {
           showToast({ 
             title: "Error", 
             message: "Something went wrong during registration.", 
+            status:"warning"
           });
         }
       } catch (err) {
@@ -100,6 +101,7 @@ const SignUp = () => {
         showToast({ 
           title: "Error", 
           message: "Something went wrong during registration.", 
+          status:"warning"
         });
 
         // console.log("register", err);

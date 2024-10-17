@@ -6,6 +6,15 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Logout from "../../pages/logout/Logout";
 import { fetchAdminData } from "../../features/slice/adminDataSlice";
+import CustomAvatar from "../Avatar/CustomAvatar";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+  PopoverArrow,
+  PopoverCloseButton,
+ 
+} from "@chakra-ui/react";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -40,6 +49,7 @@ const Header = () => {
       navigate("/login");
     }
   };
+
   return (
     <div className="container-fluid header">
       <Row className="container d-flex align-items-center">
@@ -73,19 +83,27 @@ const Header = () => {
           {getRole === "admin" ? (
             <>
               {/* Render admin-specific content here */}
-              <div>
-                <p>
-                  {adminData ? (
-                    <p className="fs-4 fw-medium text-light me-4">
-                      {" "}
-                      <span className="fs-5 text-light me-2">Admin:</span>
-                      {adminData.adminBody.username}
-                    </p>
-                  ) : (
-                    <p>no data found</p>
-                  )}
-                </p>
-              </div>
+              {adminData ? (
+                  <Popover>
+                    <PopoverTrigger>
+                      <div>
+                        <CustomAvatar
+                          username={adminData.adminBody.username}
+                          bgcolor="red.500"
+                        />
+                      </div>
+                    </PopoverTrigger>
+                    <PopoverContent className="p-2">
+                      <PopoverArrow />
+                      <PopoverCloseButton />
+                      <p className="fs-5 fw-medium text-black">{adminData.adminBody.role}</p>
+                      <p>{adminData.adminBody.username}</p>
+                      <p>{adminData.adminBody.email}</p>
+                    </PopoverContent>
+                  </Popover>
+              ) : (
+                <>nodata</>
+              )}
               <Logout />
             </>
           ) : (
