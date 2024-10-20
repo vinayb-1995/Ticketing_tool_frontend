@@ -28,7 +28,7 @@ const Header = () => {
 
   /* admin data from redux */
   const dispatch = useDispatch();
-  const adminData = useSelector((state) => state.admin.adminData);
+  const adminData = useSelector((state) => state?.admin?.adminData);
   useEffect(() => {
     if (getRole === "admin") {
       dispatch(fetchAdminData());

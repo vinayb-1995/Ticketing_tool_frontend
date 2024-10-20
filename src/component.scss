@@ -2,7 +2,7 @@
 $primary-color: #4267b2;
 $white-color: #fff;
 $black-color: #000;
-$blue-shadow:rgba(165, 193, 253, 0.5);
+$blue-shadow: rgba(165, 193, 253, 0.5);
 /*------------- common colors ------------- */
 /* dancing font */
 $dancing-font: "Dancing Script", cursive;
@@ -106,7 +106,6 @@ $extra-large-font-size: 28px;
   backdrop-filter: blur(100px); // Blur for glass effect
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); // Subtle shadow for depth
   border: 1px solid rgba(13, 0, 255, 0.3); // Optional border for glassy edge
-
   @media (max-width: 768px) {
     // Tablet size
     width: 90%;
@@ -139,7 +138,6 @@ $extra-large-font-size: 28px;
     align-items: center;
     padding-left: 10px;
     transition: 0.2s ease-in-out;
-
     &:focus-within {
       border: 1.5px solid $primary-color;
     }
@@ -196,10 +194,8 @@ $extra-large-font-size: 28px;
   font-family: inherit;
   display: inline-block;
   width: 8em;
-  // width: 100%;
   height: 2.6em;
   line-height: 2.5em;
-  // margin: 20px;
   position: relative;
   cursor: pointer;
   overflow: hidden;
@@ -210,25 +206,18 @@ $extra-large-font-size: 28px;
   border-radius: 6px;
   font-weight: 500;
   color: var(--color);
-
   &:before {
     content: "";
     position: absolute;
     z-index: -1;
     background: var(--color);
-    // height: 150px;
     height: 118px;
-    // width: 200px;
     width: 500px;
     border-radius: 50%;
-    // border: 10px;
-    // padding: 10px;
-    // margin-bottom: 10px;
     top: 100%;
     left: 100%;
     transition: all 0.5s;
   }
-
   &:hover {
     color: #fff;
 
@@ -247,17 +236,243 @@ $extra-large-font-size: 28px;
 /* --------------buttonstyle1 end -------------- */
 
 /* --------------NavigationBackButton start -------------- */
-.navigation-button{
+.navigation-button {
   color: $white-color;
   font-size: 20px;
   background-color: $primary-color;
-  margin: 0 ;
+  margin: 0;
   padding: 4px 16px;
   border: 1px solid $primary-color;
   border-radius: 6px;
   &:hover {
-    box-shadow: 0 4px 8px $blue-shadow; 
+    box-shadow: 0 4px 8px $blue-shadow;
   }
 }
 /* --------------NavigationBackButton end -------------- */
 
+/* --------------Headings start -------------- */
+.secondary-headings {
+  .heading-name {
+    p {
+      margin: 0px;
+      font-size: $large-font-size;
+      color: $primary-color;
+      font-weight: 500;
+    }
+  }
+}
+/* --------------Headings end -------------- */
+
+/* --------------scrollOption for dropDownField start -------------- */
+.srcrollable-containe {
+  overflow-y: scroll;
+  height: 100px;
+  &::-webkit-scrollbar {
+    display: none; // Hides scrollbar in Webkit-based browsers (Chrome, Safari, etc.)
+  }
+}
+/* --------------scrollOption for dropDownField end -------------- */
+
+/* --------------INputField start -------------- */
+/* Conditional input field component style start */
+.group {
+  display: flex;
+  line-height: 30px;
+  align-items: center;
+  position: relative;
+  max-width: auto;
+}
+.inputs {
+  width: 100%;
+  height: 40px;
+  line-height: 30px;
+  padding: 0 1rem;
+  padding-left: 3rem;
+  border: 0.5px solid #cacfca;
+  border-radius: 10px;
+  outline: none;
+  background-color: #f8fafc;
+  color: #0d0c22;
+  transition: 0.5s ease;
+
+  &::placeholder {
+    color: #94a3b8;
+  }
+  &:focus,
+  &:hover {
+    outline: none;
+    border-color: rgba(129, 140, 248);
+    background-color: #fff;
+    box-shadow: 0 0 0 5px rgb(129 140 248 / 4%);
+  }
+}
+.file-input {
+  width: 100%;
+  height: 40px;
+  line-height: 22px;
+  padding-top: 6px;
+  padding-left: 3rem;
+  border: 0.5px solid #cacfca;
+  border-radius: 10px;
+  outline: none;
+  background-color: #f8fafc;
+  color: #0d0c22;
+  transition: 0.5s ease;
+}
+.iconss {
+  position: absolute;
+  left: 1rem;
+  fill: none;
+  width: 1rem;
+  height: 1rem;
+}
+/* Conditional input field component style end */
+/* --------------INputField end -------------- */
+
+/* --------------dropdownfield start -------------- */
+.dropdown {
+  width: 100%;
+  height: 40px;
+  line-height: 30px;
+  display: flex;
+  // justify-content: start;
+  align-items: center;
+  padding: 0 0.4rem;
+  // padding-left: 0.5rem;
+  border: 0.5px solid #cacfca;
+  border-radius: 10px;
+  outline: none;
+  background-color: #f8fafc;
+  color: #0d0c22;
+  transition: 0.5s ease;
+  &::placeholder {
+    color: #94a3b8;
+  }
+  &:focus,
+  &:hover {
+    outline: none;
+    border-color: rgba(129, 140, 248);
+    background-color: #fff;
+    box-shadow: 0 0 0 5px rgb(129 140 248 / 4%);
+  }
+  .icons {
+    padding: 0px 14px;
+    flex: 0%;
+    margin: 0;
+  }
+  .dropdownfield {
+    .rw-widget-picker {
+      border: none !important;
+      box-shadow: none !important;
+      background-color: #f8fafc;
+      &:focus,
+      &:hover {
+        background-color: #fff;
+      }
+    }
+    .rw-state-focus .rw-widget-picker .rw-widget-input {
+      border: none !important;
+      box-shadow: none !important;
+      border-color: transparent !important; // Ensure the border-color is removed
+    }
+    .rw-state-focus .rw-widget-picker {
+      border: none !important;
+      box-shadow: none !important;
+      border-color: transparent !important; // Ensure the border-color is removed
+    }
+    .rw-dropdown-list-input {
+      padding: 0px;
+    }
+    .rw-list-option {
+      padding: 0px;
+      padding-left: 10px;
+      margin: 0;
+    }
+  }
+}
+/* --------------dropdownfield end -------------- */
+
+/* --------------TextAreaField start -------------- */
+.TextAreaField {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0;
+  border: 0.5px solid #cacfca;
+  border-radius: 10px;
+  background-color: #f8fafc;
+  color: #0d0c22;
+  position: relative;
+  transition: 0.5s ease;
+  textarea {
+    width: 100%;
+    height: 100%;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: inherit;
+    padding-top: 6px;
+    line-height: 1.5;
+    padding-left: 3rem;
+    border-radius: 18px;
+    resize: vertical;
+    overflow-y: auto;
+    overflow-x: hidden;
+    &::-webkit-scrollbar {
+      width: 0px;
+      height: 0px;
+    }
+    &::placeholder {
+      color: #94a3b8;
+    }
+    &:focus,
+    &:hover {
+      border-color: rgba(129, 140, 248);
+      background-color: #fff;
+      box-shadow: 0 0 0 5px rgb(129 140 248 / 4%);
+    }
+  }
+  .icons {
+    position: absolute;
+    left: 0.2rem;
+    fill: none;
+    width: 1rem;
+    height: 1rem;
+    padding: 0px 14px;
+    flex: 0%;
+    margin: 0;
+  }
+}
+/* --------------TextAreaField end -------------- */
+
+/* --------------DataTable start -------------- */
+.data-table-outer-layer{
+  border: 1px solid $primary-color;
+  border-radius: 8px;
+ .rdt_Pagination{
+  // border-radius: 10px;
+  border-bottom-left-radius :10px ;
+  border-bottom-right-radius : 10px;
+ }
+
+ .rdt_TableHead{
+  font-size:16px;
+  font-weight: 700;
+  
+  .rdt_TableHeadRow{
+    min-height: 36px;
+   }
+ }
+ .rdt_TableRow{
+  min-height: 40px;
+  .rdt_TableCell{
+    &:hover{
+      cursor: pointer;
+    }
+  }
+ }
+}
+
+
+
+/* --------------DataTable end -------------- */

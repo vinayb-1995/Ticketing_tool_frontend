@@ -93,7 +93,6 @@ $extra-large-font-size: 28px;
 }
 /* --------------- avatar end ------------- */
 
-
 /* --------------adminhome start -------------- */
 .adminhome {
   p {
@@ -123,27 +122,3 @@ $extra-large-font-size: 28px;
 }
 /* --------------adminhome end -------------- */
 
-/* --------------createcutomer start -------------- */
-.createcutomer{
-  .creat-cutomer-heading{
-    p{
-      margin: 0px;
-      font-size: $large-font-size;
-      color: $primary-color;
-      font-weight: 500;
-    }
-  }
-}
-/* --------------createcutomer end -------------- */
-/* --------------createagent start -------------- */
-.createagent{
-  .creat-agent-heading{
-    p{
-      margin: 0px;
-      font-size: $large-font-size;
-      color: $primary-color;
-      font-weight: 500;
-    }
-  }
-}
-/* --------------createagent end -------------- */

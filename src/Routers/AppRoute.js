@@ -7,6 +7,8 @@ import AdminHome from "../pages/Admin/AdminHome";
 import useAuth from "../components/useAuth/useAuth";
 import CreateCustomer from "../pages/Admin/CreateCustomer/CreateCustomer";
 import CreateAgent from "../pages/Admin/CreateAgent/CreateAgent";
+import AssignTicketsTable from "../pages/Admin/AssignTickets/AssignTicketsTable";
+import TicketManagerPro from "../pages/Admin/AssignTickets/TicketManagerPro/TicketManagerPro";
 
 const AppRoute = () => {
   const { isAuthenticated, role } = useAuth();
@@ -22,9 +24,12 @@ const AppRoute = () => {
         <>
           {role === "admin" && (
             <>
+              {/* admin pages */}
               <Route path="/adminhome" element={<AdminHome />} />
               <Route path="/createcustomer" element={<CreateCustomer />} />
               <Route path="/createagent" element={<CreateAgent />} />
+              <Route path="/assignticketstable" element={<AssignTicketsTable />} />
+              <Route path="/ticketmanger" element={<TicketManagerPro />} />
             </>
           )}
         </>

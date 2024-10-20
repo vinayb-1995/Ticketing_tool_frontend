@@ -1,11 +1,9 @@
 import React from "react";
-import useAuth from "../useAuth/useAuth";
 
-export const InputField = ({
+export const TextAreaField = ({
   label,
   name,
   id,
-  type = "text",
   placeholder,
   error,
   className,
@@ -19,7 +17,6 @@ export const InputField = ({
   onBlur,
   icon,
 }) => {
-  const { isAuthenticated } = useAuth();
   return (
     <div className="flex-column">
       <label htmlFor={id} className="ms-2">
@@ -30,13 +27,12 @@ export const InputField = ({
           ""
         )}
       </label>
-      <div className= {`${!isAuthenticated?"inputForm":"group"}`}>
-        {icon && <span className={`${!isAuthenticated?"input-icon":"iconss"}`} >{icon}</span>}
-        <input
-          type={type}
+      <div className="TextAreaField">
+        {icon && <span className="icons">{icon}</span>}
+        <textarea
           name={name}
           id={id}
-          className={`${className}  ${!isAuthenticated?"input":"inputs"} `}
+          className={`${className} `}
           placeholder={placeholder}
           value={value}
           onChange={onChange}
