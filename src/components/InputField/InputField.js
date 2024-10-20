@@ -30,13 +30,17 @@ export const InputField = ({
           ""
         )}
       </label>
-      <div className= {`${!isAuthenticated?"inputForm":"group"}`}>
-        {icon && <span className={`${!isAuthenticated?"input-icon":"iconss"}`} >{icon}</span>}
+      <div className={`${!isAuthenticated ? "inputForm" : "group"}`}>
+        {icon && (
+          <span className={`${!isAuthenticated ? "input-icon" : "iconss"}`}>
+            {icon}
+          </span>
+        )}
         <input
           type={type}
           name={name}
           id={id}
-          className={`${className}  ${!isAuthenticated?"input":"inputs"} `}
+          className={`${className}  ${!isAuthenticated ? "input" : "inputs"} `}
           placeholder={placeholder}
           value={value}
           onChange={onChange}
