@@ -72,8 +72,7 @@ const TicketManagerPro = () => {
               name="phone"
               type="text"
               // onChange={handleChange}
-              icon={<FiPhone />
-              }
+              icon={<FiPhone />}
               // error={errors.email}
             />
           </Col>
@@ -95,9 +94,7 @@ const TicketManagerPro = () => {
               name="password"
               type="text"
               // onChange={handleChange}
-              icon={ <IoLockClosedOutline />
-
-              }
+              icon={<IoLockClosedOutline />}
               // error={errors.email}
             />
           </Col>
@@ -119,7 +116,7 @@ const TicketManagerPro = () => {
               name="companyorgnizationname"
               type="text"
               // onChange={handleChange}
-              icon={<FaRegBuilding /> }
+              icon={<FaRegBuilding />}
               // error={errors.email}
             />
           </Col>
@@ -130,8 +127,7 @@ const TicketManagerPro = () => {
               name="Prefered contact Method"
               type="text"
               // onChange={handleChange}
-              icon={<FaRegAddressCard />
-              }
+              icon={<FaRegAddressCard />}
               // error={errors.email}
             />
           </Col>
