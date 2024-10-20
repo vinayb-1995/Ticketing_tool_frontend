@@ -15,13 +15,15 @@ const AdminHome = () => {
   // useEffect(() => {
   //   dispatch(fetchAdminData());
   // }, [dispatch]);
-
   // console.log('UserData:', userData);
   const handleCreatCustomer=()=>{
     navigate("/createcustomer")
   }
   const handleCreatAgent=()=>{
     navigate("/createagent")
+  }
+  const handleAssignTickets=()=>{
+    navigate("/assignticketstable")
   }
   return (
     <>
@@ -41,7 +43,7 @@ const AdminHome = () => {
         <Col xs={12} md={3} lg={3} onClick={handleCreatAgent} className="dashboardbutton">
             <p>Creat Agent</p>
           </Col>
-        <Col xs={12} md={3} lg={3} className="dashboardbutton">
+        <Col xs={12} md={3} lg={3} onClick={handleAssignTickets} className="dashboardbutton">
             <p>Assign Tickets</p>
           </Col>
         <Col xs={12} md={3} lg={3} className="dashboardbutton">

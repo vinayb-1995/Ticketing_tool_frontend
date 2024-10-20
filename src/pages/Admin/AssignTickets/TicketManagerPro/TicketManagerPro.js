@@ -1,20 +1,21 @@
 import { Col, Row } from "react-bootstrap";
-import Headings from "../../../components/Heading/Headings";
-import { InputField } from "../../../components/InputField/InputField";
 import { MdAlternateEmail } from "react-icons/md";
-import ButtonStyle1 from "../../../components/Buttons/ButtonStyle1";
 import { IoPersonOutline } from "react-icons/io5";
 import { IoPhonePortraitOutline } from "react-icons/io5";
 import { FaRegBuilding } from "react-icons/fa";
 import { IoLockClosedOutline } from "react-icons/io5";
 import { FiPhone } from "react-icons/fi";
 import { FaRegAddressCard } from "react-icons/fa6";
-const CreateCustomer = () => {
+import Headings from "../../../../components/Heading/Headings";
+import ButtonStyle1 from "../../../../components/Buttons/ButtonStyle1";
+import { InputField } from "../../../../components/InputField/InputField";
+
+const TicketManagerPro = () => {
   return (
     <div className="mt-4 container createcutomer">
       <Headings
-        navigtepath="/adminhome"
-        headingname="New Customer Registration"
+        navigtepath="/assignticketstable"
+        headingname="Ticket Mangement"
       />
       <form>
         <Row>
@@ -24,9 +25,11 @@ const CreateCustomer = () => {
               placeholder="First Name"
               name="firstname"
               type="text"
+              value="vinay"
               // onChange={handleChange}
               icon={<IoPersonOutline />}
               // error={errors.email}
+              disabled={true}
             />
           </Col>
           <Col xs={12} md={4} lg={4} className="my-2">
@@ -151,4 +154,4 @@ const CreateCustomer = () => {
     </div>
   );
 };
-export default CreateCustomer;
+export default TicketManagerPro;
