@@ -8,12 +8,12 @@ import ButtonStyle1 from "../../../components/Buttons/ButtonStyle1";
 import { FaRegBuilding } from "react-icons/fa";
 import { IoLockClosedOutline } from "react-icons/io5";
 import { FaRegAddressCard } from "react-icons/fa6";
-import { useState } from "react";
+import React, { useState } from "react";
 import { DropdownField } from "../../../components/Dropdown/DropdownField";
 
 const CreateAgent = () => {
   const [selectedOption, setSelectedOption] = useState(null);
-
+ 
   const handleDropdownChange = (index, name, selectedName) => {
     console.log(`Selected ${name}: ${selectedName}`);
     setSelectedOption(selectedName);
@@ -119,6 +119,7 @@ const CreateAgent = () => {
           <Col xs={12} md={4} lg={4} className="my-2">
               <DropdownField
               index={0}
+           
               id="teamgroup"
               name="exampleDropdown"
               code="code"

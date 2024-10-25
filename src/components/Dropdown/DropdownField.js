@@ -1,7 +1,4 @@
-// import { useState } from 'react'
 import React, { useState, useEffect } from "react";
-// import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
-// import { Combobox } from '@headlessui/react'
 import "react-widgets/scss/styles.scss";
 import DropdownList from "react-widgets/DropdownList";
 
@@ -10,6 +7,7 @@ export const DropdownField = ({
   id,
   name,
   code,
+  description,
   label,
   placeholder,
   error,
@@ -23,28 +21,27 @@ export const DropdownField = ({
   icon,
 }) => {
   const [selectedData, setSelectedData] = useState(setValue);
-
+  // console.log("error>>",error)
   useEffect(() => {
-    let obj = {
+    let obj ={
       ...selectedData,
-      textField: name,
-      textCode: code,
-      index: index,
-    };
+      'textField':name,
+      'textCode':code,
+      'textDesc':description,
+      'index':index,
+      'status': selectedData?.name ? true : false,
+      'label':label
+    }
     getvalue(obj);
     onChangeValue(index, name, selectedData?.name);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getvalue, selectedData]);
 
   return (
     <>
       <label className="ms-2">
-        {label} {required ? "*" : ""}{" "}
-        {extraLabel !== "" ? (
-          <i className="bi bi-info-circle" title={extraLabel}></i>
-        ) : (
-          ""
-        )}
+        {label} {required ? "*" : ""}
+        {extraLabel && <i className="bi bi-info-circle" title={extraLabel}></i>}
       </label>
       <div className="dropdown">
         {icon && <span className="icons">{icon}</span>}
@@ -53,18 +50,17 @@ export const DropdownField = ({
           name={name}
           className="dropdownfield"
           data={data}
-          dataKey="id"
+          dataKey="value"
           textField="name"
-          defaultValue={""}
-          value={setValue}
+          value={selectedData}
           onChange={(value) => setSelectedData(value)}
           filter="contains"
           placeholder={placeholder}
           disabled={disabled}
         />
       </div>
-      {error && typeof error.message === "string" && (
-        <span className="text-red-500 text-xs">{error.message}</span>
+      {error && typeof error === "string" && (
+        <p className="text-danger error" >{error}</p>
       )}
     </>
   );
