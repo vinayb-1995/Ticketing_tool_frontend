@@ -8,7 +8,7 @@ export const InputField = ({
   type = "text",
   placeholder,
   error,
-  className,
+  className,  
   value,
   disabled,
   onChange,

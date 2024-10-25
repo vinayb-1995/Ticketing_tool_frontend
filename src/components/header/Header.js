@@ -35,9 +35,9 @@ const Header = () => {
     }
   }, [dispatch, getRole]);
 
-  useEffect(() => {
-    console.log("Admin Data in Component:", adminData); // Debug log
-  }, [adminData]);
+  // useEffect(() => {
+  //   console.log("Admin Data in Component:", adminData); // Debug log
+  // }, [adminData]);
 
   // const status = useSelector((state) => state.user.status);
   // const error = useSelector((state) => state.user.error);
