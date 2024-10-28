@@ -9,6 +9,7 @@ import CreateCustomer from "../pages/Admin/CreateCustomer/CreateCustomer";
 import CreateAgent from "../pages/Admin/CreateAgent/CreateAgent";
 import AssignTicketsTable from "../pages/Admin/AssignTickets/AssignTicketsTable";
 import TicketManagerPro from "../pages/Admin/AssignTickets/TicketManagerPro/TicketManagerPro";
+import Customer from "../pages/Customer/Customer";
 
 const AppRoute = () => {
   const { isAuthenticated, role } = useAuth();
@@ -19,17 +20,29 @@ const AppRoute = () => {
           <Route path="/" element={<Login />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
+          {/* <Route path="/customer" element={<Customer />} /> */}
+
         </>
       ) : (
         <>
           {role === "admin" && (
             <>
               {/* admin pages */}
+              <Route path="/" element={<AdminHome />} />
               <Route path="/adminhome" element={<AdminHome />} />
               <Route path="/createcustomer" element={<CreateCustomer />} />
               <Route path="/createagent" element={<CreateAgent />} />
               <Route path="/assignticketstable" element={<AssignTicketsTable />} />
               <Route path="/ticketmanger" element={<TicketManagerPro />} />
+              <Route path="/customer" element={<Customer />} />
+            </>
+          )}
+            {role === "customer" && (
+            <>
+              {/* customer pages */}
+              <Route path="/" element={<Customer />} />
+              <Route path="/customer" element={<Customer />} />
+              {/* Add more customer-specific routes here */}
             </>
           )}
         </>

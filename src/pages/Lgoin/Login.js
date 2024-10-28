@@ -14,11 +14,11 @@ const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { showToast } = Toast();
-  const [getLoginAdmin, setLoginAdmin] = useState({
-    email: "",
+  const [getLoginID, setLoginID] = useState({
+    user_unique_ID: "",
     password: "",
   });
-
+// console.log("lgoindetails",getLoginID)
   /* Store errors */
   const [errors, setErrors] = useState({});
 
@@ -26,8 +26,8 @@ const Login = () => {
   const handleChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
-    setLoginAdmin({
-      ...getLoginAdmin,
+    setLoginID({
+      ...getLoginID,
       [name]: value,
     });
     setErrors({ ...errors, [name]: "" });
@@ -36,15 +36,16 @@ const Login = () => {
   /* Validate inputs */
   const validate = () => {
     const newErrors = {};
-    if (!getLoginAdmin.email) {
-      newErrors.email = "Email is required";
-    } else if (!/\S+@\S+\.\S+/.test(getLoginAdmin.email)) {
-      newErrors.email = "Email address is invalid";
-    }
-    if (!getLoginAdmin.password) {
+    if (!getLoginID.user_unique_ID) {
+      newErrors.user_unique_ID = "Email/ID is required";
+    } 
+    // else if (!/\S+@\S+\.\S+/.test(getLoginID.email)) {
+    //   newErrors.email = "Email address is invalid";
+    // }
+    if (!getLoginID.password) {
       newErrors.password = "Password is required";
     } 
-    // else if (getLoginAdmin.password.length < 6) {
+    // else if (getLoginID.password.length < 6) {
     //   newErrors.password = "Password must be at least 6 characters long";
     // }
     return newErrors;
@@ -55,69 +56,71 @@ const Login = () => {
     e.preventDefault();
     const newErrors = validate();
     if (Object.keys(newErrors).length === 0) {
-      // console.log("getLoginAdmin>>", getLoginAdmin);
-      // Add your fetch request here
+      // console.log("getLoginID>>", getLoginID);
+      // Add your fetch 
       try {
-        const response = await fetch(
+        const urls = [
+          `http://localhost:5000/api/customer/customerlogin`,
           `http://localhost:5000/api/admin/adminlogin`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(getLoginAdmin),
-          }
+          `http://localhost:5000/api/agent/agentlogin`
+        ];
+      
+        // Use Promise.allSettled to handle all requests without throwing an error for failed ones
+        const results = await Promise.allSettled(
+          urls.map(url =>
+            fetch(url, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(getLoginID),
+            })
+          )
         );
-        console.log("response>>", response);
-        if (response.ok) {
-          // alert("login succefull please login");
-          const res_data = await response.json();
+      
+        // Find the first successful response without logging errors for failed responses
+        const successfulResponse = results.find(
+          result => result.status === "fulfilled" && result.value.ok
+        );
+      
+        if (successfulResponse) {
+          const res_data = await successfulResponse.value.json();
           const role = res_data.role;
-          // console.log("role>>",role)
-          // dispatch(setToken(res_data.token,res_data.role))
-          dispatch(setToken({ token: res_data.token, role: res_data.role }));
-
+      
+          // Dispatch token and role to Redux store
+          dispatch(setToken({ token: res_data.token, role }));
+      
+          // Navigate based on role
           if (role === "admin") {
             navigate("/adminhome");
-            showToast({ 
-              title: "", 
-              message: "login succeful", 
-              status:"success"
+            showToast({
+              title: "",
+              message: "Login successful",
+              status: "success",
             });
-          } else if (role === "user") {
-            
-            navigate("/user");
+          } else if (role === "customer") {
+            navigate("/customer");
           } else {
-            // alert("invalid credential");
-            showToast({ 
-              title: "Error", 
-              message: "invalid credential", 
-              status:"warning"
+            showToast({
+              title: "Error",
+              message: "Invalid credentials",
+              status: "warning",
             });
           }
-          // onOpen();
-        } else if (response.status === 400) {
-          // alert("Some thing went wrong pleas login again");
-          showToast({ 
-            title: "Error", 
-            message: "Some thing went wrong pleas login again.", 
-            status:"warning"
-          });
-          // onErrorOpen();
         } else {
-          // alert("some thing went wrong");
-          showToast({ 
-            title: "Error", 
-            message: "Some thing went wrong pleas login again.", 
-            status:"warning"
+          // If none of the APIs returned a successful response
+          showToast({
+            title: "Error",
+            message: "Invalid credentials or network error.",
+            status: "warning",
           });
         }
       } catch (err) {
-        // alert("login fiaild");
-        showToast({ 
-          title: "Error", 
-          message: "Some thing went wrong pleas login again.", 
-          status:"warning"
+        // General error handling for other potential issues
+        showToast({
+          title: "Error",
+          message: "Something went wrong, please try logging in again.",
+          status: "warning",
         });
       }
     } else {
@@ -135,13 +138,13 @@ const Login = () => {
                 <p>Login to Your Account</p>
               </div>
               <InputField
-                label="Email"
-                placeholder="Email"
-                name="email"
+                label="Email/ID"
+                placeholder="Email/ID"
+                name="user_unique_ID"
                 type="text"
                 onChange={handleChange}
                 icon={<MdAlternateEmail />}
-                error={errors.email}
+                error={errors.user_unique_ID}
               />
               <InputField
                 label="Password"

@@ -15,18 +15,23 @@ import ConformationModal from "../../../components/Modals/ConformationModal";
 import { useDisclosure } from "@chakra-ui/react";
 import Toast from "../../../components/Toast/Toast";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
-  const accoutnStatusDropDownOption = [
-    { name: "Active", value: "active" },
-    { name: "Created", value: "created" },
-  ];
-  const contactMethod = [
-    { name: "Mail", value: "mail" },
-    { name: "Mobile", value: "Mobile" },
-  ];
+const accoutnStatusDropDownOption = [
+  { name: "Active", value: "active" },
+  { name: "Created", value: "created" },
+];
+const contactMethod = [
+  { name: "Mail", value: "mail" },
+  { name: "Mobile", value: "Mobile" },
+];
 
 const CreateCustomer = () => {
   const navigate = useNavigate();
+  const admiId = useSelector(
+    (state) => state?.admin?.adminData?.adminBody?._id
+  );
+  // console.log("adminid",admiId)
   const [getNewCustomer, setNewCustomer] = useState({
     firstname: "",
     lastname: "",
@@ -38,6 +43,7 @@ const CreateCustomer = () => {
     companyorgnizationname: "",
     preferedcontactmethod: "",
     accountstatus: "",
+    createdByAdmin: admiId,
   });
   // const [formData, setFormData] = useState({ name: "" });
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -70,49 +76,73 @@ const CreateCustomer = () => {
       [name]: value,
     });
   };
-/* validation */
+  /* validation */
   /* soter error */
-  const [errors, setErrors] = useState({})
+  const [errors, setErrors] = useState({});
   const validate = () => {
     let tempErrors = {};
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Regex for email validation
     const phonePattern = /^\d{10}$/; // Regex for 10-digit phone number validation
-  
+
     // Check required fields and set error messages
-    if (!getNewCustomer.firstname) tempErrors.firstname = "First Name is required.";
-    if (!getNewCustomer.lastname) tempErrors.lastname = "Last Name is required.";
-    
+    if (!getNewCustomer.firstname)
+      tempErrors.firstname = "First Name is required.";
+    if (!getNewCustomer.lastname)
+      tempErrors.lastname = "Last Name is required.";
+
     if (!getNewCustomer.email || !emailPattern.test(getNewCustomer.email)) {
       tempErrors.email = "Valid Email is required.";
     }
-    
-    if (getNewCustomer.secondaryemail && !emailPattern.test(getNewCustomer.secondaryemail)) {
+
+    if (
+      getNewCustomer.secondaryemail &&
+      !emailPattern.test(getNewCustomer.secondaryemail)
+    ) {
       tempErrors.secondaryemail = "Valid Secondary Email is required.";
     }
-    
+
     // Check if email and secondary email are the same
-    if (getNewCustomer.email && getNewCustomer.secondaryemail && getNewCustomer.email === getNewCustomer.secondaryemail) {
-      tempErrors.secondaryemail = "Secondary email must be different from primary email.";
+    if (
+      getNewCustomer.email &&
+      getNewCustomer.secondaryemail &&
+      getNewCustomer.email === getNewCustomer.secondaryemail
+    ) {
+      tempErrors.secondaryemail =
+        "Secondary email must be different from primary email.";
     }
-  
+
     if (!getNewCustomer.mobile || !phonePattern.test(getNewCustomer.mobile)) {
       tempErrors.mobile = "Valid 10-digit Mobile number is required.";
     }
-  
-    if (getNewCustomer.alternativemobile && !phonePattern.test(getNewCustomer.alternativemobile)) {
-      tempErrors.alternativemobile = "Valid 10-digit Alternative Mobile number is required.";
+
+    if (
+      getNewCustomer.alternativemobile &&
+      !phonePattern.test(getNewCustomer.alternativemobile)
+    ) {
+      tempErrors.alternativemobile =
+        "Valid 10-digit Alternative Mobile number is required.";
     }
-    
+
     // Check if mobile and alternative mobile are the same
-    if (getNewCustomer.mobile && getNewCustomer.alternativemobile && getNewCustomer.mobile === getNewCustomer.alternativemobile) {
-      tempErrors.alternativemobile = "Alternative mobile must be different from primary mobile.";
+    if (
+      getNewCustomer.mobile &&
+      getNewCustomer.alternativemobile &&
+      getNewCustomer.mobile === getNewCustomer.alternativemobile
+    ) {
+      tempErrors.alternativemobile =
+        "Alternative mobile must be different from primary mobile.";
     }
-  
+
     if (!getNewCustomer.password) tempErrors.password = "Password is required.";
-    if (!getNewCustomer.companyorgnizationname) tempErrors.companyorgnizationname = "Company/Organization Name is required.";
-    if (!getNewCustomer.preferedcontactmethod) tempErrors.preferedcontactmethod = "Preferred Contact Method is required.";
-    if (!getNewCustomer.accountstatus) tempErrors.accountstatus = "Account Status is required.";
-  
+    if (!getNewCustomer.companyorgnizationname)
+      tempErrors.companyorgnizationname =
+        "Company/Organization Name is required.";
+    if (!getNewCustomer.preferedcontactmethod)
+      tempErrors.preferedcontactmethod =
+        "Preferred Contact Method is required.";
+    if (!getNewCustomer.accountstatus)
+      tempErrors.accountstatus = "Account Status is required.";
+
     setErrors(tempErrors); // Set errors state
     return Object.keys(tempErrors).length === 0; // Returns true if no errors
   };
@@ -126,10 +156,10 @@ const CreateCustomer = () => {
       onOpen();
     }
   };
-//on conform model
-const handleOk = async () => {
-  //write response heare
-   try {
+  //on conform model
+  const handleOk = async () => {
+    //write response heare
+    try {
       const response = await fetch(
         `http://localhost:5000/api/customer/customerregister`,
         {
@@ -142,17 +172,17 @@ const handleOk = async () => {
       );
       console.log("response>>", response);
       if (response.ok) {
-        onClose()
+        onClose();
         setTimeout(() => {
           // alert("Successfully created customer");//gree toast show created and navigate to the admim page
           navigate("/adminhome");
-          showToast({ 
-            title: "", 
-            message: "Customer Created succeful", 
-            status:"success"
+          showToast({
+            title: "",
+            message: "Customer Created succeful",
+            status: "success",
           });
-        }, 100); 
-      
+        }, 100);
+
         // const res_data = await response.json();
         // const role = res_data.role;
         // console.log("role>>",role)
@@ -164,16 +194,15 @@ const handleOk = async () => {
         // alert("Some thing went wrong pleas login again");
         showToast({
           title: "Error",
-          message: "Some thing went wrong pleas login again.",
-          status:"warning"
+          message: `Please try another email ID; ${getNewCustomer.email} already exists.`,
+          status: "warning",
         });
-        
       } else {
         // alert("some thing went wrong");
         showToast({
           title: "Error",
           message: "Some thing went wrong pleas login again.",
-          status:"warning"
+          status: "warning",
         });
       }
     } catch (err) {
@@ -181,10 +210,10 @@ const handleOk = async () => {
       showToast({
         title: "Error",
         message: "Some thing went wrong pleas login again.",
-        status:"warning"
+        status: "warning",
       });
-      }
-};
+    }
+  };
   return (
     <div className="mt-4 container createcutomer pb-4">
       <Headings
@@ -246,7 +275,6 @@ const handleOk = async () => {
               onChange={handleChange}
               icon={<IoPhonePortraitOutline />}
               error={errors.mobile}
-
             />
           </Col>
           <Col xs={12} md={4} lg={4} className="my-2">
@@ -258,7 +286,6 @@ const handleOk = async () => {
               onChange={handleChange}
               icon={<IoPhonePortraitOutline />}
               error={errors.alternativemobile}
-
             />
           </Col>
           <Col xs={12} md={4} lg={4} className="my-2">
@@ -270,7 +297,6 @@ const handleOk = async () => {
               onChange={handleChange}
               icon={<IoLockClosedOutline />}
               error={errors.password}
-
             />
           </Col>
           <Col xs={12} md={4} lg={4} className="my-2">
@@ -285,20 +311,19 @@ const handleOk = async () => {
             />
           </Col>
           <Col xs={12} md={4} lg={4} className="my-2">
-          <DropdownField
+            <DropdownField
               index={0}
               id="preferedcontactmethod"
               name="preferedcontactmethod"
               label="Preferred Contact Method"
               placeholder="Preferred Contact Method"
               data={contactMethod} // Options for dropdown
-              setValue={getNewCustomer?.preferedcontactmethod||""} // Pre-filled value
+              setValue={getNewCustomer?.preferedcontactmethod || ""} // Pre-filled value
               getvalue={setDropdownData} // Set dropdown data on change
               disabled={false}
               required={true}
               error={errors.preferedcontactmethod}
-              icon={<FaRegAddressCard />
-              }
+              icon={<FaRegAddressCard />}
             />
           </Col>
           <Col xs={12} md={4} lg={4} className="my-2">
@@ -314,8 +339,7 @@ const handleOk = async () => {
               disabled={false}
               required={true}
               error={errors.accountstatus} // Display error if exists
-              icon={<AiOutlineUserSwitch />
-              }
+              icon={<AiOutlineUserSwitch />}
             />
           </Col>
         </Row>
