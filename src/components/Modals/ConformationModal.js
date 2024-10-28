@@ -14,7 +14,7 @@ import {
 import { Col, Row } from "react-bootstrap";
 
 const ConformationModal = ({ title, bodyText, isOpen, onClose, onOk }) => {
-    // console.log("bodytext>>",bodyText)
+  // console.log("bodytext>>",bodyText)
   return (
     <Modal isOpen={isOpen} onClose={onClose} isCentered>
       <ModalOverlay />
@@ -22,21 +22,25 @@ const ConformationModal = ({ title, bodyText, isOpen, onClose, onOk }) => {
         <ModalHeader>{title}</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          {bodyText && typeof bodyText === 'object' ? (
-            Object.entries(bodyText).map(([key, value], index) => (
-              <Row key={index} style={{ marginBottom: "8px" }}>
-                <Col lg={6}>
-                  <strong>{key}:</strong>
-                </Col >
-                <Col lg={6} className="d-flex align-items-end">{value}</Col>
-              </Row>
-            ))
+          {bodyText && typeof bodyText === "object" ? (
+            Object.entries(bodyText)
+              .filter(([key]) => key !== "createdByAdmin") // Filter out createdByAdmin
+              .map(([key, value], index) => (
+                <Row key={index} style={{ marginBottom: "8px" }}>
+                  <Col lg={6}>
+                    <strong>{key}:</strong>
+                  </Col>
+                  <Col lg={6} className="d-flex align-items-end">
+                    {value}
+                  </Col>
+                </Row>
+              ))
           ) : (
             <p>No details available</p>
           )}
         </ModalBody>
         <ModalFooter>
-          <Button  mr={3} onClick={onClose}>
+          <Button mr={3} onClick={onClose}>
             Close
           </Button>
           <Button variant="ghost" onClick={onOk}>
