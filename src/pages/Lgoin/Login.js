@@ -92,14 +92,26 @@ const Login = () => {
       
           // Navigate based on role
           if (role === "admin") {
-            navigate("/adminhome");
+            navigate("/");
             showToast({
               title: "",
               message: "Login successful",
               status: "success",
             });
           } else if (role === "customer") {
-            navigate("/customer");
+            navigate("/");
+            showToast({
+              title: "",
+              message: "Login successful",
+              status: "success",
+            });
+          } else if (role === "agent") {
+            navigate("/");
+            showToast({
+              title: "",
+              message: "Login successful",
+              status: "success",
+            })
           } else {
             showToast({
               title: "Error",

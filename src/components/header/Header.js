@@ -6,6 +6,8 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Logout from "../../pages/logout/Logout";
 import { fetchAdminData } from "../../features/slice/adminDataSlice";
+import { fetchagentLoingData } from "../../features/slice/fetchAgentData";
+import { fetchAgentsAllData } from "../../features/slice/fetchAgentsAllData";
 import CustomAvatar from "../Avatar/CustomAvatar";
 import {
   Popover,
@@ -14,7 +16,8 @@ import {
   PopoverArrow,
   PopoverCloseButton,
 } from "@chakra-ui/react";
-import { fetchCustomerData } from "../../features/slice/customerDataSlice";
+import { fetchCustomerLoingData } from "../../features/slice/customerLoginDataSlice";
+import { fetchCustomerAllData } from "../../features/slice/fetchCustomerAllData";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -33,11 +36,27 @@ const Header = () => {
   /* customer data from redux */
   const customerData = useSelector((state) => state.customer.customerData);
   // console.log("customerdata>>",customerData)
+  const agentData = useSelector((state) => state.agent.agentData);
+
+  /*fetch in all customer customer all data */
+  const customerAllData = useSelector(
+    (state) => state.allCustomer.customerData
+  );
+  // console.log("fetchCustomerAllData>>", customerAllData);
+  const agentsData = useSelector((state) => state.allAgents.AgentsData);
+  // console.log("fetchAgentsAllData>>", agentsData);
+
   useEffect(() => {
     if (getRole === "admin") {
       dispatch(fetchAdminData());
+      dispatch(fetchCustomerAllData());
+      dispatch(fetchAgentsAllData());
     } else if (getRole === "customer") {
-      dispatch(fetchCustomerData());
+      dispatch(fetchCustomerLoingData());
+      // console.log("header>> role customer")
+    } else if (getRole === "agent") {
+      dispatch(fetchagentLoingData());
+
       // console.log("header>> role customer")
     }
   }, [dispatch, getRole]);
@@ -62,6 +81,7 @@ const Header = () => {
     customerData?.customerBody?.lastname || ""
   }`;
   // console.log("customerName",customerName)
+
   return (
     <div className="container-fluid header">
       <Row className="container d-flex align-items-center">
@@ -94,14 +114,14 @@ const Header = () => {
         >
           {getRole === "admin" ? (
             <>
-              {/* Render admin-specific content here */}
+              {/* Render admin-specific content */}
               {adminData ? (
                 <Popover>
                   <PopoverTrigger>
                     <div>
                       <CustomAvatar
                         username={adminData.adminBody.username}
-                        bgcolor="red.500"
+                        bgcolor="purple.700"
                       />
                     </div>
                   </PopoverTrigger>
@@ -126,7 +146,106 @@ const Header = () => {
                 <Popover>
                   <PopoverTrigger>
                     <div>
-                      <CustomAvatar username={customerName} bgcolor="red.500" />
+                      <CustomAvatar
+                        username={customerName}
+                        bgcolor="green.500"
+                      />
+                    </div>
+                  </PopoverTrigger>
+                  <PopoverContent className="p-2">
+                    <PopoverArrow />
+                    <PopoverCloseButton />
+                    <p className="fs-5 fw-medium text-black">
+                      {customerData?.customerBody?.role}
+                    </p>
+                    <p>{customerName}</p>
+                    <p>{customerData?.customerBody?.email}</p>
+                  </PopoverContent>
+                </Popover>
+              ) : (
+                <>no data</>
+              )}
+              <Logout />
+            </>
+          ) : getRole === "agent" ? (
+            <>
+              {agentData ? (
+                <Popover>
+                  <PopoverTrigger>
+                    <div>
+                      <CustomAvatar
+                        username={agentData.agentBody.fullname}
+                        bgcolor="red.500"
+                      />
+                    </div>
+                  </PopoverTrigger>
+                  <PopoverContent className="p-2">
+                    <PopoverArrow />
+                    <PopoverCloseButton />
+                    <p className="fs-5 fw-medium text-black">
+                      {agentData.agentBody.role}
+                    </p>
+                    <p>{agentData.agentBody.fullname}</p>
+                    <p>{agentData.agentBody.email}</p>
+                  </PopoverContent>
+                </Popover>
+              ) : (
+                <>no data</>
+              )}
+              <Logout />
+            </>
+          ) : (
+            <>
+              {/* Render other roles' content */}
+              <Link className="link me-4 d-flex align-items-center" to="/login">
+                <p className="me-2">Login</p>
+                <BsBoxArrowLeft className="icons" />
+              </Link>
+              <Link className="link d-flex align-items-center" to="/signup">
+                <p className="me-2">Register</p>
+                <TiUserAddOutline className="icons" />
+              </Link>
+            </>
+          )}
+
+          {/* {getRole === "admin" ? (
+            <>
+             
+              {adminData ? (
+                <Popover>
+                  <PopoverTrigger>
+                    <div>
+                      <CustomAvatar
+                        username={adminData.adminBody.username}
+                        bgcolor="purple.700"
+                      />
+                    </div>
+                  </PopoverTrigger>
+                  <PopoverContent className="p-2">
+                    <PopoverArrow />
+                    <PopoverCloseButton />
+                    <p className="fs-5 fw-medium text-black">
+                      {adminData.adminBody.role}
+                    </p>
+                    <p>{adminData.adminBody.username}</p>
+                    <p>{adminData.adminBody.email}</p>
+                  </PopoverContent>
+                </Popover>
+              ) : (
+                <>nodata</>
+              )}
+              <Logout />
+            </>
+          ) : getRole === "customer" ? (
+            <>
+              {customerData ? (
+                <Popover>
+                  <PopoverTrigger>
+                    <div>
+                      <CustomAvatar
+                        username={customerName}
+                        bgcolor="green.500"
+                      />
                     </div>
                   </PopoverTrigger>
                   <PopoverContent className="p-2">
@@ -146,7 +265,7 @@ const Header = () => {
             </>
           ) : (
             <>
-              {/* Render other roles' content here */}
+            
               <Link className="link me-4 d-flex align-items-center" to="/login">
                 <p className="me-2">Login</p>
                 <BsBoxArrowLeft className="icons" />
@@ -156,7 +275,7 @@ const Header = () => {
                 <TiUserAddOutline className="icons" />
               </Link>
             </>
-          )}
+          )} */}
         </Col>
       </Row>
     </div>
