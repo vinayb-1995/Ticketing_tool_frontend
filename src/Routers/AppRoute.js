@@ -10,6 +10,7 @@ import CreateAgent from "../pages/Admin/CreateAgent/CreateAgent";
 import AssignTicketsTable from "../pages/Admin/AssignTickets/AssignTicketsTable";
 import TicketManagerPro from "../pages/Admin/AssignTickets/TicketManagerPro/TicketManagerPro";
 import Customer from "../pages/Customer/Customer";
+import Agents from "../pages/Agents/Agents";
 
 const AppRoute = () => {
   const { isAuthenticated, role } = useAuth();
@@ -42,6 +43,14 @@ const AppRoute = () => {
               {/* customer pages */}
               <Route path="/" element={<Customer />} />
               <Route path="/customer" element={<Customer />} />
+              {/* Add more customer-specific routes here */}
+            </>
+          )}
+            {role === "agent" && (
+            <>
+              {/* customer pages */}
+              <Route path="/" element={<Agents />} />
+              <Route path="/customer" element={<Agents />} />
               {/* Add more customer-specific routes here */}
             </>
           )}

@@ -6,7 +6,7 @@ import { Col, Row } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
 const AdminHome = () => {
-    const navigate=useNavigate()
+  const navigate = useNavigate();
   /* admin data from redux */
   // const dispatch = useDispatch();
   // const userData = useSelector((state) => state.admin.adminData);
@@ -16,15 +16,15 @@ const AdminHome = () => {
   //   dispatch(fetchAdminData());
   // }, [dispatch]);
   // console.log('UserData:', userData);
-  const handleCreatCustomer=()=>{
-    navigate("/createcustomer")
-  }
-  const handleCreatAgent=()=>{
-    navigate("/createagent")
-  }
-  const handleAssignTickets=()=>{
-    navigate("/assignticketstable")
-  }
+  const handleCreatCustomer = () => {
+    navigate("/createcustomer");
+  };
+  const handleCreatAgent = () => {
+    navigate("/createagent");
+  };
+  const handleAssignTickets = () => {
+    navigate("/assignticketstable");
+  };
   return (
     <>
       <div className="container mt-2 adminhome">
@@ -37,22 +37,40 @@ const AdminHome = () => {
           </Col>
         </Row>
         <Row className="m-2 d-flex justify-content-center ">
-        <Col xs={12} md={3} lg={3} onClick={handleCreatCustomer} className="dashboardbutton">
+          <Col
+            xs={12}
+            md={3}
+            lg={3}
+            onClick={handleCreatCustomer}
+            className="dashboardbutton"
+          >
             <p>Create Customer</p>
           </Col>
-        <Col xs={12} md={3} lg={3} onClick={handleCreatAgent} className="dashboardbutton">
+          <Col
+            xs={12}
+            md={3}
+            lg={3}
+            onClick={handleCreatAgent}
+            className="dashboardbutton"
+          >
             <p>Create Agent</p>
           </Col>
-        <Col xs={12} md={3} lg={3} onClick={handleAssignTickets} className="dashboardbutton">
+          <Col
+            xs={12}
+            md={3}
+            lg={3}
+            onClick={handleAssignTickets}
+            className="dashboardbutton"
+          >
             <p>Assign Tickets</p>
           </Col>
-        <Col xs={12} md={3} lg={3} className="dashboardbutton">
+          <Col xs={12} md={3} lg={3} className="dashboardbutton">
             <p>All Customer</p>
           </Col>
-        <Col xs={12} md={3} lg={3} className="dashboardbutton">
+          <Col xs={12} md={3} lg={3} className="dashboardbutton">
             <p>All Agents</p>
           </Col>
-        <Col xs={12} md={3} lg={3} className="dashboardbutton">
+          <Col xs={12} md={3} lg={3} className="dashboardbutton">
             <p>Open, Closed & Pending tickets</p>
           </Col>
         </Row>
