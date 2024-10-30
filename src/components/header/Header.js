@@ -94,7 +94,6 @@ const Header = () => {
             alt="logo"
           />
         </Col>
-
         {/* Heading Column */}
         <Col
           xs={{ span: 4, offset: 2 }}
@@ -104,7 +103,6 @@ const Header = () => {
         >
           <p>Welcome to ATT</p>
         </Col>
-
         {/* Auth Links (Login and Register) */}
         <Col
           xs={6}
@@ -121,7 +119,7 @@ const Header = () => {
                     <div>
                       <CustomAvatar
                         username={adminData.adminBody.username}
-                        bgcolor="purple.700"
+                        bgcolor="teal.400"
                       />
                     </div>
                   </PopoverTrigger>
