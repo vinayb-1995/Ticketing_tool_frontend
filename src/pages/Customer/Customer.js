@@ -1,6 +1,12 @@
 import { Col, Row } from "react-bootstrap";
+import {  useNavigate } from "react-router-dom";
 
 const Customer = () => {
+  const navigate=useNavigate()
+  const  handelnavigate=()=>{
+    navigate("/createtickets")
+  }
+  
   return (
     <>
       <div className="container mt-2 adminhome">
@@ -19,7 +25,7 @@ const Customer = () => {
           </Col>
         </Row>
         <Row className="m-2 d-flex justify-content-start">
-          <Col xs={12} md={3} lg={3} className="dashboardbutton">
+          <Col xs={12} md={3} lg={3} className="dashboardbutton" onClick={handelnavigate}>
             <p>Create Tickets</p>
           </Col>
           <Col xs={12} md={3} lg={3} className="dashboardbutton">

@@ -45,6 +45,23 @@ const CreateCustomer = () => {
     accountstatus: "",
     createdByAdmin: admiId,
   });
+  const [getConformfields, setConformfields] = useState({});
+
+  // Update getConformfields whenever getNewCustomer changes
+  useEffect(() => {
+    setConformfields({
+      "First Name": getNewCustomer.firstname,
+      "Last Name": getNewCustomer.lastname,
+      Email: getNewCustomer.email,
+      "Secondary Email": getNewCustomer.secondaryemail,
+      Mobile: getNewCustomer.mobile,
+      "Alternative Mobile": getNewCustomer.alternativemobile,
+      Password: getNewCustomer.password,
+      "Company/Organization Name": getNewCustomer.companyorgnizationname,
+      "Preferred Contact Method": getNewCustomer.preferedcontactmethod,
+      "Account Status": getNewCustomer.accountstatus,
+    });
+  }, [getNewCustomer]);
   // const [formData, setFormData] = useState({ name: "" });
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { showToast } = Toast();
@@ -349,7 +366,7 @@ const CreateCustomer = () => {
       </form>
       <ConformationModal
         title="Confirm Customer Details"
-        bodyText={getNewCustomer}
+        bodyText={getConformfields}
         isOpen={isOpen}
         onClose={onClose}
         onOk={handleOk}

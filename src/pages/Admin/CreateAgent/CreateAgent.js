@@ -58,6 +58,21 @@ const CreateAgent = () => {
     accountstatus: "",
     createdByAdmin: admiId
   });
+  const [getConformfields, setConformfields] = useState({});
+
+  useEffect(() => {
+    setConformfields({
+      "Full Name": getNewAgent.fullname,
+      "Email": getNewAgent.email,
+      "Phone Number": getNewAgent.phoneNumber,
+      "Password": getNewAgent.password,
+      "Department": getNewAgent.department,
+      "Group": getNewAgent.group,
+      "Account status": getNewAgent.accountstatus,
+      "Created By Admin": getNewAgent.createdByAdmin,
+    });
+  }, [getNewAgent]);
+  
 
   const { showToast } = Toast();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -121,10 +136,9 @@ const validate = () => {
 const newErrors = validate();
 if (newErrors) {
   // setFormData(getNewCustomer); // Save the data for modal display
+  
   onOpen();
-}
-
-}
+}}
 
 //handel Ok
 const handleOk = async () => {
@@ -287,7 +301,8 @@ const handleOk = async () => {
       </form>
       <ConformationModal
         title="Confirm Agent Details"
-        bodyText={getNewAgent}
+        // bodyText={getNewAgent}
+        bodyText={getConformfields}
         isOpen={isOpen}
         onClose={onClose}
         onOk={handleOk}
