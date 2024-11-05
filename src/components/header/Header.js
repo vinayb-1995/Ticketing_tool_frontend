@@ -8,6 +8,7 @@ import Logout from "../../pages/logout/Logout";
 import { fetchAdminData } from "../../features/slice/adminDataSlice";
 import { fetchagentLoingData } from "../../features/slice/fetchAgentData";
 import { fetchAgentsAllData } from "../../features/slice/fetchAgentsAllData";
+import { fetchAllTickets } from "../../features/slice/allTickets";
 import CustomAvatar from "../Avatar/CustomAvatar";
 import {
   Popover,
@@ -35,22 +36,27 @@ const Header = () => {
 
   /* customer data from redux */
   const customerData = useSelector((state) => state.customer.customerData);
-  // console.log("customerdata>>",customerData)
+  console.log("customerdata>>",customerData)
   const agentData = useSelector((state) => state.agent.agentData);
 
   /*fetch in all customer customer all data */
   const customerAllData = useSelector(
     (state) => state.allCustomer.customerData
   );
-  // console.log("fetchCustomerAllData>>", customerAllData);
+  console.log("fetchCustomerAllData>>", customerAllData);
   const agentsData = useSelector((state) => state.allAgents.AgentsData);
-  // console.log("fetchAgentsAllData>>", agentsData);
+  console.log("fetchAgentsAllData>>", agentsData);
+
+  const allTicketsData = useSelector((state) => state.alltickets.allTicketsData);
+  console.log("allTicketsData",allTicketsData)
+
 
   useEffect(() => {
     if (getRole === "admin") {
       dispatch(fetchAdminData());
       dispatch(fetchCustomerAllData());
       dispatch(fetchAgentsAllData());
+      dispatch(fetchAllTickets());
     } else if (getRole === "customer") {
       dispatch(fetchCustomerLoingData());
       // console.log("header>> role customer")

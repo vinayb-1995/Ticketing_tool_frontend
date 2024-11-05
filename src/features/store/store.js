@@ -6,6 +6,7 @@ import customerLoginDataReduser  from '../slice/customerLoginDataSlice';
 import agentLoginDataReduser  from '../slice/fetchAgentData';
 import customerAllDataReducer  from '../slice/fetchCustomerAllData';
 import agentsAllDataReducer  from '../slice/fetchAgentsAllData';
+import allTicketReducer  from '../slice/allTickets';
 
 export const store = configureStore({
   reducer: {
@@ -15,6 +16,7 @@ export const store = configureStore({
     allCustomer:customerAllDataReducer,
     allAgents:agentsAllDataReducer,
     agent: agentLoginDataReduser,
+    alltickets: allTicketReducer,  
   },
 });
 

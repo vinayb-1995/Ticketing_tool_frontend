@@ -16,7 +16,7 @@ import { useNavigate } from "react-router-dom";
 import { useDisclosure } from "@chakra-ui/react";
 import ConformationModal from "../../../components/Modals/ConformationModal";
 
-const department = [
+/* const department = [
   { name: "Software Development", value: "software_development" },
   { name: "Quality Assurance", value: "quality_assurance" },
   { name: "Human Resources", value: "human_resources" },
@@ -36,11 +36,36 @@ const group = [
   { name: "Sales Team", value: "sales_team" },
   { name: "Customer Success Team", value: "customer_success_team" },
   { name: "Research & Development Team", value: "research_development_team" },
-];
+]; */
 
 const accoutnStatusDropDownOption = [
   { name: "Active", value: "active" },
   { name: "Created", value: "created" },
+];
+const data = [
+  {
+    department: "Software Development",
+    teams: [
+      { name: "Frontend Team", value: "Frontend Team" },
+      { name: "Backend Team", value: "Backend Team" },
+      { name: "Full Stack Team", value: "Full Stack Team" }
+    ]
+  },
+  {
+    department: "Quality Assurance",
+    teams: [
+      { name: "Automation Team", value: "Automation Team" },
+      { name: "Manual Testing Team", value: "Manual Testing Team" },
+      { name: "Performance Testing Team", value: "Performance Testing Team" }
+    ]
+  },
+  {
+    department: "Human Resources",
+    teams: [
+      { name: "Recruitment Team", value: "Recruitment Team" },
+      { name: "Employee Relations Team", value: "Employee Relations Team" }
+    ]
+  }
 ];
 const CreateAgent = () => {
   const navigate = useNavigate();
@@ -58,6 +83,16 @@ const CreateAgent = () => {
     accountstatus: "",
     createdByAdmin: admiId
   });
+
+const updatedTeam = data.some((dept) =>
+  dept.department === getNewAgent.department &&
+  dept.teams.some((team) => team.value === getNewAgent.group)
+);
+
+// console.log("department>>", getNewAgent.department);
+// console.log("teams/group>>", getNewAgent.group);
+// console.log("updatedTeam>>", updatedTeam);
+
   const [getConformfields, setConformfields] = useState({});
 
   useEffect(() => {
@@ -69,7 +104,7 @@ const CreateAgent = () => {
       "Department": getNewAgent.department,
       "Group": getNewAgent.group,
       "Account status": getNewAgent.accountstatus,
-      "Created By Admin": getNewAgent.createdByAdmin,
+      // "Created By Admin": getNewAgent.createdByAdmin,
     });
   }, [getNewAgent]);
   
@@ -78,9 +113,26 @@ const CreateAgent = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   //dropdown option
-
   const [getDropdownData, setDropdownData] = useState(null);
+  const [teams, setTeams] = useState([]);
   useEffect(() => {
+    if (getDropdownData) {
+      if (getDropdownData.textField === 'department') {
+        // Update the teams based on the selected department
+        const selectedDepartment = data.find(dep => dep.department === getDropdownData.name);
+        setTeams(selectedDepartment ? selectedDepartment.teams : []);
+        // console.log('selectedDepartment',selectedDepartment)
+        // console.log('getDropdownData',getDropdownData.name)
+      }
+      // Update agent state based on dropdown selection
+      setNewAgent((prevState) => ({
+        ...prevState,
+        [getDropdownData.textField]: getDropdownData.name,
+      }));
+    }
+  }, [getDropdownData]);
+  // =================================================================================
+/*   useEffect(() => {
     // Prevent update if getDropdownData is null or undefined
     if (getDropdownData && getDropdownData.name && getDropdownData.textField) {
       setNewAgent((prevState) => {
@@ -94,7 +146,7 @@ const CreateAgent = () => {
         };
       });
     }
-  }, [getDropdownData]);
+  }, [getDropdownData]); */
 
   /* Handle input changes */
   const handleChange = (e) => {
@@ -123,7 +175,8 @@ const validate = () => {
   if (!getNewAgent.password) tempErrors.password = "Password is required.";
   if (!getNewAgent.accountstatus) tempErrors.accountstatus = "Account Status is required.";
   if (!getNewAgent.department) tempErrors.department = "Department/Expertise is required.";
-  if (!getNewAgent.group) tempErrors.department = "group/team is required.";
+  if (!getNewAgent.group) tempErrors.group = "group/team is required.";
+  if (!updatedTeam ) tempErrors.group = "please update the group/team.";
 
   setErrors(tempErrors); // set error state
   return Object.keys(tempErrors).length === 0;
@@ -153,7 +206,7 @@ const handleOk = async () => {
         body: JSON.stringify(getNewAgent),
       }
     );
-    console.log("response>>", response);
+    // console.log("response>>", response);
     if (response.ok) {
       // onClose();
       setTimeout(() => {
@@ -269,8 +322,10 @@ const handleOk = async () => {
               name="department"
               label="Department/Expertise"
               placeholder="Department/Expertise"
-              data={department} // Options for dropdown
+              // data={department}
+              data={data.map(dep => ({ name: dep.department, value: dep.department }))}
               setValue={getNewAgent?.department || ""} // Pre-filled value
+              // getvalue={setDropdownData} // Set dropdown data on change
               getvalue={setDropdownData} // Set dropdown data on change
               disabled={false}
               required={true}
@@ -285,10 +340,11 @@ const handleOk = async () => {
               name="group"
               label="team/group"
               placeholder="team/group"
-              data={group} // Options for dropdown
+              // data={group} // Options for dropdown
+              data={teams}
               setValue={getNewAgent?.group || ""} // Pre-filled value
               getvalue={setDropdownData} // Set dropdown data on change
-              disabled={false}
+              disabled={teams.length === 0} // Disable if no teams are available
               required={true}
               error={errors.group}
               icon={<FaRegAddressCard />}
