@@ -15,13 +15,15 @@ import { useEffect, useState } from "react";
 import { DropdownField } from "../../../components/Dropdown/DropdownField";
 import { TextAreaField } from "../../../components/TextAreaField/TextAreaField";
 import ConformationModal from "../../../components/Modals/ConformationModal";
+import Toast from "../../../components/Toast/Toast";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const departments = [
   { name: "IT", value: "it" },
   { name: "ERP", value: "erp" },
 ];
 
-const subModules = [
+const subModule = [
   { name: "User Management", value: "user_management" },
   { name: "Access Control", value: "access_control" },
   { name: "Data Migration", value: "data_migration" },
@@ -36,40 +38,54 @@ const issueTypes = [
 ];
 
 const CreateTickets = () => {
+  const location = useLocation();
+  const uuid = location.state?.uuid;
+    // console.log("uniquei id for customer>> ",uuid)
+  const navigate = useNavigate();
   /* customer data from redux */
   const customerData = useSelector((state) => state.customer.customerData);
   const customerName = `${customerData?.customerBody?.firstname || ""} ${
     customerData?.customerBody?.lastname || ""
   }`.trim();
-  //   console.log("customerData>>", customerData);
+  // console.log("customerData>>", customerData);
+  // const admiId = customerData?.customerBody?.adminDetails?._id.toString();
+  const adminId = customerData?.customerBody?.adminDetails?._id
+    .toString()
+    .trim();
+  // console.log("adminId", adminId);
+
   const [getNewTicket, setNewTicket] = useState({
+    uniqueticketID:"",
     adminName: "",
-    AdminID: "",
+    adminId: "",
+    adminMailID: "",
     customerName: "",
-    customeID: "",
-    cutomerMailID: "",
-    customermobile: "",
+    customerID: "",
+    customerMailID: "",
+    customerContactNumber: "",
     department: "",
-    subModules: "",
-    TypeofIssue: "",
+    subModule: "",
+    issueType: "",
     description: "",
+    image: "",
   });
   // console.log('getNewTicket>>',getNewTicket)
   const [getConformfields, setConformfields] = useState({});
-
+  const { showToast } = Toast();
   // Update getConformfields whenever getNewTicket changes
   useEffect(() => {
     setConformfields({
+      "Ticket ID":getNewTicket.uniqueticketID,
       "Admin Name": getNewTicket.adminName,
-      "Admin ID": getNewTicket.AdminID,
+      "Admin ID": getNewTicket.adminMailID,
       "Customer Name": getNewTicket.customerName,
-      "Customer ID": getNewTicket.customeID,
-      "Customer Email": getNewTicket.cutomerMailID,
-      "Customer Mobile": getNewTicket.customermobile,
-      "Department": getNewTicket.department,
-      "Sub Modules": getNewTicket.subModules,
-      "Type of Issue": getNewTicket.TypeofIssue,
-      "Description": getNewTicket.description,
+      "Customer ID": getNewTicket.customerID,
+      "Customer Email": getNewTicket.customerMailID,
+      "Customer Mobile": getNewTicket.customerContactNumber,
+      Department: getNewTicket.department,
+      "Sub Modules": getNewTicket.subModule,
+      "Type of Issue": getNewTicket.issueType,
+      Description: getNewTicket.description,
     });
   }, [getNewTicket]);
   /* dropdown */
@@ -91,20 +107,20 @@ const CreateTickets = () => {
   }, [getDropdownData]);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  /* Handle input changes */
   const handleChange = (e) => {
-    const name = e.target.name;
-    const value = e.target.value;
-    setNewTicket({
-      ...getNewTicket,
-      [name]: value,
+    const { name, value, type, files } = e.target; // Destructure to get name, value, type, and files
+    setNewTicket((prevState) => ({
+      ...prevState,
+      [name]: type === "file" ? files[0] : value, // Check if the input is a file
       adminName: customerData?.customerBody?.adminDetails?.username,
-      AdminID: customerData?.customerBody?.adminDetails?.email,
+      adminMailID: customerData?.customerBody?.adminDetails?.email,
       customerName: customerName,
-      customeID: customerData?.customerBody?.user_unique_ID || "",
-      cutomerMailID: customerData?.customerBody?.email || "",
-      customermobile: customerData?.customerBody?.mobile || "",
-    });
+      customerID: customerData?.customerBody?.user_unique_ID || "",
+      customerMailID: customerData?.customerBody?.email || "",
+      customerContactNumber: customerData?.customerBody?.mobile || "",
+      adminId: adminId || "",
+      uniqueticketID:uuid||"",
+    }));
   };
 
   const [errors, setErrors] = useState({});
@@ -114,11 +130,11 @@ const CreateTickets = () => {
     if (!getNewTicket.department) {
       tempErrors.department = "Department is required";
     }
-    if (!getNewTicket.subModules) {
-      tempErrors.subModules = "Sub Module is required";
+    if (!getNewTicket.subModule) {
+      tempErrors.subModule = "Sub Module is required";
     }
-    if (!getNewTicket.TypeofIssue) {
-      tempErrors.TypeofIssue = "Type of Issue is required";
+    if (!getNewTicket.issueType) {
+      tempErrors.issueType = "Type of Issue is required";
     }
     if (!getNewTicket.description) {
       tempErrors.description = "Description is required";
@@ -128,24 +144,99 @@ const CreateTickets = () => {
     setErrors(tempErrors);
     return Object.keys(tempErrors).length === 0;
   };
+
   /* hande submit */
   const handleSubmit = async (e) => {
     e.preventDefault();
     const newErrors = validate();
+   
     if (newErrors) {
-      console.log("getNewTicket", getNewTicket);
+      // console.log("getNewTicket", getNewTicket);
       // setFormData(getNewCustomer); // Save the data for modal display
+     
       onOpen();
     }
   };
-//handel Ok
-const handleOk = async () => {
-    console.log("ok try catch fetch post method here")
-}
+  //handel Ok
+  const handleOk = async () => {
+    // console.log("getNewTicket", getNewTicket);
+   
+  // console.log(uniqueId);
+    try {
+      const formData = new FormData();
+      // Ensure each field is defined before appending
+      Object.keys(getNewTicket).forEach((key) => {
+        if (getNewTicket[key] !== undefined && getNewTicket[key] !== null) {
+          formData.append(key, getNewTicket[key]);
+        }
+      });
+      // for (let pair of formData.entries()) {
+      //   // console.log(`${pair[0]}: ${pair[1]}`);
+      //   console.log(
+      //     `${pair[0]}: ${pair[1] instanceof File ? pair[1].name : pair[1]}`
+      //   );
+      // }
+      // console.log("formData>>",formData)
+      const response = await fetch(
+        "http://localhost:5000/api/tickets/createTicket",
+        {
+          method: "POST",
+          body: formData,
+          headers: {
+            // Do not set Content-Type, browser will set it automatically when sending FormData
+          },
+        }
+      );
+      // console.log("response", response);
+      // const resData = await response.json(); // or response.text() if you're expecting plain text
+      // console.log("Response Data:", resData);
+      if (response.ok) {
+        // console.log("Ticket created successfully!");
+        setTimeout(() => {
+          // alert("Successfully created customer");//gree toast show created and navigate to the admim page
+          navigate("/");
+          showToast({
+            title: "",
+            message: "Customer Created succeful",
+            status: "success",
+          });
+        }, 100);
+
+        // const res_data = await response.json();
+        // const role = res_data.role;
+        // console.log("role>>",role)
+        // dispatch(setToken(res_data.token,res_data.role))
+        // dispatch(setToken({ token: res_data.token, role: res_data.role }));
+
+        // onOpen();
+      } else if (response.status === 400) {
+        // alert("Some thing went wrong pleas login again");
+        showToast({
+          title: "Error",
+          message: `Please try another email  already exists.`,
+          status: "warning",
+        });
+      } else {
+        // alert("some thing went wrong");
+        showToast({
+          title: "Error",
+          message: "Some thing went wrong.",
+          status: "warning",
+        });
+      }
+    } catch (error) {
+      console.log("fetch error creat tickets>>", error);
+    }
+  };
+
+  /* Handle file change */
+  //  const handleFileChange = (e) => {
+  //   setNewTicket({ ...getNewTicket, image: e.target.files[0] });  // Save the file object
+  // };
   return (
     <>
       <div className="mt-2 mb-4 container createcutomer">
-        <Headings navigtepath="/" headingname="Create New Ticket" />
+        <Headings navigtepath="/" headingname="Create New Ticket" ticketID={uuid}/>
         <form onSubmit={handleSubmit}>
           <Row>
             <Col xs={12} md={12} lg={12} className="mt-2">
@@ -172,7 +263,7 @@ const handleOk = async () => {
               <InputField
                 label="Admin Mail-ID"
                 placeholder="Admin Mail-ID"
-                name="AdminID"
+                name="adminMailID"
                 type="text"
                 value={customerData?.customerBody?.adminDetails?.email || ""}
                 onChange={handleChange}
@@ -197,7 +288,7 @@ const handleOk = async () => {
                 label="Customer ID"
                 placeholder="Customer ID"
                 value={customerData?.customerBody?.user_unique_ID || ""}
-                name="customeID"
+                name="customerID"
                 type="text"
                 onChange={handleChange}
                 icon={<MdAlternateEmail />}
@@ -208,7 +299,7 @@ const handleOk = async () => {
               <InputField
                 label="Customer Mail-ID"
                 placeholder="Customer Mail-ID"
-                name="cutomerMailID"
+                name="customerMailID"
                 type="text"
                 value={customerData?.customerBody?.email || ""}
                 onChange={handleChange}
@@ -220,7 +311,7 @@ const handleOk = async () => {
               <InputField
                 label="Customer Contact Number"
                 placeholder="Customer Contact Number"
-                name="customermobile"
+                name="customerContactNumber"
                 type="text"
                 value={customerData?.customerBody?.mobile || ""}
                 onChange={handleChange}
@@ -259,14 +350,14 @@ const handleOk = async () => {
                 index={0}
                 label="Sub Modules"
                 placeholder="Sub Modules"
-                id="subModules"
-                name="subModules"
-                data={subModules}
-                setValue={setNewTicket?.subModules || ""}
+                id="subModule"
+                name="subModule"
+                data={subModule}
+                setValue={setNewTicket?.subModule || ""}
                 getvalue={setDropdownData}
                 disabled={false}
                 required={true}
-                error={errors.subModules}
+                error={errors.subModule}
                 icon={<FaRegAddressCard />}
               />
             </Col>
@@ -275,15 +366,36 @@ const handleOk = async () => {
                 index={0}
                 label="Type of Issue"
                 placeholder="Type of Issue"
-                id="TypeofIssue"
-                name="TypeofIssue"
+                id="issueType"
+                name="issueType"
                 data={issueTypes}
-                setValue={setNewTicket?.TypeofIssue || ""}
+                setValue={setNewTicket?.issueType || ""}
                 getvalue={setDropdownData}
                 disabled={false}
                 required={true}
-                error={errors.TypeofIssue}
+                error={errors.issueType}
                 icon={<FaRegBuilding />}
+              />
+            </Col>
+            <Col xs={12} md={4} lg={4} className="my-2">
+              {/*   <InputField
+                label="Upload Image"
+                placeholder="Upload Image"
+                name="uploadImage"
+                type="file"
+                // value={customerData?.customerBody?.adminDetails?.username || ""}
+                // onChange={handleChange}
+                icon={<IoPersonOutline />}
+                disabled={false}
+              />*/}
+              <InputField
+                label="Upload Image"
+                placeholder="Upload Image"
+                name="image"
+                type="file"
+                onChange={handleChange} // Handle file input change
+                icon={<IoPersonOutline />}
+                disabled={false}
               />
             </Col>
             <Col xs={12} md={8} lg={8} className="my-2">
@@ -306,13 +418,13 @@ const handleOk = async () => {
           </div>
         </form>
         <ConformationModal
-        title="Confirm Agent Details"
-        // bodyText={getNewAgent}
-        bodyText={getConformfields}
-        isOpen={isOpen}
-        onClose={onClose}
-        onOk={handleOk}
-      />
+          title="Confirm Agent Details"
+          // bodyText={getNewAgent}
+          bodyText={getConformfields}
+          isOpen={isOpen}
+          onClose={onClose}
+          onOk={handleOk}
+        />
       </div>
     </>
   );

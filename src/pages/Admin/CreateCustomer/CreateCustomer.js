@@ -187,7 +187,7 @@ const CreateCustomer = () => {
           body: JSON.stringify(getNewCustomer),
         }
       );
-      console.log("response>>", response);
+      // console.log("response>>", response);
       if (response.ok) {
         onClose();
         setTimeout(() => {

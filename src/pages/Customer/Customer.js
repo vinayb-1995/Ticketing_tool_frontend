@@ -1,12 +1,22 @@
+// import { useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import {  useNavigate } from "react-router-dom";
 
 const Customer = () => {
   const navigate=useNavigate()
-  const  handelnavigate=()=>{
-    navigate("/createtickets")
+  const  handelnavigate= async ()=>{
+    try {
+      const response = await fetch('http://localhost:5000/generate-uuid'); // Fetch request to the backend route
+      if (!response.ok) {
+        throw new Error('Failed to fetch UUID'); // Handle HTTP errors
+      }
+      const data = await response.json(); // Parse the JSON response
+      navigate("/createtickets", { state: { uuid: data.uuid } });
+    } catch (err) {
+      console.error(err.message); // Set error in case of a failure
+    }
   }
-  
+
   return (
     <>
       <div className="container mt-2 adminhome">
