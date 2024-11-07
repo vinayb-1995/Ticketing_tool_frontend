@@ -35,7 +35,7 @@ const AppRoute = () => {
               <Route path="/createcustomer" element={<CreateCustomer />} />
               <Route path="/createagent" element={<CreateAgent />} />
               <Route path="/assignticketstable" element={<AssignTicketsTable />} />
-              <Route path="/ticketmanger" element={<TicketManagerPro />} />
+              <Route path="/ticketmanger/:id" element={<TicketManagerPro />} />
               <Route path="/customer" element={<Customer />} />
             </>
           )}

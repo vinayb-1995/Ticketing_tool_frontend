@@ -78,7 +78,7 @@ const Header = () => {
   const handleLogoClick = () => {
     if (role === "admin") {
       navigate("/");
-    } else {
+    }else {
       navigate("/");
     }
   };
