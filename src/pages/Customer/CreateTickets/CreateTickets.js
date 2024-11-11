@@ -10,13 +10,14 @@ import { FaRegAddressCard } from "react-icons/fa6";
 import ButtonStyle1 from "../../../components/Buttons/ButtonStyle1";
 import Headings from "../../../components/Heading/Headings";
 import { useSelector } from "react-redux";
-import { Divider, useDisclosure } from "@chakra-ui/react";
+import { useDisclosure } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { DropdownField } from "../../../components/Dropdown/DropdownField";
 import { TextAreaField } from "../../../components/TextAreaField/TextAreaField";
 import ConformationModal from "../../../components/Modals/ConformationModal";
 import Toast from "../../../components/Toast/Toast";
 import { useLocation, useNavigate } from "react-router-dom";
+import SecondaryHeader from "../../../components/Heading/SecondaryHeader";
 
 const departments = [
   { name: "IT", value: "it" },
@@ -40,7 +41,7 @@ const issueTypes = [
 const CreateTickets = () => {
   const location = useLocation();
   const uuid = location.state?.uuid;
-    // console.log("uniquei id for customer>> ",uuid)
+  // console.log("uniquei id for customer>> ",uuid)
   const navigate = useNavigate();
   /* customer data from redux */
   const customerData = useSelector((state) => state.customer.customerData);
@@ -49,13 +50,15 @@ const CreateTickets = () => {
   }`.trim();
   // console.log("customerData>>", customerData);
   // const admiId = customerData?.customerBody?.adminDetails?._id.toString();
-  const adminId = customerData?.customerBody?.adminDetails?._id
+  const adminaMilID={email:customerData?.customerBody?.adminDetails?.email}//posting the data for counter
+  // console.log("adminaMilID>>",adminaMilID)
+  const adminId = customerData?.customerBody?.adminDetails?._id//uniquie adminID for TI and SAP
     .toString()
     .trim();
   // console.log("adminId", adminId);
 
   const [getNewTicket, setNewTicket] = useState({
-    uniqueticketID:"",
+    uniqueticketID: "",
     adminName: "",
     adminId: "",
     adminMailID: "",
@@ -75,7 +78,7 @@ const CreateTickets = () => {
   // Update getConformfields whenever getNewTicket changes
   useEffect(() => {
     setConformfields({
-      "Ticket ID":getNewTicket.uniqueticketID,
+      "Ticket ID": getNewTicket.uniqueticketID,
       "Admin Name": getNewTicket.adminName,
       "Admin ID": getNewTicket.adminMailID,
       "Customer Name": getNewTicket.customerName,
@@ -105,8 +108,8 @@ const CreateTickets = () => {
       });
     }
   }, [getDropdownData]);
-  const { isOpen, onOpen, onClose } = useDisclosure();
-
+  const { isOpen, onOpen, onClose: chakraOnClose } = useDisclosure();
+  
   const handleChange = (e) => {
     const { name, value, type, files } = e.target; // Destructure to get name, value, type, and files
     setNewTicket((prevState) => ({
@@ -119,10 +122,8 @@ const CreateTickets = () => {
       customerMailID: customerData?.customerBody?.email || "",
       customerContactNumber: customerData?.customerBody?.mobile || "",
       adminId: adminId || "",
-      uniqueticketID:uuid||"",
     }));
   };
-
   const [errors, setErrors] = useState({});
   const validate = () => {
     const tempErrors = {};
@@ -149,19 +150,138 @@ const CreateTickets = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const newErrors = validate();
-   
     if (newErrors) {
       // console.log("getNewTicket", getNewTicket);
       // setFormData(getNewCustomer); // Save the data for modal display
-     
-      onOpen();
+      if (getNewTicket.department === "IT") {
+        try {
+          // const response = await fetch("http://localhost:5000/api/counter/it");
+          const response = await fetch(
+            `http://localhost:5000/api/counter/incrementIt`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(adminaMilID),
+            }
+          );
+          if (!response.ok) {
+            throw new Error("Failed to fetch itid"); // Handle HTTP errors
+          }
+          const data = await response.json(); // Parse the JSON response
+          console.log("itcounterid>>",data)
+          // setUniqueID(data.itID)
+          setNewTicket((prevState) => ({
+            ...prevState,
+            uniqueticketID: data.itID,
+          }));
+          setTimeout(() => {
+            onOpen();
+          }, 100);
+        } catch (err) {
+          console.error(err.message); // Set error in case of a failure
+        }
+      } else if (getNewTicket.department === "ERP") {
+        try {
+          // const response = await fetch("http://localhost:5000/api/counter/sap");
+          const response = await fetch(
+            `http://localhost:5000/api/counter/incrementSap`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(adminaMilID),
+            }
+          );
+          if (!response.ok) {
+            throw new Error("Failed to fetch itid"); // Handle HTTP errors
+          }
+          const data = await response.json(); // Parse the JSON response
+          // console.log("itcounterid>>",data)
+          // setUniqueID(data.sapID)
+          setNewTicket((prevState) => ({
+            ...prevState,
+            uniqueticketID: data.sapID,
+          }));
+          setTimeout(() => {
+            onOpen();
+          }, 100);
+        } catch (err) {
+          console.error(err.message); // Set error in case of a failure
+        }
+      }
     }
+  };
+  // handle onClose function with logging
+  const onClose = async () => {
+    if (getNewTicket.department === "IT") {
+      try {
+        // const response = await fetch("http://localhost:5000/api/counter/decrementIT");
+        const response = await fetch(
+          `http://localhost:5000/api/counter/decrementIT`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(adminaMilID),
+          }
+        );
+        if (!response.ok) {
+          throw new Error("Failed to fetch itid"); // Handle HTTP errors
+        }
+        const data = await response.json(); // Parse the JSON response
+        // console.log("itcounterid>>",data)
+        // setUniqueID(data.itID)
+        setNewTicket((prevState) => ({
+          ...prevState,
+          uniqueticketID: data.itID,
+        }));
+        setTimeout(() => {
+          chakraOnClose(); 
+        }, 100);
+      } catch (err) {
+        console.error(err.message); // Set error in case of a failure
+      }
+    } else if (getNewTicket.department === "ERP") {
+      try {
+        // const response = await fetch("http://localhost:5000/api/counter/decrementSAP");
+        const response = await fetch(
+          `http://localhost:5000/api/counter/decrementSAP`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(adminaMilID),
+          }
+        );
+        if (!response.ok) {
+          throw new Error("Failed to fetch itid"); // Handle HTTP errors
+        }
+        const data = await response.json(); // Parse the JSON response
+        // console.log("itcounterid>>",data)
+        // setUniqueID(data.sapID)
+        setNewTicket((prevState) => ({
+          ...prevState,
+          uniqueticketID: data.sapID,
+        }));
+        setTimeout(() => {
+          chakraOnClose(); 
+        }, 100);
+      } catch (err) {
+        console.error(err.message); // Set error in case of a failure
+      }
+    }
+    // chakraOnClose(); 
   };
   //handel Ok
   const handleOk = async () => {
     // console.log("getNewTicket", getNewTicket);
-   
-  // console.log(uniqueId);
+
+    // console.log(uniqueId);
     try {
       const formData = new FormData();
       // Ensure each field is defined before appending
@@ -236,16 +356,15 @@ const CreateTickets = () => {
   return (
     <>
       <div className="mt-2 mb-4 container createcutomer">
-        <Headings navigtepath="/" headingname="Create New Ticket" ticketID={uuid}/>
+        <Headings
+          navigtepath="/"
+          headingname="Create New Ticket"
+          ticketID={uuid}
+        />
         <form onSubmit={handleSubmit}>
           <Row>
             <Col xs={12} md={12} lg={12} className="mt-2">
-              <p className="mb-0 fs-5 fw-medium">Cutomer Details</p>
-              <Divider
-                className="m-0"
-                borderColor="blue.400"
-                borderWidth="0.5px"
-              />
+              <SecondaryHeader header="Customer Details"/>
             </Col>
             <Col xs={12} md={4} lg={4} className="my-2">
               <InputField
@@ -320,14 +439,7 @@ const CreateTickets = () => {
               />
             </Col>
             <Col xs={12} md={12} lg={12} className="mt-2">
-              <p className="mb-0 fs-5 fw-medium">
-                Please Fill The Ticket Information
-              </p>
-              <Divider
-                className="m-0"
-                borderColor="blue.400"
-                borderWidth="0.5px"
-              />
+            <SecondaryHeader header=" Please Fill The Ticket Information"/>
             </Col>
             <Col xs={12} md={4} lg={4} className="my-2">
               <DropdownField

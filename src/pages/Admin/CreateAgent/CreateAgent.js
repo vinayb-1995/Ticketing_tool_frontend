@@ -16,56 +16,39 @@ import { useNavigate } from "react-router-dom";
 import { useDisclosure } from "@chakra-ui/react";
 import ConformationModal from "../../../components/Modals/ConformationModal";
 
-/* const department = [
-  { name: "Software Development", value: "software_development" },
-  { name: "Quality Assurance", value: "quality_assurance" },
-  { name: "Human Resources", value: "human_resources" },
-  { name: "Marketing", value: "marketing" },
-  { name: "Customer Support", value: "customer_support" },
-  { name: "Data Analysis", value: "data_analysis" },
-  { name: "Project Management", value: "project_management" },
-  { name: "Sales", value: "sales" },
-];
-
-const group = [
-  { name: "Frontend Team", value: "frontend_team" },
-  { name: "Backend Team", value: "backend_team" },
-  { name: "DevOps Team", value: "devops_team" },
-  { name: "Design Team", value: "design_team" },
-  { name: "Marketing Team", value: "marketing_team" },
-  { name: "Sales Team", value: "sales_team" },
-  { name: "Customer Success Team", value: "customer_success_team" },
-  { name: "Research & Development Team", value: "research_development_team" },
-]; */
-
 const accoutnStatusDropDownOption = [
   { name: "Active", value: "active" },
   { name: "Created", value: "created" },
 ];
 const data = [
   {
-    department: "Software Development",
+    department: "IT",
     teams: [
-      { name: "Frontend Team", value: "Frontend Team" },
-      { name: "Backend Team", value: "Backend Team" },
-      { name: "Full Stack Team", value: "Full Stack Team" }
-    ]
+      { name: "Frontend Developer", value: "Frontend Developer" },
+      { name: "System Engineer", value: "System Engineer" },
+      { name: "Backend Developer", value: "Backend Developer" },
+      { name: "Network Engineer", value: "Network Engineer" },
+      { name: "Database Administrator", value: "Database Administrator" },
+      { name: "DevOps Engineer", value: "DevOps Engineer" },
+      { name: "Cybersecurity Specialist", value: "Cybersecurity Specialist" },
+      { name: "Cloud Engineer", value: "Cloud Engineer" },
+      { name: "Technical Support", value: "Technical Support" },
+    ],
   },
   {
-    department: "Quality Assurance",
+    department: "SAP",
     teams: [
-      { name: "Automation Team", value: "Automation Team" },
-      { name: "Manual Testing Team", value: "Manual Testing Team" },
-      { name: "Performance Testing Team", value: "Performance Testing Team" }
-    ]
+      { name: "SAP Functional", value: "SAP Functional" },
+      { name: "SAP Technical", value: "SAP Technical" },
+      { name: "SAP Basis", value: "SAP Basis" },
+      { name: "SAP ABAP Developer", value: "SAP ABAP Developer" },
+      { name: "SAP HANA Consultant", value: "SAP HANA Consultant" },
+      { name: "SAP Project Manager", value: "SAP Project Manager" },
+      { name: "SAP Security Consultant", value: "SAP Security Consultant" },
+      { name: "SAP FICO Consultant", value: "SAP FICO Consultant" },
+      { name: "SAP MM Consultant", value: "SAP MM Consultant" },
+    ],
   },
-  {
-    department: "Human Resources",
-    teams: [
-      { name: "Recruitment Team", value: "Recruitment Team" },
-      { name: "Employee Relations Team", value: "Employee Relations Team" }
-    ]
-  }
 ];
 const CreateAgent = () => {
   const navigate = useNavigate();
@@ -79,35 +62,35 @@ const CreateAgent = () => {
     phoneNumber: "",
     password: "",
     department: "",
-    group:"",
+    group: "",
     accountstatus: "",
-    createdByAdmin: admiId
+    createdByAdmin: admiId,
   });
 
-const updatedTeam = data.some((dept) =>
-  dept.department === getNewAgent.department &&
-  dept.teams.some((team) => team.value === getNewAgent.group)
-);
+  const updatedTeam = data.some(
+    (dept) =>
+      dept.department === getNewAgent.department &&
+      dept.teams.some((team) => team.value === getNewAgent.group)
+  );
 
-// console.log("department>>", getNewAgent.department);
-// console.log("teams/group>>", getNewAgent.group);
-// console.log("updatedTeam>>", updatedTeam);
+  // console.log("department>>", getNewAgent.department);
+  // console.log("teams/group>>", getNewAgent.group);
+  // console.log("updatedTeam>>", updatedTeam);
 
   const [getConformfields, setConformfields] = useState({});
 
   useEffect(() => {
     setConformfields({
       "Full Name": getNewAgent.fullname,
-      "Email": getNewAgent.email,
+      Email: getNewAgent.email,
       "Phone Number": getNewAgent.phoneNumber,
-      "Password": getNewAgent.password,
-      "Department": getNewAgent.department,
-      "Group": getNewAgent.group,
+      Password: getNewAgent.password,
+      Department: getNewAgent.department,
+      Group: getNewAgent.group,
       "Account status": getNewAgent.accountstatus,
       // "Created By Admin": getNewAgent.createdByAdmin,
     });
   }, [getNewAgent]);
-  
 
   const { showToast } = Toast();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -117,9 +100,11 @@ const updatedTeam = data.some((dept) =>
   const [teams, setTeams] = useState([]);
   useEffect(() => {
     if (getDropdownData) {
-      if (getDropdownData.textField === 'department') {
+      if (getDropdownData.textField === "department") {
         // Update the teams based on the selected department
-        const selectedDepartment = data.find(dep => dep.department === getDropdownData.name);
+        const selectedDepartment = data.find(
+          (dep) => dep.department === getDropdownData.name
+        );
         setTeams(selectedDepartment ? selectedDepartment.teams : []);
         // console.log('selectedDepartment',selectedDepartment)
         // console.log('getDropdownData',getDropdownData.name)
@@ -132,7 +117,7 @@ const updatedTeam = data.some((dept) =>
     }
   }, [getDropdownData]);
   // =================================================================================
-/*   useEffect(() => {
+  /*   useEffect(() => {
     // Prevent update if getDropdownData is null or undefined
     if (getDropdownData && getDropdownData.name && getDropdownData.textField) {
       setNewAgent((prevState) => {
@@ -158,98 +143,100 @@ const updatedTeam = data.some((dept) =>
     });
   };
 
- 
-//validation
-const [errors, setErrors] = useState({});
+  //validation
+  const [errors, setErrors] = useState({});
 
-const validate = () => {
-  let tempErrors = {};
-  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  const phonePattern = /^\d{10}$/;
+  const validate = () => {
+    let tempErrors = {};
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const phonePattern = /^\d{10}$/;
 
-  if (!getNewAgent.fullname) tempErrors.fullname = "Full Name is required.";
-  if (!getNewAgent.email || !emailPattern.test(getNewAgent.email))
-    tempErrors.email = "Valid Email is required.";
-  if (!getNewAgent.phoneNumber || !phonePattern.test(getNewAgent.phoneNumber))
-    tempErrors.phoneNumber = "Valid 10-digit Phone Number is required.";
-  if (!getNewAgent.password) tempErrors.password = "Password is required.";
-  if (!getNewAgent.accountstatus) tempErrors.accountstatus = "Account Status is required.";
-  if (!getNewAgent.department) tempErrors.department = "Department/Expertise is required.";
-  if (!getNewAgent.group) tempErrors.group = "group/team is required.";
-  if (!updatedTeam ) tempErrors.group = "please update the group/team.";
+    if (!getNewAgent.fullname) tempErrors.fullname = "Full Name is required.";
+    if (!getNewAgent.email || !emailPattern.test(getNewAgent.email))
+      tempErrors.email = "Valid Email is required.";
+    if (!getNewAgent.phoneNumber || !phonePattern.test(getNewAgent.phoneNumber))
+      tempErrors.phoneNumber = "Valid 10-digit Phone Number is required.";
+    if (!getNewAgent.password) tempErrors.password = "Password is required.";
+    if (!getNewAgent.accountstatus)
+      tempErrors.accountstatus = "Account Status is required.";
+    if (!getNewAgent.department)
+      tempErrors.department = "Department/Expertise is required.";
+    if (!getNewAgent.group) tempErrors.group = "group/team is required.";
+    if (!updatedTeam) tempErrors.group = "please update the group/team.";
 
-  setErrors(tempErrors); // set error state
-  return Object.keys(tempErrors).length === 0;
-};
+    setErrors(tempErrors); // set error state
+    return Object.keys(tempErrors).length === 0;
+  };
 
- /* hande submit */
- const handleSubmit = async (e) => {
-  e.preventDefault();
-// console.log("getNewAgentData",getNewAgent)
-const newErrors = validate();
-if (newErrors) {
-  // setFormData(getNewCustomer); // Save the data for modal display
-  
-  onOpen();
-}}
+  /* hande submit */
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    // console.log("getNewAgentData",getNewAgent)
+    const newErrors = validate();
+    if (newErrors) {
+      // setFormData(getNewCustomer); // Save the data for modal display
 
-//handel Ok
-const handleOk = async () => {
-  try {
-    const response = await fetch(
-      `http://localhost:5000/api/agent/agentregister`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(getNewAgent),
-      }
-    );
-    // console.log("response>>", response);
-    if (response.ok) {
-      // onClose();
-      setTimeout(() => {
-        // alert("Successfully created customer");//gree toast show created and navigate to the admim page
-        navigate("/adminhome");
+      onOpen();
+    }
+  };
+
+  //handel Ok
+  const handleOk = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:5000/api/agent/agentregister`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(getNewAgent),
+        }
+      );
+      // console.log("response>>", response);
+      if (response.ok) {
+        // onClose();
+        setTimeout(() => {
+          // alert("Successfully created customer");//gree toast show created and navigate to the admim page
+          navigate("/adminhome");
+          showToast({
+            title: "",
+            message: "Agent created succeful",
+            status: "success",
+          });
+        }, 100);
+
+        // const res_data = await response.json();
+        // const role = res_data.role;
+        // console.log("role>>",role)
+        // dispatch(setToken(res_data.token,res_data.role))
+        // dispatch(setToken({ token: res_data.token, role: res_data.role }));
+
+        // onOpen();
+      } else if (response.status === 400) {
+        // alert("Some thing went wrong pleas login again");
         showToast({
-          title: "",
-          message: "Agent created succeful",
-          status: "success",
+          title: "Error",
+          message: `Please try another email ID; ${getNewAgent.email} already exists.`,
+          status: "warning",
         });
-      }, 100);
-  
-      // const res_data = await response.json();
-      // const role = res_data.role;
-      // console.log("role>>",role)
-      // dispatch(setToken(res_data.token,res_data.role))
-      // dispatch(setToken({ token: res_data.token, role: res_data.role }));
-  
-      // onOpen();
-    } else if (response.status === 400) {
-      // alert("Some thing went wrong pleas login again");
-      showToast({
-        title: "Error",
-        message: `Please try another email ID; ${getNewAgent.email} already exists.`,
-        status: "warning",
-      });
-    } else {
-      // alert("some thing went wrong");
+      } else {
+        // alert("some thing went wrong");
+        showToast({
+          title: "Error",
+          message: "Some thing went wrong pleas login again.",
+          status: "warning",
+        });
+      }
+    } catch (err) {
+      // alert(" fiaild");
       showToast({
         title: "Error",
         message: "Some thing went wrong pleas login again.",
         status: "warning",
       });
     }
-  } catch (err) {
-    // alert(" fiaild");
-    showToast({
-      title: "Error",
-      message: "Some thing went wrong pleas login again.",
-      status: "warning",
-    });
-  }
-}
+  };
   return (
     <div className="mt-4 container createagent">
       <Headings navigtepath="/adminhome" headingname="New Agent Registration" />
@@ -323,7 +310,10 @@ const handleOk = async () => {
               label="Department/Expertise"
               placeholder="Department/Expertise"
               // data={department}
-              data={data.map(dep => ({ name: dep.department, value: dep.department }))}
+              data={data.map((dep) => ({
+                name: dep.department,
+                value: dep.department,
+              }))}
               setValue={getNewAgent?.department || ""} // Pre-filled value
               // getvalue={setDropdownData} // Set dropdown data on change
               getvalue={setDropdownData} // Set dropdown data on change

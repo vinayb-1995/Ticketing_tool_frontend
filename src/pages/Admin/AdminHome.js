@@ -25,6 +25,9 @@ const AdminHome = () => {
   const handleAssignTickets = () => {
     navigate("/assignticketstable");
   };
+  const handlAllAgents = () => {
+    navigate("/allagents");
+  };
   return (
     <>
       <div className="container mt-2 adminhome">
@@ -67,7 +70,7 @@ const AdminHome = () => {
           <Col xs={12} md={3} lg={3} className="dashboardbutton">
             <p>All Customer</p>
           </Col>
-          <Col xs={12} md={3} lg={3} className="dashboardbutton">
+          <Col xs={12} md={3} lg={3} onClick={handlAllAgents} className="dashboardbutton">
             <p>All Agents</p>
           </Col>
           <Col xs={12} md={3} lg={3} className="dashboardbutton">

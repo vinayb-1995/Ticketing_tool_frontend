@@ -36,7 +36,7 @@ const customerSlice = createSlice({
     error: null,
   },
   reducers: {
-    clearCustomerData: (state) => {
+    clearCustomerallData: (state) => {
       state.customerData = [];
       state.status = "idle";
       state.error = null;
