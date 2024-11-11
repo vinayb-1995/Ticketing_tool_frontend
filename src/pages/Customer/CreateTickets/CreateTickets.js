@@ -10,13 +10,14 @@ import { FaRegAddressCard } from "react-icons/fa6";
 import ButtonStyle1 from "../../../components/Buttons/ButtonStyle1";
 import Headings from "../../../components/Heading/Headings";
 import { useSelector } from "react-redux";
-import { Divider, useDisclosure } from "@chakra-ui/react";
+import { useDisclosure } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { DropdownField } from "../../../components/Dropdown/DropdownField";
 import { TextAreaField } from "../../../components/TextAreaField/TextAreaField";
 import ConformationModal from "../../../components/Modals/ConformationModal";
 import Toast from "../../../components/Toast/Toast";
 import { useLocation, useNavigate } from "react-router-dom";
+import SecondaryHeader from "../../../components/Heading/SecondaryHeader";
 
 const departments = [
   { name: "IT", value: "it" },
@@ -363,12 +364,7 @@ const CreateTickets = () => {
         <form onSubmit={handleSubmit}>
           <Row>
             <Col xs={12} md={12} lg={12} className="mt-2">
-              <p className="mb-0 fs-5 fw-medium">Cutomer Details</p>
-              <Divider
-                className="m-0"
-                borderColor="blue.400"
-                borderWidth="0.5px"
-              />
+              <SecondaryHeader header="Customer Details"/>
             </Col>
             <Col xs={12} md={4} lg={4} className="my-2">
               <InputField
@@ -443,14 +439,7 @@ const CreateTickets = () => {
               />
             </Col>
             <Col xs={12} md={12} lg={12} className="mt-2">
-              <p className="mb-0 fs-5 fw-medium">
-                Please Fill The Ticket Information
-              </p>
-              <Divider
-                className="m-0"
-                borderColor="blue.400"
-                borderWidth="0.5px"
-              />
+            <SecondaryHeader header=" Please Fill The Ticket Information"/>
             </Col>
             <Col xs={12} md={4} lg={4} className="my-2">
               <DropdownField

@@ -12,6 +12,8 @@ import TicketManagerPro from "../pages/Admin/AssignTickets/TicketManagerPro/Tick
 import Customer from "../pages/Customer/Customer";
 import Agents from "../pages/Agents/Agents";
 import CreateTickets from "../pages/Customer/CreateTickets/CreateTickets";
+import AllAgents from "../pages/Admin/AllAgents/AllAgents";
+import AgentByIDAdmin from "../pages/Admin/AllAgents/agentByID/AgentByIDAdmin";
 
 const AppRoute = () => {
   const { isAuthenticated, role } = useAuth();
@@ -37,6 +39,8 @@ const AppRoute = () => {
               <Route path="/assignticketstable" element={<AssignTicketsTable />} />
               <Route path="/ticketmanger/:id" element={<TicketManagerPro />} />
               <Route path="/customer" element={<Customer />} />
+              <Route path="/allagents" element={<AllAgents />} />
+              <Route path="/agentbyidadmin/:id" element={<AgentByIDAdmin />} />
             </>
           )}
             {role === "customer" && (
