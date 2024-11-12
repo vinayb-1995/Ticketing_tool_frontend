@@ -11,6 +11,13 @@ const AllAgents = () => {
   const [getAllgents, setAllagents] = useState();
   const itAgents = getAllgents?.filter(agent => agent?.department === "IT");
   const sapAgents = getAllgents?.filter(agent => agent?.department === "SAP");
+
+  const itAgetnADmin = itAgents?.filter(agent => agent?.agentAdminIT === true) || [];
+  console.log("IT agents >>", itAgetnADmin);
+  
+  const SAPAgetnADmin = sapAgents?.filter(agent => agent?.agentAdminSAP === true) || [];
+  console.log("SAP agents >>", SAPAgetnADmin);
+
   //   console.log("ALL AGENTS DATA", getAllgents);
   const handelNavigate = (id) => [navigate(`/agentbyidadmin/:${id}`)];
   useEffect(() => {
@@ -50,7 +57,34 @@ const AllAgents = () => {
           </p>
         </div>
       ),
+      //sortable: true,
+    },
+    {
+      name: "admin",
+      selector: (row) => {
 
+    
+if (row?.department === "IT") {
+      return (
+        <div>
+          <p className="mb-0 fw-medium">
+          {row?.agentAdminIT ? "Admin":"consultent"}
+          {console.log(row?.agentAdminIT)}
+
+          </p>
+        </div>
+      );
+    } else if (row?.department === "SAP") {
+        return (
+          <div>
+            <p className="mb-0 fw-medium">
+              {row?.agentAdminSAP ? "Admin":"consultent"}
+            </p>
+          </div>
+        );
+      }
+         
+    },
       //sortable: true,
     },
     {

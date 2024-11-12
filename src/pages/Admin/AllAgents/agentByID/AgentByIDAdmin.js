@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Headings from "../../../../components/Heading/Headings";
 import { Col, Row } from "react-bootstrap";
 import { InputField } from "../../../../components/InputField/InputField";
@@ -15,15 +15,26 @@ import { MdAlternateEmail } from "react-icons/md";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import SecondaryHeader from "../../../../components/Heading/SecondaryHeader";
+import { DropdownField } from "../../../../components/Dropdown/DropdownField";
+import ModalComponentSuccess from "../../../../components/Modals/ModalComponentSuccess";
+import { useDisclosure } from "@chakra-ui/react";
 
+const accoutnStatusDropDownOption = [
+  { name: "Yes", value: true },
+  { name: "No", value: false },
+];
 const AgentByIDAdmin = () => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const navigate = useNavigate();
   const token = useSelector((state) => state.auth.token);
   // console.log("token>>",token)
   const [getAgentByIDAdmin, setAgentByIDAdmin] = useState();
   //   console.log(getAgentByIDAdmin);
   const { id } = useParams();
   const ticketID = id.slice(1).trim();
-  //   console.log("id>>agent>>", ticketID);
+  const [getDropdownData, setDropdownData] = useState(null);
+  //   console.log("getDropdownData>>", getDropdownData?.value);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -47,8 +58,123 @@ const AgentByIDAdmin = () => {
     };
     fetchData();
   }, [token, ticketID]);
-  const handleSubmit = () => {
-    console.log("handel submit");
+  //   const [getNewAgent, setNewAgent] = useState({
+  //   });
+  //   console.log("getNewAgent",getNewAgent)
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    console.log("handel submit>>", getDropdownData?.value);
+    console.log("agent ID>>", getAgentByIDAdmin?.user_unique_ID);
+    if (getAgentByIDAdmin?.department === "IT") {
+      if (getDropdownData?.value === true) {
+        try {
+          const response = await fetch(
+            "http://localhost:5000/api/admin/updateAdminAgentByIdIt",
+            {
+              method: "PATCH", // Use PATCH for partial update
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`, // Include token if needed
+              },
+              body: JSON.stringify({
+                agentAdminIT: false,
+              }),
+            }
+          );
+
+          if (!response.ok) {
+            throw new Error("Failed to update agent admin status");
+          }
+          // const data = await response.json();
+          // console.log("Agent admin status updated successfully:", data);
+        } catch (error) {
+          console.error("Error updating agent admin status:", error.message);
+        }
+      }
+      try {
+        const response = await fetch(
+          `http://localhost:5000/api/admin/updateAgentByIdIt/${getAgentByIDAdmin?.user_unique_ID}`,
+          {
+            method: "PUT", // Use PUT to update
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`, // Include token if needed
+            },
+            body: JSON.stringify({
+              agentAdminIT: getDropdownData?.value,
+            }),
+          }
+        );
+        if (!response.ok) {
+          throw new Error("Failed to update agent status");
+        }
+        if (response.ok) {
+          onOpen();
+        }
+        // const data = await response.json();
+        // console.log("Agent updated successfully:", data);
+      } catch (error) {
+        console.error("Error updating agent:", error.message);
+      }
+    } else if (getAgentByIDAdmin?.department === "SAP") {
+      if (getDropdownData?.value === true) {
+        try {
+          const response = await fetch(
+            "http://localhost:5000/api/admin/updateAdminAgentByIdSap",
+            {
+              method: "PATCH", // Use PATCH for partial update
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`, // Include token if needed
+              },
+              body: JSON.stringify({
+                agentAdminSAP: false,
+              }),
+            }
+          );
+
+          if (!response.ok) {
+            throw new Error("Failed to update agent admin status");
+          }
+
+          // const data = await response.json();
+          // console.log("Agent admin status updated successfully:", data);
+        } catch (error) {
+          console.error("Error updating agent admin status:", error.message);
+        }
+      }
+      try {
+        const response = await fetch(
+          `http://localhost:5000/api/admin/updateAgentByIdSap/${getAgentByIDAdmin?.user_unique_ID}`,
+          {
+            method: "PUT", // Use PUT to update
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`, // Include token if needed
+            },
+            body: JSON.stringify({
+              agentAdminSAP: getDropdownData?.value,
+            }),
+          }
+        );
+        if (!response.ok) {
+          throw new Error("Failed to update agent status");
+        }
+        if (response.ok) {
+          onOpen();
+        }
+        // const data = await response.json();
+        // console.log("Agent updated successfully:", data);
+      } catch (error) {
+        console.error("Error updating agent:", error.message);
+      }
+    }
+  };
+  const handleOk = () => {
+    onClose();
+    navigate("/allagents");
+    // Additional actions can be added here if needed
   };
   return (
     <>
@@ -56,7 +182,7 @@ const AgentByIDAdmin = () => {
         <Headings navigtepath="/allagents" headingname={`Udate Agent`} />
         <form onSubmit={handleSubmit}>
           <Row>
-        <SecondaryHeader header="Aget Detials" />
+            <SecondaryHeader header="Aget Detials" />
             <Col xs={12} md={4} lg={4} className="my-2">
               <InputField
                 label="Full Name"
@@ -139,33 +265,36 @@ const AgentByIDAdmin = () => {
               />
             </Col>
             <Col xs={12} md={12} lg={12} className="my-2">
-            <SecondaryHeader header="Set Agent Admin" />
+              <SecondaryHeader header="Set Agent Admin" />
             </Col>
             <Col xs={12} md={4} lg={4} className="my-2">
-              <InputField
-                id="agentadmin"
-                name="agentadmin "
-                // value={getAgentByIDAdmin?.group}
+              <DropdownField
+                index={0}
+                id="Agent Admin"
+                name="agentAdmin"
                 label="Agent Admin"
-                placeholder="Agent Admin"
-                type="text"
+                placeholder="Yes or No"
+                data={accoutnStatusDropDownOption} // Options for dropdown
+                setValue={getDropdownData?.value} // Pre-filled value
+                getvalue={setDropdownData} // Set dropdown data on change
+                disabled={false}
+                required={true}
+                //   error={errors.accountstatus}
                 icon={<FaRegAddressCard />}
-                // disabled={true}
               />
             </Col>
           </Row>
           <div className="mt-4">
-            <ButtonStyle1 type="submit">Update</ButtonStyle1>
+            <ButtonStyle1 /* type="submit" */>Update</ButtonStyle1>
           </div>
         </form>
-        {/* <ConformationModal
-        title="Confirm Agent Details"
-        // bodyText={getNewAgent}
-        bodyText={getConformfields}
-        isOpen={isOpen}
-        onClose={onClose}
-        onOk={handleOk}
-      /> */}
+        <ModalComponentSuccess
+          isOpen={isOpen}
+          onClose={onClose}
+          title="Registration Successful"
+          bodyText={`${getAgentByIDAdmin?.fullname} is Know ${getDropdownData?.value?"Admin":"consultent"} for ${getAgentByIDAdmin?.department} Department`}
+          onOk={handleOk}
+        />
       </div>
     </>
   );
