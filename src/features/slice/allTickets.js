@@ -5,7 +5,7 @@ export const fetchAllTickets = createAsyncThunk(
   "alltickets/fetchAllTickets",
   async (_, { getState, rejectWithValue }) => {
     const token = getState().auth.token; // Retrieve the token from auth state
-
+    console.log("token>>",token)
     if (!token) {
       return rejectWithValue("No token found"); // Handle missing token error
     }
