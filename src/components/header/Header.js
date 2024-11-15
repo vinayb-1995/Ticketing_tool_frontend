@@ -50,6 +50,8 @@ const Header = () => {
   const allTicketsData = useSelector((state) => state.alltickets.allTicketsData);
   console.log("allTicketsData",allTicketsData)
 
+  const allAgentsData = useSelector((state) => state.allAgents.allAgentsData);
+  console.log("allAgentsData>>",allAgentsData)
 
   useEffect(() => {
     if (getRole === "admin") {
@@ -57,6 +59,7 @@ const Header = () => {
       dispatch(fetchCustomerAllData());
       dispatch(fetchAgentsAllData());
       dispatch(fetchAllTickets());
+      dispatch(fetchAgentsAllData());
     } else if (getRole === "customer") {
       dispatch(fetchCustomerLoingData());
       // console.log("header>> role customer")

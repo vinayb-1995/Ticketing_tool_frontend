@@ -17,6 +17,7 @@ export const store = configureStore({
     allAgents:agentsAllDataReducer,
     agent: agentLoginDataReduser,
     alltickets: allTicketReducer,  
+ 
   },
 });
 

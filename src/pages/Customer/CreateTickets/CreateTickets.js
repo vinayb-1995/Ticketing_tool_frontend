@@ -279,7 +279,7 @@ const CreateTickets = () => {
   };
   //handel Ok
   const handleOk = async () => {
-    // console.log("getNewTicket", getNewTicket);
+    console.log("getNewTicket", getNewTicket);
 
     // console.log(uniqueId);
     try {
@@ -317,7 +317,7 @@ const CreateTickets = () => {
           navigate("/");
           showToast({
             title: "",
-            message: "Customer Created succeful",
+            message: "New ticket created succeful",
             status: "success",
           });
         }, 100);

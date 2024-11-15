@@ -1,54 +1,68 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Headings from "../../../components/Heading/Headings";
 import SecondaryHeader from "../../../components/Heading/SecondaryHeader";
 import { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import { useNavigate } from "react-router-dom";
+import { fetchAgentsAllData } from "../../../features/slice/fetchAgentsAllData";
 
 const AllAgents = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const token = useSelector((state) => state.auth.token); // Access the token
+  const allAgentsData = useSelector((state) => state.allAgents.allAgentsData);
+  console.log("allAgentsData>>",allAgentsData)
+  // const token = useSelector((state) => state.auth.token); // Access the token
   const [getAllgents, setAllagents] = useState();
-  const itAgents = getAllgents?.filter(agent => agent?.department === "IT");
-  const sapAgents = getAllgents?.filter(agent => agent?.department === "SAP");
+  const agentAdmins = getAllgents?.filter((agent) => agent?.agentAdminIT === false || agent?.agentAdminSAP === false );
+  console.log("agentAdmins>>",agentAdmins)
 
-  const itAgetnADmin = itAgents?.filter(agent => agent?.agentAdminIT === true) || [];
-  console.log("IT agents >>", itAgetnADmin);
-  
-  const SAPAgetnADmin = sapAgents?.filter(agent => agent?.agentAdminSAP === true) || [];
+  const itAgents = getAllgents?.filter((agent) => agent?.department === "IT");
+  const sapAgents = getAllgents?.filter((agent) => agent?.department === "SAP");
+
+  const itAgetnADmin =
+    itAgents?.filter((agent) => agent?.agentAdminIT === true) || [];
+  console.log("IT agents >>", itAgetnADmin[0]?.fullname);
+
+  const SAPAgetnADmin =
+    sapAgents?.filter((agent) => agent?.agentAdminSAP === true) || [];
   console.log("SAP agents >>", SAPAgetnADmin);
 
-  //   console.log("ALL AGENTS DATA", getAllgents);
-  const handelNavigate = (id) => [navigate(`/agentbyidadmin/:${id}`)];
+  //console.log("ALL AGENTS DATA", getAllgents);
+  const handelNavigate = (id) => {navigate(`/agentbyidadmin/:${id}`)};
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(
-          `http://localhost:5000/api/admin/allagentsdata`,
-          {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        if (!response.ok) {
-          throw new Error("Failed to fetch itid"); // Handle HTTP errors
-        }
-        const data = await response.json(); // Parse the JSON response
-        setAllagents(data);
-      } catch (err) {
-        console.error(err.message); // Set error in case of a failure
-      }
-    };
-    fetchData();
-  }, [token]);
+    dispatch(fetchAgentsAllData());
+    setAllagents(allAgentsData)
+    // const fetchAllAgentData = async () => {
+    //   try {
+    //     const response = await fetch(
+    //       `http://localhost:5000/api/admin/allagentsdata`,
+    //       {
+    //         method: "GET",
+    //         headers: {
+    //           Authorization: `Bearer ${token}`,
+    //         },
+    //       }
+    //     );
+    //     if (!response.ok) {
+    //       throw new Error("Failed to fetch itid"); // Handle HTTP errors
+    //     }
+    //     const data = await response.json(); // Parse the JSON response
+    //     setAllagents(data);
+    //     console.log("data>>",data)
+    //   } catch (err) {
+    //     console.error(err.message); // Set error in case of a failure
+    //   }
+    // };
+    // fetchAllAgentData();
+  }, [allAgentsData]);
+
   /* table data */
   const columns = [
     {
       name: "Agent ID",
       selector: (row) => (
-        <div>
+        <div style={{ cursor: "pointer" }}>
           <p
             className="mb-0 fw-medium"
             onClick={() => handelNavigate(row?.user_unique_ID)}
@@ -60,42 +74,77 @@ const AllAgents = () => {
       //sortable: true,
     },
     {
-      name: "admin",
-      selector: (row) => {
-
-    
-if (row?.department === "IT") {
-      return (
-        <div>
-          <p className="mb-0 fw-medium">
-          {row?.agentAdminIT ? "Admin":"consultent"}
-          {console.log(row?.agentAdminIT)}
-
-          </p>
-        </div>
-      );
-    } else if (row?.department === "SAP") {
-        return (
-          <div>
-            <p className="mb-0 fw-medium">
-              {row?.agentAdminSAP ? "Admin":"consultent"}
-            </p>
-          </div>
-        );
-      }
-         
-    },
+      name: "Designation",
+      selector: (row) => row?.group,
       //sortable: true,
     },
     {
-      name: "Agent Name/Mail ID",
+      name: "Department",
+      selector: (row) => (
+        <div>
+          <p className="mb-0">{row?.department}</p>
+        </div>
+      ),
+      //sortable: true,
+    },
+    {
+      name: "Reporting Manager",
+      selector: (row) => {
+        if (row?.department === "IT") {
+          return (
+            <div>
+              <p className="mb-0 fw-medium">
+                <div>
+                  <p p className="mb-0"  >{itAgetnADmin[0]?.fullname || "Not Assigned"}</p>
+                </div>
+              </p>
+            </div>
+          );
+        } else if (row?.department === "SAP") {
+          return (
+            <div>
+              <div>
+                <p className="mb-0" >  {SAPAgetnADmin[0]?.fullname || "Not Assigned"}</p>
+              </div>
+            </div>
+          );
+        }
+      },
+      //sortable: true,
+    },
+    {
+      name: "Mail ID",
       selector: (row) => (
         <>
-          <p className="mb-0 fw-medium">{row?.fullname}</p>
-          <p className="mb-0">/{row?.email}</p>
+          {/* <p className="mb-0 fw-medium">{row?.fullname}</p> */}
+          <p className="mb-0">{row?.email}</p>
         </>
       ),
       //selector: (row) => row?.customer_Name,
+      //sortable: true,
+    },
+    {
+      name: "Admin",
+      selector: (row) => {
+        if (row?.department === "IT") {
+          return (
+            <div>
+              <p className="mb-0 fw-medium">
+                {row?.agentAdminIT ? "Admin" : "User"}
+                {console.log(row?.agentAdminIT)}
+              </p>
+            </div>
+          );
+        } else if (row?.department === "SAP") {
+          return (
+            <div>
+              <p className="mb-0 fw-medium">
+                {row?.agentAdminSAP ? "Admin" : "User"}
+              </p>
+            </div>
+          );
+        }
+      },
       //sortable: true,
     },
     // {
@@ -104,20 +153,6 @@ if (row?.department === "IT") {
     //   width: "100px",
     //   //   sortable: true,
     // },
-    {
-      name: "Department",
-      selector: (row) => (
-        <div>
-          <p>{row?.department}</p>
-        </div>
-      ),
-      //sortable: true,
-    },
-    {
-      name: "group",
-      selector: (row) => row?.group,
-      //sortable: true,
-    },
   ];
   return (
     <>
@@ -139,7 +174,7 @@ if (row?.department === "IT") {
         <div className="pt-2">
           <SecondaryHeader header="Tabel SAP Agents" />
           <div className="data-table-outer-layer mt-2">
-                <DataTable
+            <DataTable
               //title="Arnold Schwarzenegger Movies"
               columns={columns}
               // data={data}

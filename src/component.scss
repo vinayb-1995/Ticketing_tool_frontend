@@ -472,10 +472,13 @@ $extra-large-font-size: 28px;
   min-height: 40px;
   .rdt_TableCell{
     &:hover{
-      cursor: pointer;
+      // cursor: pointer;
+      background-color: #fff;
     }
   }
  }
+ 
+ 
 }
 
 
