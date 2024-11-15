@@ -36,7 +36,6 @@ const TicketManagerPro = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-
   const { showToast } = Toast();
   const { id } = useParams(); // Get the ID from the URL
   const ticketID = id.slice(1).trim();
@@ -145,7 +144,7 @@ const TicketManagerPro = () => {
     // if (token) {
     //   fetchAllAgentData();
     // }
-  }, [ticketID, token, getDropdownData,allAgentsData,dispatch]);
+  }, [ticketID, token, getDropdownData, allAgentsData, dispatch]);
 
   const handleChange = (e) => {
     const name = e.target.name;
@@ -172,7 +171,7 @@ const TicketManagerPro = () => {
         }
       );
       if (response.ok) {
-        navigate(isAssigned ? "/assignedtickets" : "/assignticketstable")
+        navigate(isAssigned ? "/assignedtickets" : "/assignticketstable");
         showToast({
           title: "",
           message: `agent updated`,
@@ -316,16 +315,17 @@ const TicketManagerPro = () => {
             />
           </Col>
           <Col xs={12} md={12} lg={12} className="mt-2">
-            <p className="mb-0 fs-5 fw-medium d-flex justify-content-start align-items-cente`r">Extra Details
-            <span
-              className={`mb-0 fs-5 ms-4 fw-medium ${
-                isAssigned ? "d-block" : "d-none"
-              }`}
-              style={{ cursor: "pointer" }}
-              onClick={handelEdit}
-            >
-              <FaEdit />
-            </span>
+            <p className="mb-0 fs-5 fw-medium d-flex justify-content-start align-items-cente`r">
+              Extra Details
+              <span
+                className={`mb-0 fs-5 ms-4 fw-medium ${
+                  isAssigned ? "d-block" : "d-none"
+                }`}
+                style={{ cursor: "pointer" }}
+                onClick={handelEdit}
+              >
+                <FaEdit />
+              </span>
             </p>
             <Divider
               className="m-0"
@@ -375,9 +375,12 @@ const TicketManagerPro = () => {
           <Col xs={12} md={4} lg={4} className="my-2">
             <InputField
               label="End Date and Time"
-              placeholder={getTicketData?.adminAssigned?.endDateAdnTime || "End Date and Time"}
+              placeholder={
+                getTicketData?.adminAssigned?.endDateAdnTime ||
+                "End Date and Time"
+              }
               name="endDateAdnTime"
-              type={gettogglefield?'text':'date'}
+              type={gettogglefield ? "text" : "date"}
               // value={customerData?.customerBody?.adminDetails?.username || ""}
               onChange={handleChange}
               icon={<IoPersonOutline />}
@@ -449,7 +452,9 @@ const TicketManagerPro = () => {
             <InputField
               label="Actual cost "
               // placeholder="Actual cost"
-              placeholder={getTicketData?.adminAssigned?.actualCost || "Actual cost"}
+              placeholder={
+                getTicketData?.adminAssigned?.actualCost || "Actual cost"
+              }
               name="actualCost"
               type="text"
               // value={getTicketData?.adminAssigned?.actualCost || ""}
@@ -462,7 +467,9 @@ const TicketManagerPro = () => {
             <InputField
               label="planed  cost"
               // placeholder="planed  cost"
-              placeholder={getTicketData?.adminAssigned?.plannedCost || "planed  cost"}
+              placeholder={
+                getTicketData?.adminAssigned?.plannedCost || "planed  cost"
+              }
               name="plannedCost"
               type="text"
               // value={getTicketData?.adminAssigned?.plannedCost || ""}
@@ -474,7 +481,10 @@ const TicketManagerPro = () => {
           <Col xs={12} md={4} lg={4} className="my-2">
             <TextAreaField
               label="Description of the Admin"
-              placeholder={getTicketData?.adminAssigned?.adminDescription || "Description of the Admin"}
+              placeholder={
+                getTicketData?.adminAssigned?.adminDescription ||
+                "Description of the Admin"
+              }
               name="adminDescription"
               id="adminDescription"
               disabled={gettogglefield}
@@ -498,12 +508,8 @@ const TicketManagerPro = () => {
             /> */}
           </Col>
         </Row>
-        <div className={`mt-4 ${gettogglefield?'d-none':'d-block'}`}>
-          <ButtonStyle1
-            type="submit"
-          >
-            Update
-          </ButtonStyle1>{" "}
+        <div className={`mt-4 ${gettogglefield ? "d-none" : "d-block"}`}>
+          <ButtonStyle1 type="submit">Update</ButtonStyle1>{" "}
         </div>
       </form>
     </div>
