@@ -50,9 +50,11 @@ const CreateTickets = () => {
   }`.trim();
   // console.log("customerData>>", customerData);
   // const admiId = customerData?.customerBody?.adminDetails?._id.toString();
-  const adminaMilID={email:customerData?.customerBody?.adminDetails?.email}//posting the data for counter
+  const adminaMilID = {
+    email: customerData?.customerBody?.adminDetails?.email,
+  }; //posting the data for counter
   // console.log("adminaMilID>>",adminaMilID)
-  const adminId = customerData?.customerBody?.adminDetails?._id//uniquie adminID for TI and SAP
+  const adminId = customerData?.customerBody?.adminDetails?._id //uniquie adminID for TI and SAP
     .toString()
     .trim();
   // console.log("adminId", adminId);
@@ -109,7 +111,7 @@ const CreateTickets = () => {
     }
   }, [getDropdownData]);
   const { isOpen, onOpen, onClose: chakraOnClose } = useDisclosure();
-  
+
   const handleChange = (e) => {
     const { name, value, type, files } = e.target; // Destructure to get name, value, type, and files
     setNewTicket((prevState) => ({
@@ -170,7 +172,7 @@ const CreateTickets = () => {
             throw new Error("Failed to fetch itid"); // Handle HTTP errors
           }
           const data = await response.json(); // Parse the JSON response
-          console.log("itcounterid>>",data)
+          console.log("itcounterid>>", data);
           // setUniqueID(data.itID)
           setNewTicket((prevState) => ({
             ...prevState,
@@ -240,7 +242,7 @@ const CreateTickets = () => {
           uniqueticketID: data.itID,
         }));
         setTimeout(() => {
-          chakraOnClose(); 
+          chakraOnClose();
         }, 100);
       } catch (err) {
         console.error(err.message); // Set error in case of a failure
@@ -269,13 +271,13 @@ const CreateTickets = () => {
           uniqueticketID: data.sapID,
         }));
         setTimeout(() => {
-          chakraOnClose(); 
+          chakraOnClose();
         }, 100);
       } catch (err) {
         console.error(err.message); // Set error in case of a failure
       }
     }
-    // chakraOnClose(); 
+    // chakraOnClose();
   };
   //handel Ok
   const handleOk = async () => {
@@ -364,7 +366,7 @@ const CreateTickets = () => {
         <form onSubmit={handleSubmit}>
           <Row>
             <Col xs={12} md={12} lg={12} className="mt-2">
-              <SecondaryHeader header="Customer Details"/>
+              <SecondaryHeader header="Customer Details" />
             </Col>
             <Col xs={12} md={4} lg={4} className="my-2">
               <InputField
@@ -439,7 +441,7 @@ const CreateTickets = () => {
               />
             </Col>
             <Col xs={12} md={12} lg={12} className="mt-2">
-            <SecondaryHeader header=" Please Fill The Ticket Information"/>
+              <SecondaryHeader header=" Please Fill The Ticket Information" />
             </Col>
             <Col xs={12} md={4} lg={4} className="my-2">
               <DropdownField

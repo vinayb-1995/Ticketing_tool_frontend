@@ -36,7 +36,7 @@ const Header = () => {
 
   /* customer data from redux */
   const customerData = useSelector((state) => state.customer.customerData);
-  console.log("customerdata>>",customerData)
+  console.log("customerdata>>", customerData);
   const agentData = useSelector((state) => state.agent.agentData);
 
   /*fetch in all customer customer all data */
@@ -47,11 +47,13 @@ const Header = () => {
   const agentsData = useSelector((state) => state.allAgents.AgentsData);
   console.log("fetchAgentsAllData>>", agentsData);
 
-  const allTicketsData = useSelector((state) => state.alltickets.allTicketsData);
-  console.log("allTicketsData",allTicketsData)
+  const allTicketsData = useSelector(
+    (state) => state.alltickets.allTicketsData
+  );
+  console.log("allTicketsData", allTicketsData);
 
   const allAgentsData = useSelector((state) => state.allAgents.allAgentsData);
-  console.log("allAgentsData>>",allAgentsData)
+  console.log("allAgentsData>>", allAgentsData);
 
   useEffect(() => {
     if (getRole === "admin") {
@@ -81,7 +83,7 @@ const Header = () => {
   const handleLogoClick = () => {
     if (role === "admin") {
       navigate("/");
-    }else {
+    } else {
       navigate("/");
     }
   };

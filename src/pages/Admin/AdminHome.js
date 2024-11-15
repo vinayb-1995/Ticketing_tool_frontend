@@ -73,13 +73,31 @@ const AdminHome = () => {
           >
             <p>Ticket Requests</p>
           </Col>
-          <Col xs={12} md={3} lg={3} className="dashboardbutton" onClick={handleAllCustomer}>
+          <Col
+            xs={12}
+            md={3}
+            lg={3}
+            className="dashboardbutton"
+            onClick={handleAllCustomer}
+          >
             <p>All Customer</p>
           </Col>
-          <Col xs={12} md={3} lg={3} onClick={handlAllAgents} className="dashboardbutton">
+          <Col
+            xs={12}
+            md={3}
+            lg={3}
+            onClick={handlAllAgents}
+            className="dashboardbutton"
+          >
             <p>All Agents</p>
           </Col>
-          <Col xs={12} md={3} lg={3} className="dashboardbutton" onClick={handleAssignedTickets}>
+          <Col
+            xs={12}
+            md={3}
+            lg={3}
+            className="dashboardbutton"
+            onClick={handleAssignedTickets}
+          >
             <p>Open, Closed & Pending tickets</p>
           </Col>
         </Row>

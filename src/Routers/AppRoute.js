@@ -27,7 +27,6 @@ const AppRoute = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
           {/* <Route path="/customer" element={<Customer />} /> */}
-
         </>
       ) : (
         <>
@@ -38,16 +37,22 @@ const AppRoute = () => {
               <Route path="/adminhome" element={<AdminHome />} />
               <Route path="/createcustomer" element={<CreateCustomer />} />
               <Route path="/createagent" element={<CreateAgent />} />
-              <Route path="/assignticketstable" element={<AssignTicketsTable />} />
+              <Route
+                path="/assignticketstable"
+                element={<AssignTicketsTable />}
+              />
               <Route path="/ticketmanger/:id" element={<TicketManagerPro />} />
               <Route path="/customer" element={<Customer />} />
               <Route path="/allagents" element={<AllAgents />} />
               <Route path="/allcustomer" element={<AllCustomer />} />
-              <Route path="/assignedtickets" element={<AssignedTicketsTable />} />
+              <Route
+                path="/assignedtickets"
+                element={<AssignedTicketsTable />}
+              />
               <Route path="/agentbyidadmin/:id" element={<AgentByIDAdmin />} />
             </>
           )}
-            {role === "customer" && (
+          {role === "customer" && (
             <>
               {/* customer pages */}
               <Route path="/" element={<Customer />} />
@@ -56,7 +61,7 @@ const AppRoute = () => {
               {/* Add more customer-specific routes here */}
             </>
           )}
-            {role === "agent" && (
+          {role === "agent" && (
             <>
               {/* customer pages */}
               <Route path="/" element={<Agents />} />

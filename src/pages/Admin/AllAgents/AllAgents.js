@@ -10,11 +10,13 @@ const AllAgents = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const allAgentsData = useSelector((state) => state.allAgents.allAgentsData);
-  console.log("allAgentsData>>",allAgentsData)
+  console.log("allAgentsData>>", allAgentsData);
   // const token = useSelector((state) => state.auth.token); // Access the token
   const [getAllgents, setAllagents] = useState();
-  const agentAdmins = getAllgents?.filter((agent) => agent?.agentAdminIT === false || agent?.agentAdminSAP === false );
-  console.log("agentAdmins>>",agentAdmins)
+  const agentAdmins = getAllgents?.filter(
+    (agent) => agent?.agentAdminIT === false || agent?.agentAdminSAP === false
+  );
+  console.log("agentAdmins>>", agentAdmins);
 
   const itAgents = getAllgents?.filter((agent) => agent?.department === "IT");
   const sapAgents = getAllgents?.filter((agent) => agent?.department === "SAP");
@@ -28,11 +30,13 @@ const AllAgents = () => {
   console.log("SAP agents >>", SAPAgetnADmin);
 
   //console.log("ALL AGENTS DATA", getAllgents);
-  const handelNavigate = (id) => {navigate(`/agentbyidadmin/:${id}`)};
+  const handelNavigate = (id) => {
+    navigate(`/agentbyidadmin/:${id}`);
+  };
 
   useEffect(() => {
     dispatch(fetchAgentsAllData());
-    setAllagents(allAgentsData)
+    setAllagents(allAgentsData);
     // const fetchAllAgentData = async () => {
     //   try {
     //     const response = await fetch(
@@ -55,7 +59,7 @@ const AllAgents = () => {
     //   }
     // };
     // fetchAllAgentData();
-  }, [allAgentsData]);
+  }, [allAgentsData,dispatch]);
 
   /* table data */
   const columns = [
@@ -95,7 +99,9 @@ const AllAgents = () => {
             <div>
               <p className="mb-0 fw-medium">
                 <div>
-                  <p p className="mb-0"  >{itAgetnADmin[0]?.fullname || "Not Assigned"}</p>
+                  <p p className="mb-0">
+                    {itAgetnADmin[0]?.fullname || "Not Assigned"}
+                  </p>
                 </div>
               </p>
             </div>
@@ -104,7 +110,10 @@ const AllAgents = () => {
           return (
             <div>
               <div>
-                <p className="mb-0" >  {SAPAgetnADmin[0]?.fullname || "Not Assigned"}</p>
+                <p className="mb-0">
+                  {" "}
+                  {SAPAgetnADmin[0]?.fullname || "Not Assigned"}
+                </p>
               </div>
             </div>
           );
