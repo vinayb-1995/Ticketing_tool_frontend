@@ -29,15 +29,15 @@ export const fetchAgentsAllData = createAsyncThunk(
   }
 );
 const agentsSlice = createSlice({
-  name: "agents",
+  name: "allagents",
   initialState: {
-    AgentsData: [], // Adjusted to an empty array to hold multiple Agents objects
+    allAgentsData: [], // Adjusted to an empty array to hold multiple Agents objects
     status: "idle",
     error: null,
   },
   reducers: {
     clearAgentsData: (state) => {
-      state.AgentsData = [];
+      state.allAgentsData = [];
       state.status = "idle";
       state.error = null;
     },
@@ -48,7 +48,7 @@ const agentsSlice = createSlice({
         state.status = "loading";
       })
       .addCase(fetchAgentsAllData.fulfilled, (state, action) => {
-        state.AgentsData = action.payload; // Assign array of Agents objects directly
+        state.allAgentsData = action.payload; // Assign array of Agents objects directly
         state.status = "succeeded";
       })
       .addCase(fetchAgentsAllData.rejected, (state, action) => {

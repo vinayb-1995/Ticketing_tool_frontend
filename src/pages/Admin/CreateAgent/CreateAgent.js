@@ -96,8 +96,8 @@ const CreateAgent = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   //dropdown option
-  const [getDropdownData, setDropdownData] = useState(null);
   const [teams, setTeams] = useState([]);
+  const [getDropdownData, setDropdownData] = useState(null);
   useEffect(() => {
     if (getDropdownData) {
       if (getDropdownData.textField === "department") {
@@ -175,11 +175,9 @@ const CreateAgent = () => {
     const newErrors = validate();
     if (newErrors) {
       // setFormData(getNewCustomer); // Save the data for modal display
-
       onOpen();
     }
   };
-
   //handel Ok
   const handleOk = async () => {
     try {
@@ -328,8 +326,8 @@ const CreateAgent = () => {
               index={0}
               id="group"
               name="group"
-              label="team/group"
-              placeholder="team/group"
+              label="Designation"
+              placeholder="Designation"
               // data={group} // Options for dropdown
               data={teams}
               setValue={getNewAgent?.group || ""} // Pre-filled value

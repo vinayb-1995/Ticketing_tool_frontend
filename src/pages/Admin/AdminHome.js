@@ -28,6 +28,12 @@ const AdminHome = () => {
   const handlAllAgents = () => {
     navigate("/allagents");
   };
+  const handleAssignedTickets = () => {
+    navigate("/assignedtickets");
+  };
+  const handleAllCustomer = () => {
+    navigate("/allcustomer");
+  };
   return (
     <>
       <div className="container mt-2 adminhome">
@@ -65,15 +71,15 @@ const AdminHome = () => {
             onClick={handleAssignTickets}
             className="dashboardbutton"
           >
-            <p>Assign Tickets</p>
+            <p>Ticket Requests</p>
           </Col>
-          <Col xs={12} md={3} lg={3} className="dashboardbutton">
+          <Col xs={12} md={3} lg={3} className="dashboardbutton" onClick={handleAllCustomer}>
             <p>All Customer</p>
           </Col>
           <Col xs={12} md={3} lg={3} onClick={handlAllAgents} className="dashboardbutton">
             <p>All Agents</p>
           </Col>
-          <Col xs={12} md={3} lg={3} className="dashboardbutton">
+          <Col xs={12} md={3} lg={3} className="dashboardbutton" onClick={handleAssignedTickets}>
             <p>Open, Closed & Pending tickets</p>
           </Col>
         </Row>

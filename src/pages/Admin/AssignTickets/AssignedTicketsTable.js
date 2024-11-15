@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { fetchAllTickets } from "../../../features/slice/allTickets";
 
-const AssignTicketsTable = () => {
+const AssignedTicketsTable = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const allTicketsData = useSelector((state) => state.alltickets);
@@ -14,7 +14,7 @@ const AssignTicketsTable = () => {
 
   useEffect(() => {
     const filteredData = allTicketsData?.allTicketsData?.filter(
-      (data) => data?.adminAssigned?.isAssigned === false
+      (data) => data?.adminAssigned?.isAssigned === true
     );
     setTicketsOpenData(filteredData);
   }, [allTicketsData]); // Dependency array to run effect when allTicketsData changes
@@ -55,15 +55,15 @@ const AssignTicketsTable = () => {
       //sortable: true,
     },
     {
-      name: "status",
-      selector: (row) => row?.status || "open",
-      width: "100px",
+      name: "Assigend",
+      selector: (row) => row?.adminAssigned?.assignedTo,
+      width: "200px",
       //   sortable: true,
     },
     {
-      name: "Assigned",
-      selector: (row) => "Not Assigned",
-      width: "200px",
+      name: "status",
+      selector: (row) => row?.status || "open",
+      width: "100px",
       //   sortable: true,
     },
     {
@@ -79,7 +79,7 @@ const AssignTicketsTable = () => {
   ];
   return (
     <div className="mt-4 container createagent">
-      <Headings navigtepath="/adminhome" headingname="A raised tickets" />
+      <Headings navigtepath="/adminhome" headingname="Assigned tickets" />
       <div className="data-table-outer-layer">
         <DataTable
           //title="Arnold Schwarzenegger Movies"
@@ -92,4 +92,4 @@ const AssignTicketsTable = () => {
     </div>
   );
 };
-export default AssignTicketsTable;
+export default AssignedTicketsTable;

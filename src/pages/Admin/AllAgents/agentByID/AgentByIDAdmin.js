@@ -20,8 +20,8 @@ import ModalComponentSuccess from "../../../../components/Modals/ModalComponentS
 import { useDisclosure } from "@chakra-ui/react";
 
 const accoutnStatusDropDownOption = [
-  { name: "Yes", value: true },
-  { name: "No", value: false },
+  { name: "Admin", value: true },
+  { name: "User", value: false },
 ];
 const AgentByIDAdmin = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -64,8 +64,8 @@ const AgentByIDAdmin = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log("handel submit>>", getDropdownData?.value);
-    console.log("agent ID>>", getAgentByIDAdmin?.user_unique_ID);
+    // console.log("handel submit>>", getDropdownData?.value);
+    // console.log("agent ID>>", getAgentByIDAdmin?.user_unique_ID);
     if (getAgentByIDAdmin?.department === "IT") {
       if (getDropdownData?.value === true) {
         try {
@@ -227,7 +227,6 @@ const AgentByIDAdmin = () => {
                 disabled={true}
               />
             </Col>
-
             <Col xs={12} md={4} lg={4} className="my-2">
               <InputField
                 id="accountstatus"
@@ -265,7 +264,7 @@ const AgentByIDAdmin = () => {
               />
             </Col>
             <Col xs={12} md={12} lg={12} className="my-2">
-              <SecondaryHeader header="Set Agent Admin" />
+              <SecondaryHeader header="Assign Agent Admin" />
             </Col>
             <Col xs={12} md={4} lg={4} className="my-2">
               <DropdownField
@@ -273,7 +272,7 @@ const AgentByIDAdmin = () => {
                 id="Agent Admin"
                 name="agentAdmin"
                 label="Agent Admin"
-                placeholder="Yes or No"
+                placeholder="Admin or User"
                 data={accoutnStatusDropDownOption} // Options for dropdown
                 setValue={getDropdownData?.value} // Pre-filled value
                 getvalue={setDropdownData} // Set dropdown data on change
@@ -292,7 +291,9 @@ const AgentByIDAdmin = () => {
           isOpen={isOpen}
           onClose={onClose}
           title="Registration Successful"
-          bodyText={`${getAgentByIDAdmin?.fullname} is Know ${getDropdownData?.value?"Admin":"consultent"} for ${getAgentByIDAdmin?.department} Department`}
+          bodyText={`${getAgentByIDAdmin?.fullname} is Know ${
+            getDropdownData?.value ? "Admin" : "User"
+          } for ${getAgentByIDAdmin?.department} Department`}
           onOk={handleOk}
         />
       </div>
