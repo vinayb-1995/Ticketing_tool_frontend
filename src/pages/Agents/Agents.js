@@ -1,4 +1,5 @@
 import { Col, Row } from "react-bootstrap";
+import TicketsStatus from "../../components/tickets/Tickets_status";
 
 const Agents = () => {
   return (
@@ -26,6 +27,7 @@ const Agents = () => {
             <p>Ticket Status</p>
           </Col>
         </Row>
+        <TicketsStatus/>
       </div>
     </>
   );

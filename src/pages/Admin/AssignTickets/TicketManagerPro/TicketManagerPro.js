@@ -2,7 +2,7 @@ import { Col, Row } from "react-bootstrap";
 import { IoPersonOutline } from "react-icons/io5";
 
 import { FaRegAddressCard } from "react-icons/fa6";
-import Headings from "../../../../components/Heading/Headings";
+// import Headings from "../../../../components/Heading/Headings";
 import ButtonStyle1 from "../../../../components/Buttons/ButtonStyle1";
 import { InputField } from "../../../../components/InputField/InputField";
 import { useNavigate, useParams } from "react-router-dom";
@@ -15,6 +15,7 @@ import { AiOutlineUserSwitch } from "react-icons/ai";
 import Toast from "../../../../components/Toast/Toast";
 import { fetchAgentsAllData } from "../../../../features/slice/fetchAgentsAllData";
 import { FaEdit } from "react-icons/fa";
+// import NavigationBackButton from "../../../../components/Buttons/NavigationBackButton";
 
 const accoutnStatusDropDownOption = [
   { name: "open", value: "open" },
@@ -52,20 +53,16 @@ const TicketManagerPro = () => {
     endDateAdnTime: "",
     adminDescription: "",
   });
-  console.log("geticketUpdate>>", geticketUpdate);
-  console.log("getTicketData>>", getTicketData);
-  console.log("getAllagents>>", getAllagents);
+  // console.log("geticketUpdate>>", geticketUpdate);
+  // console.log("getTicketData>>", getTicketData);
+  // console.log("getAllagents>>", getAllagents);
 
   // console.log("getTicketData isAssigned >>", getTicketData?.adminAssigned?.isAssigned);
   // console.log("getTicketData statu >>", getTicketData?.status);
   const status = getTicketData?.status;
   const isAssigned = getTicketData?.adminAssigned?.isAssigned;
-  console.log("getTicketData isAssigned >>", isAssigned);
-
+  // console.log("getTicketData isAssigned >>", isAssigned);
   const [gettogglefield, settogglefield] = useState();
-  useEffect(() => {
-    settogglefield(isAssigned);
-  }, [isAssigned]);
   const handelEdit = () => {
     settogglefield(!gettogglefield);
   };
@@ -90,8 +87,6 @@ const TicketManagerPro = () => {
   const [getDropdownData, setDropdownData] = useState(null);
 
   useEffect(() => {
-    dispatch(fetchAgentsAllData());
-
     const fetchTicketData = async () => {
       try {
         const response = await fetch(
@@ -112,7 +107,17 @@ const TicketManagerPro = () => {
         console.error(error.message);
       }
     };
+    if (ticketID && token) {
+      // Ensure ticketID and token are valid before fetching
+      fetchTicketData();
+    }
+  }, [ticketID, token]);
+
+  useEffect(() => {
     setAllagents(allAgentsData);
+  }, [allAgentsData]);
+
+  useEffect(() => {
     if (getDropdownData) {
       if (
         typeof getDropdownData === "object" &&
@@ -137,14 +142,15 @@ const TicketManagerPro = () => {
         }));
       }
     }
-    if (ticketID && token) {
-      // Ensure ticketID and token are valid before fetching
-      fetchTicketData();
-    }
-    // if (token) {
-    //   fetchAllAgentData();
-    // }
-  }, [ticketID, token, getDropdownData, allAgentsData, dispatch]);
+  }, [getDropdownData, allAgentsData]);
+
+  useEffect(() => {
+    settogglefield(isAssigned);
+  }, [isAssigned]);
+
+  useEffect(() => {
+    dispatch(fetchAgentsAllData());
+  }, [dispatch]);
 
   const handleChange = (e) => {
     const name = e.target.name;
@@ -186,16 +192,78 @@ const TicketManagerPro = () => {
       });
     }
   };
-
+  const handelNavigateNewTickets=()=>{
+    navigate("/assignticketstable")
+  }
+  
+  const handleOpenTicketsClick = () => {
+    // console.log("Open tickets clicked!");
+    navigate("/assignedtickets", {
+      state: { filter: "open" },
+    });
+  };
+  const handlePendingTicketsClick = () => {
+    // console.log("Open tickets clicked!");
+    navigate("/assignedtickets", {
+      state: { filter: "pending" },
+    });
+  };
+  const handleResolvedTicketsClick = () => {
+    // console.log("Open tickets clicked!");
+    navigate("/assignedtickets", {
+      state: { filter: "resolved" },
+    });
+  };
+  const handleClosedTicketsClick = () => {
+    // console.log("Open tickets clicked!");
+    navigate("/assignedtickets", {
+      state: { filter: "close" },
+    });
+  };
   return (
     <div className="mt-4 mb-4 container createcutomer">
-      <Headings
+      <div className="mt-4 container secondary-headings">
+        <Row className="d-flex align-items-center">
+          <Col xs={3} md={6} lg={6} className="d-flex">
+            {/* <NavigationBackButton navigtepath={navigtepath} /> */}
+            <button className="navigation-button fs-6 me-2" onClick={handelNavigateNewTickets}>New </button>
+            <button className="navigation-button fs-6 me-2" onClick={handleOpenTicketsClick}>Open </button>
+            <button className="navigation-button fs-6 me-2" onClick={handlePendingTicketsClick}>Pending </button>
+            <button className="navigation-button fs-6 me-2" onClick={handleResolvedTicketsClick}>Resolved </button>
+            <button className="navigation-button fs-6 me-2" onClick={handleClosedTicketsClick}>Closed </button>
+          </Col>
+          {/* <Col
+            xs={9}
+            md={ticketID ? 5 : 9}
+            lg={ticketID ? 5 : 9}
+            className="heading-name"
+          >
+            <p>Heading name</p>
+          </Col> */}
+          {/* Conditional rendering of ticketID with dynamic column sizes */}
+          {ticketID && (
+            <Col
+              xs={12}
+              md={6}
+              lg={6}
+              className="heading-name d-lg-flex justify-content-end d-md-flex justify-content-start"
+            >
+              <p>
+                <span className="fw-bold">ID: </span>
+                {ticketID}
+              </p>
+            </Col>
+          )}
+        </Row>
+        <Divider borderColor="blue.400" borderWidth="2px" />
+      </div>
+      {/*      <Headings
         navigtepath={`${
           isAssigned ? "/assignedtickets" : "/assignticketstable"
         }`}
         headingname="Ticket Mangement"
         ticketID={ticketID}
-      />
+      /> */}
       <form onSubmit={handleSubmit}>
         <Row>
           <Col xs={12} md={12} lg={12} className="mt-2">
@@ -380,7 +448,8 @@ const TicketManagerPro = () => {
                 "End Date and Time"
               }
               name="endDateAdnTime"
-              type={gettogglefield ? "text" : "date"}
+              type={gettogglefield ? "text" : "datetime-local"}
+              // type= "datetime"
               // value={customerData?.customerBody?.adminDetails?.username || ""}
               onChange={handleChange}
               icon={<IoPersonOutline />}
