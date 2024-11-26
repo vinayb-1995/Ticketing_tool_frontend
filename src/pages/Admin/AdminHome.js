@@ -97,7 +97,7 @@ const AdminHome = () => {
     navigate("/allagents");
   };
   const handleAssignedTickets = () => {
-    navigate("/assignedtickets",{
+    navigate("/assignedtickets", {
       state: { filter: "All" },
     });
   };
@@ -132,7 +132,6 @@ const AdminHome = () => {
       state: { filter: "close" },
     });
   };
-
 
   return (
     <>

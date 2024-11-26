@@ -16,11 +16,6 @@ const TicketsStatus = ({
   onResolvedTicketsClick,
   onClosedTicketsClick,
 }) => {
-  // console.log("tickets length",opentickets)
-  // console.log("tickets length",pending)
-  // console.log("tickets length",resolved)
-  // console.log("tickets length",close)
-
   return (
     <>
       <Row className={`container ${rowclassname} tiketstatus`}>

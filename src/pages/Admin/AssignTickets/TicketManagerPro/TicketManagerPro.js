@@ -192,10 +192,10 @@ const TicketManagerPro = () => {
       });
     }
   };
-  const handelNavigateNewTickets=()=>{
-    navigate("/assignticketstable")
-  }
-  
+  const handelNavigateNewTickets = () => {
+    navigate("/assignticketstable");
+  };
+
   const handleOpenTicketsClick = () => {
     // console.log("Open tickets clicked!");
     navigate("/assignedtickets", {
@@ -226,11 +226,36 @@ const TicketManagerPro = () => {
         <Row className="d-flex align-items-center">
           <Col xs={3} md={6} lg={6} className="d-flex">
             {/* <NavigationBackButton navigtepath={navigtepath} /> */}
-            <button className="navigation-button fs-6 me-2" onClick={handelNavigateNewTickets}>New </button>
-            <button className="navigation-button fs-6 me-2" onClick={handleOpenTicketsClick}>Open </button>
-            <button className="navigation-button fs-6 me-2" onClick={handlePendingTicketsClick}>Pending </button>
-            <button className="navigation-button fs-6 me-2" onClick={handleResolvedTicketsClick}>Resolved </button>
-            <button className="navigation-button fs-6 me-2" onClick={handleClosedTicketsClick}>Closed </button>
+            <button
+              className="navigation-button fs-6 me-2"
+              onClick={handelNavigateNewTickets}
+            >
+              New{" "}
+            </button>
+            <button
+              className="navigation-button fs-6 me-2"
+              onClick={handleOpenTicketsClick}
+            >
+              Open{" "}
+            </button>
+            <button
+              className="navigation-button fs-6 me-2"
+              onClick={handlePendingTicketsClick}
+            >
+              Pending{" "}
+            </button>
+            <button
+              className="navigation-button fs-6 me-2"
+              onClick={handleResolvedTicketsClick}
+            >
+              Resolved{" "}
+            </button>
+            <button
+              className="navigation-button fs-6 me-2"
+              onClick={handleClosedTicketsClick}
+            >
+              Closed{" "}
+            </button>
           </Col>
           {/* <Col
             xs={9}

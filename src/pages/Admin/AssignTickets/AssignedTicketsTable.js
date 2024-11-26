@@ -10,9 +10,7 @@ const AssignedTicketsTable = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const { state } = location || {};
-
-  console.log("filter>>", state.filter);
-
+  // console.log("filter>>", state.filter);
   const allTicketsData = useSelector((state) => state.alltickets);
   // console.log( "allTicketsData>>",allTicketsData?.allTicketsData)
   const [getAssignedTickets, setAssignedTickets] = useState([]);
