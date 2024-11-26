@@ -20,51 +20,36 @@ const AllCustomer = () => {
           </p>
         </div>
       ),
+      width:"200px",
       //sortable: true,
     },
     {
       name: "Name",
       selector: (row) => row?.firstname,
-      //sortable: true,
+      width:"200px",
+      sortable: true,
     },
-    // {
-    //   name: "Department",
-    //   selector: (row) => (
-    //     <div>
-    //       <p className="mb-0">{row?.department}</p>
-    //     </div>
-    //   ),
-    //   //sortable: true,
-    // },
-    // {
-    //   name: "Reporting Manager",
-    //   selector: (row) => {
-    //     if (row?.department === "IT") {
-    //       return (
-    //         <div>
-    //               <p></p>
-    //         </div>
-    //       );
-    //     } else if (row?.department === "SAP") {
-    //       return (
-    //         <div>
-    //           <div>
-    //             <p className="mb-0" >  </p>
-    //           </div>
-    //         </div>
-    //       );
-    //     }
-    //   },
-    //   //sortable: true,
-    // },
     {
       name: "Mail ID",
       selector: (row) => (
         <>
-          {/* <p className="mb-0 fw-medium">{row?.fullname}</p> */}
           <p className="mb-0">{row?.email}</p>
         </>
       ),
+      width:"200px",
+      //selector: (row) => row?.customer_Name,
+      //sortable: true,
+    },
+    {
+      name: "Phone Number",
+      selector: (row) => (
+        <>
+          {/* <p className="mb-0 fw-medium">{row?.fullname}</p> */}
+          <p className="mb-0">{row?.mobile}</p>
+        </>
+      ),
+      width:"200px",
+
       //selector: (row) => row?.customer_Name,
       //sortable: true,
     },

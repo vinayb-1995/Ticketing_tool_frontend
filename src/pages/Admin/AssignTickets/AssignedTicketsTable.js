@@ -2,23 +2,48 @@ import { useEffect, useState } from "react";
 import Headings from "../../../components/Heading/Headings";
 import DataTable from "react-data-table-component";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { fetchAllTickets } from "../../../features/slice/allTickets";
 
 const AssignedTicketsTable = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const location = useLocation();
+  const { state } = location || {};
+  // console.log("filter>>", state.filter);
   const allTicketsData = useSelector((state) => state.alltickets);
   // console.log( "allTicketsData>>",allTicketsData?.allTicketsData)
-  const [getTicketsOpenData, setTicketsOpenData] = useState([]);
+  const [getAssignedTickets, setAssignedTickets] = useState([]);
 
   useEffect(() => {
-    const filteredData = allTicketsData?.allTicketsData?.filter(
+    const allFilteredTickets = allTicketsData?.allTicketsData?.filter(
       (data) => data?.adminAssigned?.isAssigned === true
     );
-    setTicketsOpenData(filteredData);
-  }, [allTicketsData]); // Dependency array to run effect when allTicketsData changes
-  console.log("getTicketsOpenData", getTicketsOpenData);
+    const openFilteredTickets = allFilteredTickets?.filter(
+      (data) => data?.status === "" && "open"
+    );
+    const pedingFilteredTickets = allFilteredTickets?.filter(
+      (data) => data?.status === "pending"
+    );
+    const resolvedFilteredTickets = allFilteredTickets?.filter(
+      (data) => data?.status === "resolved"
+    );
+    const closedFilteredTickets = allFilteredTickets?.filter(
+      (data) => data?.status === "close"
+    );
+    if (state.filter === "All") {
+      setAssignedTickets(allFilteredTickets);
+    } else if (state.filter === "open") {
+      setAssignedTickets(openFilteredTickets);
+    } else if (state.filter === "pending") {
+      setAssignedTickets(pedingFilteredTickets);
+    } else if (state.filter === "resolved") {
+      setAssignedTickets(resolvedFilteredTickets);
+    } else if (state.filter === "close") {
+      setAssignedTickets(closedFilteredTickets);
+    }
+  }, [allTicketsData, state.filter]); // Dependency array to run effect when allTicketsData changes
+  // console.log("getAssignedTickets", getAssignedTickets);
   // Define columns
   useEffect(() => {
     dispatch(fetchAllTickets());
@@ -40,7 +65,6 @@ const AssignedTicketsTable = () => {
           </p>
         </div>
       ),
-
       //sortable: true,
     },
     {
@@ -85,7 +109,7 @@ const AssignedTicketsTable = () => {
           //title="Arnold Schwarzenegger Movies"
           columns={columns}
           // data={data}
-          data={getTicketsOpenData}
+          data={getAssignedTickets}
           //   pagination
         />
       </div>

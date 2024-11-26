@@ -19,10 +19,10 @@ import Toast from "../../../components/Toast/Toast";
 import { useLocation, useNavigate } from "react-router-dom";
 import SecondaryHeader from "../../../components/Heading/SecondaryHeader";
 
-const departments = [
+/* const departments = [
   { name: "IT", value: "it" },
   { name: "ERP", value: "erp" },
-];
+]; */
 
 const subModule = [
   { name: "User Management", value: "user_management" },
@@ -94,8 +94,126 @@ const CreateTickets = () => {
     });
   }, [getNewTicket]);
   /* dropdown */
-  const [getDropdownData, setDropdownData] = useState(null);
+  const [departments, setDepartments] = useState([]);
+  const [submodules, setSubmodules] = useState([]);
+  const [issues, setIssues] = useState([]);
+  console.log("departments>>", departments);
+  console.log("submodules>>", submodules);
+  const [selectedDepartment, setSelectedDepartment] = useState();
+  const [selectedSubmodule, setSelectedSubmodule] = useState("");
+  const [selectedIssue, setSelectedIssue] = useState("");
+  console.log("selectedDepartment>>", selectedDepartment);
+  //fetch Department
   useEffect(() => {
+    const fetchDepartments = async () => {
+      try {
+        const response = await fetch(
+          "http://localhost:5000/api/dropdown/departments"
+        ); // Replace axios.get with fetch
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json(); // Parse JSON data
+        // console.log("fetched department>>",data.map((data)=>data.department))
+        setDepartments(data);
+        // setDepartments(data.map((data) => data.department));
+        // setDepartments(data.map((item) => ({
+        //   label: item.department,
+        //   value: item.department,
+        // })));
+      } catch (error) {
+        console.error("Error fetching departments:", error);
+      }
+    };
+    fetchDepartments();
+  }, []);
+   // Fetch submodules when selectedDepartment changes
+   useEffect(() => {
+    if (selectedDepartment) {
+      const fetchSubmodules = async () => {
+        try {
+          const response = await fetch(
+            `http://localhost:5000/api/dropdown/submodules/${selectedDepartment}`
+          );
+          if (!response.ok)
+            throw new Error(`HTTP error! status: ${response.status}`);
+          const data = await response.json();
+          setSubmodules(data);
+          setIssues([]); // Reset issues
+          setSelectedSubmodule(""); // Reset selected submodule
+        } catch (error) {
+          console.error("Error fetching submodules:", error);
+        }
+      };
+      fetchSubmodules();
+    } else {
+      setSubmodules([]);
+      setIssues([]);
+      setSelectedSubmodule("");
+      setSelectedIssue("");
+    }
+  }, [selectedDepartment]);
+   // Fetch issues when selectedSubmodule changes
+   useEffect(() => {
+    if (selectedSubmodule) {
+      const fetchIssues = async () => {
+        try {
+          const response = await fetch(
+            `http://localhost:5000/api/dropdown/issues/${selectedSubmodule}`
+          );
+          if (!response.ok)
+            throw new Error(`HTTP error! status: ${response.status}`);
+          const data = await response.json();
+          setIssues(data);
+          setSelectedIssue(""); // Reset selected issue
+        } catch (error) {
+          console.error("Error fetching issues:", error);
+        }
+      };
+      fetchIssues();
+    } else {
+      setIssues([]);
+      setSelectedIssue("");
+    }
+  }, [selectedSubmodule]);
+  /* -----------------------------------------------------------------dropdown--------------------*/
+  const [getDropdownData, setDropdownData] = useState(null);
+  console.log("getDropdownData>>",getDropdownData?.name)
+
+  useEffect(() => {
+    console.log(">>Check getDropdownData Data", getDropdownData);
+    if (getDropdownData?.codeType === "country") {
+      setNewTicket((getNewTicket) => ({
+        ...getNewTicket,
+        [getDropdownData?.textField]: getDropdownData?.name,
+        [getDropdownData?.textCode]: getDropdownData?.code,
+        [getDropdownData?.textDesc]: getDropdownData?.description,
+        // [getDropdownData?.department]: getDropdownData?.value,
+      }));
+      setSelectedDepartment(getDropdownData?.name);
+    } else {  
+      setNewTicket((getNewTicket) => ({
+        ...getNewTicket,
+        [getDropdownData?.textField]: getDropdownData?.name,
+        [getDropdownData?.textCode]: getDropdownData?.code,
+        [getDropdownData?.textDesc]: getDropdownData?.description,
+      }));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [getDropdownData]);
+ /*  useEffect(() => {
+    if (!getDropdownData) return; // Exit early if no dropdown data
+  
+    setNewTicket((prevTicket) => ({
+      ...prevTicket,
+      [getDropdownData.textField]: getDropdownData.name || "",
+    }));
+  
+    if (getDropdownData.code) {
+      setSubmodules(getDropdownData.code);
+    }
+  }, [getDropdownData]); */
+ /*  useEffect(() => {
     // Prevent update if getDropdownData is null or undefined
     if (getDropdownData && getDropdownData.name && getDropdownData.textField) {
       setNewTicket((prevState) => {
@@ -109,7 +227,8 @@ const CreateTickets = () => {
         };
       });
     }
-  }, [getDropdownData]);
+  }, [getDropdownData]); */
+
   const { isOpen, onOpen, onClose: chakraOnClose } = useDisclosure();
 
   const handleChange = (e) => {

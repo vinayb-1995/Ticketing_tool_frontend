@@ -2,7 +2,7 @@
 $primary-color: #4267b2;
 $white-color: #fff;
 $black-color: #000;
-$blue-shadow:rgba(165, 193, 253, 0.5);
+$blue-shadow: rgba(165, 193, 253, 0.5);
 /*------------- common colors ------------- */
 /* dancing font */
 $dancing-font: "Dancing Script", cursive;
@@ -109,16 +109,15 @@ $extra-large-font-size: 28px;
     display: flex;
     align-items: center;
     height: 50px;
-    transition: box-shadow 0.1s ease-in-out; 
+    transition: box-shadow 0.1s ease-in-out;
     cursor: pointer;
     &:hover {
-      box-shadow: 0 4px 8px $blue-shadow; 
+      box-shadow: 0 4px 8px $blue-shadow;
       p {
-          text-shadow: 2px 2px 4px $blue-shadow;
-          transition: text-shadow 0.1s ease-in-out;
+        text-shadow: 2px 2px 4px $blue-shadow;
+        transition: text-shadow 0.1s ease-in-out;
       }
     }
   }
 }
 /* --------------adminhome end -------------- */
-

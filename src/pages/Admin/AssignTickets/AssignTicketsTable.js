@@ -56,7 +56,7 @@ const AssignTicketsTable = () => {
     },
     {
       name: "status",
-      selector: (row) => row?.status || "open",
+      selector: (row) => "New",
       width: "100px",
       //   sortable: true,
     },

@@ -35,32 +35,13 @@ const AllAgents = () => {
   };
 
   useEffect(() => {
-    dispatch(fetchAgentsAllData());
     setAllagents(allAgentsData);
-    // const fetchAllAgentData = async () => {
-    //   try {
-    //     const response = await fetch(
-    //       `http://localhost:5000/api/admin/allagentsdata`,
-    //       {
-    //         method: "GET",
-    //         headers: {
-    //           Authorization: `Bearer ${token}`,
-    //         },
-    //       }
-    //     );
-    //     if (!response.ok) {
-    //       throw new Error("Failed to fetch itid"); // Handle HTTP errors
-    //     }
-    //     const data = await response.json(); // Parse the JSON response
-    //     setAllagents(data);
-    //     console.log("data>>",data)
-    //   } catch (err) {
-    //     console.error(err.message); // Set error in case of a failure
-    //   }
-    // };
-    // fetchAllAgentData();
-  }, [allAgentsData,dispatch]);
+  }, [allAgentsData]);
 
+  useEffect(()=>{
+    dispatch(fetchAgentsAllData());
+  },[dispatch])
+  
   /* table data */
   const columns = [
     {
@@ -168,7 +149,7 @@ const AllAgents = () => {
       <div className="mt-4 container createagent">
         <Headings navigtepath="/adminhome" headingname="All Agents Table" />
         <div className="pt-2 pb-2">
-          <SecondaryHeader header="Tabel IT Agents" />
+          <SecondaryHeader header="Table IT Agents" />
           <div className="data-table-outer-layer mt-2">
             <DataTable
               //title="Arnold Schwarzenegger Movies"
@@ -181,7 +162,7 @@ const AllAgents = () => {
         </div>
 
         <div className="pt-2">
-          <SecondaryHeader header="Tabel SAP Agents" />
+          <SecondaryHeader header="Table SAP Agents" />
           <div className="data-table-outer-layer mt-2">
             <DataTable
               //title="Arnold Schwarzenegger Movies"
