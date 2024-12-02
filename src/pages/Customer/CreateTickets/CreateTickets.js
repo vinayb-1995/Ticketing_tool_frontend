@@ -3,8 +3,8 @@ import { InputField } from "../../../components/InputField/InputField";
 import { MdAlternateEmail } from "react-icons/md";
 import { IoPersonOutline } from "react-icons/io5";
 import { IoPhonePortraitOutline } from "react-icons/io5";
-import { FaRegBuilding } from "react-icons/fa";
-import { IoLockClosedOutline } from "react-icons/io5";
+// import { FaRegBuilding } from "react-icons/fa";
+// import { IoLockClosedOutline } from "react-icons/io5";
 import { FiPhone } from "react-icons/fi";
 import { FaRegAddressCard } from "react-icons/fa6";
 import ButtonStyle1 from "../../../components/Buttons/ButtonStyle1";
@@ -18,25 +18,6 @@ import ConformationModal from "../../../components/Modals/ConformationModal";
 import Toast from "../../../components/Toast/Toast";
 import { useLocation, useNavigate } from "react-router-dom";
 import SecondaryHeader from "../../../components/Heading/SecondaryHeader";
-
-/* const departments = [
-  { name: "IT", value: "it" },
-  { name: "ERP", value: "erp" },
-]; */
-
-const subModule = [
-  { name: "User Management", value: "user_management" },
-  { name: "Access Control", value: "access_control" },
-  { name: "Data Migration", value: "data_migration" },
-  { name: "Reporting", value: "reporting" },
-];
-
-const issueTypes = [
-  { name: "System Error", value: "system_error" },
-  { name: "Access Issue", value: "access_issue" },
-  { name: "Data Discrepancy", value: "data_discrepancy" },
-  { name: "Performance Issue", value: "performance_issue" },
-];
 
 const CreateTickets = () => {
   const location = useLocation();
@@ -93,142 +74,52 @@ const CreateTickets = () => {
       Description: getNewTicket.description,
     });
   }, [getNewTicket]);
-  /* dropdown */
+  /* -----------------------------------------------------------------dependent dropdown--------------------*/
   const [departments, setDepartments] = useState([]);
-  const [submodules, setSubmodules] = useState([]);
-  const [issues, setIssues] = useState([]);
-  console.log("departments>>", departments);
-  console.log("submodules>>", submodules);
-  const [selectedDepartment, setSelectedDepartment] = useState();
-  const [selectedSubmodule, setSelectedSubmodule] = useState("");
-  const [selectedIssue, setSelectedIssue] = useState("");
-  console.log("selectedDepartment>>", selectedDepartment);
-  //fetch Department
+  const [subModules, setSubModules] = useState([]);
+  const [issueTypes, setIssueTypes] = useState([]);
+  // console.log("departments>>",departments)
   useEffect(() => {
-    const fetchDepartments = async () => {
-      try {
-        const response = await fetch(
-          "http://localhost:5000/api/dropdown/departments"
-        ); // Replace axios.get with fetch
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json(); // Parse JSON data
-        // console.log("fetched department>>",data.map((data)=>data.department))
-        setDepartments(data);
-        // setDepartments(data.map((data) => data.department));
-        // setDepartments(data.map((item) => ({
-        //   label: item.department,
-        //   value: item.department,
-        // })));
-      } catch (error) {
-        console.error("Error fetching departments:", error);
-      }
-    };
-    fetchDepartments();
+    fetch("http://localhost:5000/api/dropdown/departments")
+      .then((response) => response.json())
+      .then((data) => setDepartments(data))
+      .catch((error) => console.error("Error fetching departments:", error));
   }, []);
-   // Fetch submodules when selectedDepartment changes
-   useEffect(() => {
-    if (selectedDepartment) {
-      const fetchSubmodules = async () => {
-        try {
-          const response = await fetch(
-            `http://localhost:5000/api/dropdown/submodules/${selectedDepartment}`
-          );
-          if (!response.ok)
-            throw new Error(`HTTP error! status: ${response.status}`);
-          const data = await response.json();
-          setSubmodules(data);
-          setIssues([]); // Reset issues
-          setSelectedSubmodule(""); // Reset selected submodule
-        } catch (error) {
-          console.error("Error fetching submodules:", error);
-        }
-      };
-      fetchSubmodules();
-    } else {
-      setSubmodules([]);
-      setIssues([]);
-      setSelectedSubmodule("");
-      setSelectedIssue("");
-    }
-  }, [selectedDepartment]);
-   // Fetch issues when selectedSubmodule changes
-   useEffect(() => {
-    if (selectedSubmodule) {
-      const fetchIssues = async () => {
-        try {
-          const response = await fetch(
-            `http://localhost:5000/api/dropdown/issues/${selectedSubmodule}`
-          );
-          if (!response.ok)
-            throw new Error(`HTTP error! status: ${response.status}`);
-          const data = await response.json();
-          setIssues(data);
-          setSelectedIssue(""); // Reset selected issue
-        } catch (error) {
-          console.error("Error fetching issues:", error);
-        }
-      };
-      fetchIssues();
-    } else {
-      setIssues([]);
-      setSelectedIssue("");
-    }
-  }, [selectedSubmodule]);
-  /* -----------------------------------------------------------------dropdown--------------------*/
-  const [getDropdownData, setDropdownData] = useState(null);
-  console.log("getDropdownData>>",getDropdownData?.name)
-
-  useEffect(() => {
-    console.log(">>Check getDropdownData Data", getDropdownData);
-    if (getDropdownData?.codeType === "country") {
-      setNewTicket((getNewTicket) => ({
-        ...getNewTicket,
-        [getDropdownData?.textField]: getDropdownData?.name,
-        [getDropdownData?.textCode]: getDropdownData?.code,
-        [getDropdownData?.textDesc]: getDropdownData?.description,
-        // [getDropdownData?.department]: getDropdownData?.value,
+  const handleDepartmentChange = (value) => {
+    if (value !== getNewTicket.department) {
+      setNewTicket((prev) => ({
+        ...prev,
+        department: value,
+        subModule: "",
+        issueType: "",
       }));
-      setSelectedDepartment(getDropdownData?.name);
-    } else {  
-      setNewTicket((getNewTicket) => ({
-        ...getNewTicket,
-        [getDropdownData?.textField]: getDropdownData?.name,
-        [getDropdownData?.textCode]: getDropdownData?.code,
-        [getDropdownData?.textDesc]: getDropdownData?.description,
+      // console.log("department>>",value)
+      fetch(`http://localhost:5000/api/dropdown/submodules/${value}`)
+        .then((response) => response.json())
+        .then((data) => setSubModules(data))
+        .catch((error) => console.error("Error fetching subModules:", error));
+    }
+  };
+  const handleSubModuleChange = (value) => {
+    if (value !== getNewTicket.subModule) {
+      setNewTicket((prev) => ({ ...prev, subModule: value, issueType: "" }));
+      // console.log("subModule>>",value)
+      fetch(`http://localhost:5000/api/dropdown/issues/${value}`)
+        .then((response) => response.json())
+        .then((data) => setIssueTypes(data))
+        .catch((error) => console.error("Error fetching issueTypes:", error));
+    }
+  };
+  const handleIssueTypeChange = (value) => {
+    if (value !== getNewTicket.issueType) {
+      // console.log("type of issue>>", value);
+      setNewTicket((prev) => ({
+        ...prev,
+        issueType: value, // Store the selected issue type name
       }));
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [getDropdownData]);
- /*  useEffect(() => {
-    if (!getDropdownData) return; // Exit early if no dropdown data
-  
-    setNewTicket((prevTicket) => ({
-      ...prevTicket,
-      [getDropdownData.textField]: getDropdownData.name || "",
-    }));
-  
-    if (getDropdownData.code) {
-      setSubmodules(getDropdownData.code);
-    }
-  }, [getDropdownData]); */
- /*  useEffect(() => {
-    // Prevent update if getDropdownData is null or undefined
-    if (getDropdownData && getDropdownData.name && getDropdownData.textField) {
-      setNewTicket((prevState) => {
-        // Prevent setting state if the value is already the same to avoid re-renders
-        if (prevState[getDropdownData.textField] === getDropdownData.name) {
-          return prevState;
-        }
-        return {
-          ...prevState,
-          [getDropdownData.textField]: getDropdownData.name, // Update form field based on dropdown selection
-        };
-      });
-    }
-  }, [getDropdownData]); */
-
+  };
+  /* -----------------------------------------------------------------dependent dropdown--------------------*/
   const { isOpen, onOpen, onClose: chakraOnClose } = useDisclosure();
 
   const handleChange = (e) => {
@@ -291,7 +182,7 @@ const CreateTickets = () => {
             throw new Error("Failed to fetch itid"); // Handle HTTP errors
           }
           const data = await response.json(); // Parse the JSON response
-          console.log("itcounterid>>", data);
+          // console.log("itcounterid>>", data);
           // setUniqueID(data.itID)
           setNewTicket((prevState) => ({
             ...prevState,
@@ -400,8 +291,7 @@ const CreateTickets = () => {
   };
   //handel Ok
   const handleOk = async () => {
-    console.log("getNewTicket", getNewTicket);
-
+    // console.log("getNewTicket", getNewTicket);
     // console.log(uniqueId);
     try {
       const formData = new FormData();
@@ -563,23 +453,30 @@ const CreateTickets = () => {
               <SecondaryHeader header=" Please Fill The Ticket Information" />
             </Col>
             <Col xs={12} md={4} lg={4} className="my-2">
-              <DropdownField
+              {/* <DropdownField
                 index={0}
                 label="Department(IT/ERP)"
                 placeholder="Department/Expertise"
                 id="Department(IT/ERP)"
                 name="department"
-                data={departments}
+                // data={departments}
                 setValue={setNewTicket?.department || ""}
-                getvalue={setDropdownData}
+                // getvalue={setDropdownData}
                 disabled={false}
                 required={true}
                 error={errors.department}
                 icon={<IoLockClosedOutline />}
+              /> */}
+              <DropdownField
+                label="Department"
+                data={departments}
+                setValue={getNewTicket.department}
+                onChangeValue={(_, __, value) => handleDepartmentChange(value)}
+                placeholder="Select Department"
               />
             </Col>
             <Col xs={12} md={4} lg={4} className="my-2">
-              <DropdownField
+              {/* <DropdownField
                 index={0}
                 label="Sub Modules"
                 placeholder="Sub Modules"
@@ -587,15 +484,23 @@ const CreateTickets = () => {
                 name="subModule"
                 data={subModule}
                 setValue={setNewTicket?.subModule || ""}
-                getvalue={setDropdownData}
+                // getvalue={setDropdownData}
                 disabled={false}
                 required={true}
                 error={errors.subModule}
                 icon={<FaRegAddressCard />}
+              /> */}
+              <DropdownField
+                label="SubModule"
+                data={subModules}
+                setValue={getNewTicket.subModule}
+                onChangeValue={(_, __, value) => handleSubModuleChange(value)}
+                placeholder="Select SubModule"
+                disabled={!getNewTicket.department}
               />
             </Col>
             <Col xs={12} md={4} lg={4} className="my-2">
-              <DropdownField
+              {/* <DropdownField
                 index={0}
                 label="Type of Issue"
                 placeholder="Type of Issue"
@@ -603,11 +508,19 @@ const CreateTickets = () => {
                 name="issueType"
                 data={issueTypes}
                 setValue={setNewTicket?.issueType || ""}
-                getvalue={setDropdownData}
+                // getvalue={setDropdownData}
                 disabled={false}
                 required={true}
                 error={errors.issueType}
                 icon={<FaRegBuilding />}
+              /> */}
+              <DropdownField
+                label="Issue Type"
+                data={issueTypes}
+                setValue={getNewTicket.issueType}
+                onChangeValue={(_, __, value) => handleIssueTypeChange(value)}
+                placeholder="Select Issue Type"
+                disabled={!getNewTicket.subModule}
               />
             </Col>
             <Col xs={12} md={4} lg={4} className="my-2">
