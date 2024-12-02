@@ -1,7 +1,7 @@
 // import { useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import TicketsStatus from "../../components/tickets/Tickets_status";
+// import TicketsStatus from "../../components/tickets/Tickets_status";
 
 const Customer = () => {
   const navigate = useNavigate();
@@ -49,9 +49,9 @@ const Customer = () => {
           <Col xs={12} md={3} lg={3} className="dashboardbutton">
             <p>Ticket Status</p>
           </Col>
-          <Col xs={12} md={12} lg={12} className="">
+          {/* <Col xs={12} md={12} lg={12} className="">
             <TicketsStatus />
-          </Col>
+          </Col> */}
         </Row>
       </div>
     </>

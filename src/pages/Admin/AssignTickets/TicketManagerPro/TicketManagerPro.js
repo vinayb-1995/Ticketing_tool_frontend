@@ -220,42 +220,56 @@ const TicketManagerPro = () => {
       state: { filter: "close" },
     });
   };
+  const navigateTOHome = () => {
+    // console.log("Open tickets clicked!");
+    navigate("/");
+  };
   return (
     <div className="mt-4 mb-4 container createcutomer">
       <div className="mt-4 container secondary-headings">
         <Row className="d-flex align-items-center">
-          <Col xs={3} md={6} lg={6} className="d-flex">
+          <Col xs={3} md={6} lg={6} className="d-lg-flex d-md-block d-xs-block">
             {/* <NavigationBackButton navigtepath={navigtepath} /> */}
-            <button
-              className="navigation-button fs-6 me-2"
-              onClick={handelNavigateNewTickets}
-            >
-              New{" "}
-            </button>
-            <button
-              className="navigation-button fs-6 me-2"
-              onClick={handleOpenTicketsClick}
-            >
-              Open{" "}
-            </button>
-            <button
-              className="navigation-button fs-6 me-2"
-              onClick={handlePendingTicketsClick}
-            >
-              Pending{" "}
-            </button>
-            <button
-              className="navigation-button fs-6 me-2"
-              onClick={handleResolvedTicketsClick}
-            >
-              Resolved{" "}
-            </button>
-            <button
-              className="navigation-button fs-6 me-2"
-              onClick={handleClosedTicketsClick}
-            >
-              Closed{" "}
-            </button>
+            <Col xs={6} md={6} lg={6} className="d-flex justify-content-around">
+              <button
+                className="navigation-button fs-6 me-2 mt-2" 
+                onClick={handelNavigateNewTickets}
+              >
+                New{" "}
+              </button>
+              <button
+                className="navigation-button fs-6 me-2 mt-2"
+                onClick={handleOpenTicketsClick}
+              >
+                Open{" "}
+              </button>
+              <button
+                className="navigation-button fs-6 me-2 mt-2"
+                onClick={handlePendingTicketsClick}
+              >
+                Pending{" "}
+              </button>
+            </Col>
+            <Col xs={6} md={6} lg={6} className="d-flex justify-content-around" >
+              <button
+                className="navigation-button fs-6 me-2 mt-2"
+                onClick={handleResolvedTicketsClick}
+              >
+                Resolved{" "}
+              </button>
+              <button
+                className="navigation-button fs-6 me-2 mt-2"
+                onClick={handleClosedTicketsClick}
+              >
+                Closed{" "}
+              </button>
+              <button
+                className="navigation-button fs-6 me-2 mt-2"
+                onClick={navigateTOHome}
+              >
+                Home
+              </button>
+            </Col>
           </Col>
           {/* <Col
             xs={9}

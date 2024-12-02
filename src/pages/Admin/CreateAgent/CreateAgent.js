@@ -20,7 +20,7 @@ const accoutnStatusDropDownOption = [
   { name: "Active", value: "active" },
   { name: "Created", value: "created" },
 ];
-const data = [
+/* const data = [
   {
     department: "IT",
     teams: [
@@ -49,13 +49,14 @@ const data = [
       { name: "SAP MM Consultant", value: "SAP MM Consultant" },
     ],
   },
-];
+]; */
 const CreateAgent = () => {
   const navigate = useNavigate();
 
   const admiId = useSelector(
     (state) => state?.admin?.adminData?.adminBody?._id
   );
+  // console.log("admiId>>",admiId)
   const [getNewAgent, setNewAgent] = useState({
     fullname: "",
     email: "",
@@ -67,11 +68,11 @@ const CreateAgent = () => {
     createdByAdmin: admiId,
   });
 
-  const updatedTeam = data.some(
-    (dept) =>
-      dept.department === getNewAgent.department &&
-      dept.teams.some((team) => team.value === getNewAgent.group)
-  );
+  // const updatedTeam = data.some(
+  //   (dept) =>
+  //     dept.department === getNewAgent.department &&
+  //     // dept.teams.some((team) => team.value === getNewAgent.group)
+  // );
 
   // console.log("department>>", getNewAgent.department);
   // console.log("teams/group>>", getNewAgent.group);
@@ -96,11 +97,11 @@ const CreateAgent = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   //dropdown option
-  const [teams, setTeams] = useState([]);
+  // const [teams, setTeams] = useState([]);
   const [getDropdownData, setDropdownData] = useState(null);
   useEffect(() => {
     if (getDropdownData) {
-      if (getDropdownData.textField === "department") {
+      /*  if (getDropdownData.textField === "department") {
         // Update the teams based on the selected department
         const selectedDepartment = data.find(
           (dep) => dep.department === getDropdownData.name
@@ -108,7 +109,7 @@ const CreateAgent = () => {
         setTeams(selectedDepartment ? selectedDepartment.teams : []);
         // console.log('selectedDepartment',selectedDepartment)
         // console.log('getDropdownData',getDropdownData.name)
-      }
+      } */
       // Update agent state based on dropdown selection
       setNewAgent((prevState) => ({
         ...prevState,
@@ -116,6 +117,54 @@ const CreateAgent = () => {
       }));
     }
   }, [getDropdownData]);
+  /* -----------------------------------------------------------------dependent dropdown--------------------*/
+  const [departments, setDepartments] = useState([]);
+  const [subModules, setSubModules] = useState([]);
+  // const [issueTypes, setIssueTypes] = useState([]);
+  // console.log("departments>>",departments)
+  useEffect(() => {
+    fetch("http://localhost:5000/api/dropdown/departments")
+      .then((response) => response.json())
+      .then((data) => setDepartments(data))
+      .catch((error) => console.error("Error fetching departments:", error));
+  }, []);
+
+  const handleDepartmentChange = (value) => {
+    if (value !== getNewAgent.department) {
+      setNewAgent((prev) => ({
+        ...prev,
+        department: value,
+        group: "",
+      }));
+      // console.log("department>>",value)
+      fetch(`http://localhost:5000/api/dropdown/submodules/${value}`)
+        .then((response) => response.json())
+        .then((data) => setSubModules(data))
+        .catch((error) => console.error("Error fetching subModules:", error));
+    }
+  };
+
+  const handleSubModuleChange = (value) => {
+    if (value !== getNewAgent.group) {
+      setNewAgent((prev) => ({ ...prev, group: value }));
+      // console.log("subModule>>",value)
+      fetch(`http://localhost:5000/api/dropdown/issues/${value}`)
+        .then((response) => response.json())
+        // .then((data) => setIssueTypes(data))
+        .catch((error) => console.error("Error fetching issueTypes:", error));
+    }
+  };
+  // const handleIssueTypeChange = (value) => {
+  //   if (value !== getNewTicket.issueType) {
+  //     // console.log("type of issue>>", value);
+  //     setNewTicket((prev) => ({
+  //       ...prev,
+  //       issueType: value, // Store the selected issue type name
+  //     }));
+  //   }
+  // };
+  /* -----------------------------------------------------------------dependent dropdown--------------------*/
+
   // =================================================================================
   /*   useEffect(() => {
     // Prevent update if getDropdownData is null or undefined
@@ -162,7 +211,7 @@ const CreateAgent = () => {
     if (!getNewAgent.department)
       tempErrors.department = "Department/Expertise is required.";
     if (!getNewAgent.group) tempErrors.group = "group/team is required.";
-    if (!updatedTeam) tempErrors.group = "please update the group/team.";
+    // if (!updatedTeam) tempErrors.group = "please update the group/team.";
 
     setErrors(tempErrors); // set error state
     return Object.keys(tempErrors).length === 0;
@@ -301,7 +350,7 @@ const CreateAgent = () => {
             />
           </Col>
           <Col xs={12} md={4} lg={4} className="my-2">
-            <DropdownField
+            {/* <DropdownField
               index={0}
               id="department"
               name="department"
@@ -319,10 +368,19 @@ const CreateAgent = () => {
               required={true}
               error={errors.department}
               icon={<FaRegAddressCard />}
+            /> */}
+            <DropdownField
+              label="Department"
+              data={departments}
+              setValue={getNewAgent.department}
+              onChangeValue={(_, __, value) => handleDepartmentChange(value)}
+              placeholder="Select Department"
+              icon={<FaRegAddressCard />}
+
             />
           </Col>
           <Col xs={12} md={4} lg={4} className="my-2">
-            <DropdownField
+            {/* <DropdownField
               index={0}
               id="group"
               name="group"
@@ -336,6 +394,16 @@ const CreateAgent = () => {
               required={true}
               error={errors.group}
               icon={<FaRegAddressCard />}
+            /> */}
+            <DropdownField
+              label="Designation"
+              data={subModules}
+              setValue={getNewAgent.group}
+              onChangeValue={(_, __, value) => handleSubModuleChange(value)}
+              placeholder="Select SubModule"
+              disabled={!getNewAgent.department}
+              icon={<FaRegAddressCard />}
+
             />
           </Col>
         </Row>

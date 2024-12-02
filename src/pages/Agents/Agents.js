@@ -27,7 +27,7 @@ const Agents = () => {
             <p>Ticket Status</p>
           </Col>
         </Row>
-        <TicketsStatus/>
+        {/* <TicketsStatus/> */}
       </div>
     </>
   );
