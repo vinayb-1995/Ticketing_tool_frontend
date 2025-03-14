@@ -8,6 +8,7 @@ import TicketsStatus from "../../components/tickets/Tickets_status";
 import { useEffect, useState } from "react";
 
 import { fetchAllTickets } from "../../features/slice/allTickets";
+import SecondaryHeader from "../../components/Heading/SecondaryHeader";
 
 const AdminHome = () => {
   const navigate = useNavigate();
@@ -143,7 +144,12 @@ const AdminHome = () => {
           <Col xs={12} md={6} lg={6}>
             <p>Total Number of Agents : 50</p>
           </Col>
+          <Col lg={12} style={{width:"78%"}} className="mt-4 xs-w-100">
+          <SecondaryHeader  header="Main Menu" />
+          </Col>
+
         </Row>
+
         <Row className="m-2 d-flex justify-content-center ">
           <Col
             xs={12}
