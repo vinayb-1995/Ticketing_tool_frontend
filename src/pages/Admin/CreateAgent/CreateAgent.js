@@ -403,7 +403,6 @@ const CreateAgent = () => {
               placeholder="Select SubModule"
               disabled={!getNewAgent.department}
               icon={<FaRegAddressCard />}
-
             />
           </Col>
         </Row>

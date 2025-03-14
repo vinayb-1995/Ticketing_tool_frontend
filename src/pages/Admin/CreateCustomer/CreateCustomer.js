@@ -262,6 +262,22 @@ const CreateCustomer = () => {
             />
           </Col>
           <Col xs={12} md={4} lg={4} className="my-2">
+            <DropdownField
+              index={0}
+              id="preferedcontactmethod"
+              name="preferedcontactmethod"
+              label="Preferred Contact Method"
+              placeholder="Preferred Contact Method"
+              data={contactMethod} // Options for dropdown
+              setValue={getNewCustomer?.preferedcontactmethod || ""} // Pre-filled value
+              getvalue={setDropdownData} // Set dropdown data on change
+              disabled={false}
+              required={true}
+              error={errors.preferedcontactmethod}
+              icon={<FaRegAddressCard />}
+            />
+          </Col>
+          <Col xs={12} md={4} lg={4} className="my-2">
             <InputField
               label="Email"
               placeholder="Email"
@@ -272,6 +288,7 @@ const CreateCustomer = () => {
               error={errors.email}
             />
           </Col>
+          
           <Col xs={12} md={4} lg={4} className="my-2">
             <InputField
               label="Secondary Email"
@@ -327,22 +344,7 @@ const CreateCustomer = () => {
               error={errors.companyorgnizationname}
             />
           </Col>
-          <Col xs={12} md={4} lg={4} className="my-2">
-            <DropdownField
-              index={0}
-              id="preferedcontactmethod"
-              name="preferedcontactmethod"
-              label="Preferred Contact Method"
-              placeholder="Preferred Contact Method"
-              data={contactMethod} // Options for dropdown
-              setValue={getNewCustomer?.preferedcontactmethod || ""} // Pre-filled value
-              getvalue={setDropdownData} // Set dropdown data on change
-              disabled={false}
-              required={true}
-              error={errors.preferedcontactmethod}
-              icon={<FaRegAddressCard />}
-            />
-          </Col>
+         
           <Col xs={12} md={4} lg={4} className="my-2">
             <DropdownField
               index={0}
