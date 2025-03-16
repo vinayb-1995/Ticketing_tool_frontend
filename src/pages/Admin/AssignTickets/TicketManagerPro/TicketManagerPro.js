@@ -148,13 +148,13 @@ const TicketManagerPro = () => {
           [getDropdownData.textField]: getDropdownData.name,
         }));
         // Handle the case where getDropdownData is a simple string
-      } else if(getDropdownData?.textField==="assignedTo"){
+      } else if (getDropdownData?.textField === "assignedTo") {
         const isObject = typeof getDropdownData === "object";
         const result = isObject
           ? Object.values(getDropdownData).join("")
           : getDropdownData;
         const agentsid = result.split("").splice(0, 10).join("");
-        console.log(">>agentsid",agentsid)
+        console.log(">>agentsid", agentsid);
         // Handle the case where getDropdownData is an object with textField and name
         seticketUpdate((prevState) => ({
           ...prevState,
@@ -163,7 +163,7 @@ const TicketManagerPro = () => {
       }
     }
   }, [getDropdownData, allAgentsData]);
- 
+
   useEffect(() => {
     settogglefield(isAssigned);
   }, [isAssigned]);
@@ -501,18 +501,18 @@ const TicketManagerPro = () => {
               icon={<AiOutlineUserSwitch />}
             /> */}
             <DropdownField
-        index={0}
-        id="status"
-        name="status"
-        label="Account Status"
-        // placeholder={geticketUpdate.status || "open"} // Use current state for placeholder
-        data={accoutnStatusDropDownOption} // Options for dropdown
-        setValue={getTicketData?.status} // Bind to geticketUpdate
-        getvalue={setDropdownData} // Set dropdown data on change
-        disabled={gettogglefield} // Simplified disabled logic
-        required={true}
-        icon={<AiOutlineUserSwitch />}
-      />
+              index={0}
+              id="status"
+              name="status"
+              label="Account Status"
+              // placeholder={geticketUpdate.status || "open"} // Use current state for placeholder
+              data={accoutnStatusDropDownOption} // Options for dropdown
+              setValue={getTicketData?.status} // Bind to geticketUpdate
+              getvalue={setDropdownData} // Set dropdown data on change
+              disabled={gettogglefield} // Simplified disabled logic
+              required={true}
+              icon={<AiOutlineUserSwitch />}
+            />
           </Col>
           <Col xs={12} md={4} lg={4} className="my-2">
             <InputField
@@ -565,36 +565,34 @@ const TicketManagerPro = () => {
               // error={errors.accountstatus}
               icon={<AiOutlineUserSwitch />}
             /> */}
-             <DropdownField
-        index={0}
-        id="assignedTo"
-        name="assignedTo"
-        label="Assign Agents"
-        data={
-          getTicketData?.department === "IT" ? agentsITID : agentsSAPId
-        } // Options for dropdown
-        setValue={geticketUpdate.assignedTo} // Bind to geticketUpdate
-        getvalue={setDropdownData} // Set dropdown data on change
-        disabled={false} // Replace with your logic for disabled state
-        required={true}
-        icon={<AiOutlineUserSwitch />}
-      />
-             
-            
+            <DropdownField
+              index={0}
+              id="assignedTo"
+              name="assignedTo"
+              label="Assign Agents"
+              data={
+                getTicketData?.department === "IT" ? agentsITID : agentsSAPId
+              } // Options for dropdown
+              setValue={geticketUpdate.assignedTo} // Bind to geticketUpdate
+              getvalue={setDropdownData} // Set dropdown data on change
+              disabled={false} // Replace with your logic for disabled state
+              required={true}
+              icon={<AiOutlineUserSwitch />}
+            />
           </Col>
           <Col xs={12} md={4} lg={4} className="my-2">
-          <DropdownField
-        index={0}
-        id="wricef"
-        name="wricef"
-        label="WRICEF"
-        data={WRICEFTypes} // Options for dropdown
-        setValue={geticketUpdate?.wricef} // Bind to geticketUpdate
-        getvalue={setDropdownData} // Set dropdown data on change
-        disabled={gettogglefield} // Replace with your logic for disabled state
-        required={true}
-        icon={<AiOutlineUserSwitch />}
-      />
+            <DropdownField
+              index={0}
+              id="wricef"
+              name="wricef"
+              label="WRICEF"
+              data={WRICEFTypes} // Options for dropdown
+              setValue={geticketUpdate?.wricef} // Bind to geticketUpdate
+              getvalue={setDropdownData} // Set dropdown data on change
+              disabled={gettogglefield} // Replace with your logic for disabled state
+              required={true}
+              icon={<AiOutlineUserSwitch />}
+            />
             {/* <DropdownField
               index={0}
               id="wricef"

@@ -32,11 +32,11 @@ export const DropdownField = ({
   //   }
   // }, [setValue]);
 
-useEffect(() => {
+  useEffect(() => {
     if (!selectedData) {
       setSelectedData(setValue);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setValue]);
 
   // console.log("error>>",error)
@@ -67,7 +67,15 @@ useEffect(() => {
     getvalue(obj);
     onChangeValue(index, name, selectedData?.name);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedData, index, name, code, description, label, getvalue, /* onChangeValue */]);
+  }, [
+    selectedData,
+    index,
+    name,
+    code,
+    description,
+    label,
+    getvalue /* onChangeValue */,
+  ]);
 
   return (
     <>
@@ -92,7 +100,7 @@ useEffect(() => {
         />
       </div>
       {error && typeof error === "string" && (
-        <p className="text-danger error" >{error}</p>
+        <p className="text-danger error">{error}</p>
       )}
     </>
   );
