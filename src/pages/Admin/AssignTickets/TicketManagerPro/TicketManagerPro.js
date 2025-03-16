@@ -164,6 +164,7 @@ const TicketManagerPro = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = geticketUpdate;
+    // console.log(">>data",data)
     try {
       const response = await fetch(
         `http://localhost:5000/api/tickets/assignTickets/${ticketID}`,
@@ -177,10 +178,11 @@ const TicketManagerPro = () => {
         }
       );
       if (response.ok) {
-        navigate(isAssigned ? "/assignedtickets" : "/assignticketstable");
+        // navigate(isAssigned ? "/assignedtickets" : "/assignticketstable");
+        // navigate("/adminhome");
         showToast({
           title: "",
-          message: `agent updated`,
+          message: `${ticketID} Ticket updated`,
           status: "success",
         });
       }
@@ -501,13 +503,13 @@ const TicketManagerPro = () => {
               id="agentId"
               name="agentId"
               label="Assign Agents"
-              placeholder={
-                getTicketData?.adminAssigned?.assignedTo || "Assign Agents"
-              }
+              // placeholder={
+              //   getTicketData?.adminAssigned?.assignedTo || "Assign Agents"
+              // }
               data={
                 getTicketData?.department === "IT" ? agentsITID : agentsSAPId
               } // Options for dropdown
-              // setValue={} // Pre-filled value
+              setValue={ getTicketData?.adminAssigned?.assignedTo||""} // Pre-filled value
               getvalue={setDropdownData} // Set dropdown data on change
               disabled={gettogglefield}
               required={true}
@@ -521,9 +523,9 @@ const TicketManagerPro = () => {
               id="wricef"
               name="wricef"
               label="WRICEF"
-              placeholder={getTicketData?.adminAssigned?.wricef || "WRICEF"}
+              // placeholder={getTicketData?.adminAssigned?.wricef || "WRICEF"}
               data={WRICEFTypes} // Options for dropdown
-              // setValue={getNewAgent?.accountstatus} // Pre-filled value
+              setValue={getTicketData?.adminAssigned?.wricef} // Pre-filled value
               getvalue={setDropdownData} // Set dropdown data on change
               disabled={gettogglefield}
               required={true}

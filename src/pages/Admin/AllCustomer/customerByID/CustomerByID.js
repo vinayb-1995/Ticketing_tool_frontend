@@ -7,7 +7,7 @@ import { InputField } from "../../../../components/InputField/InputField";
 import { FaRegAddressCard } from "react-icons/fa";
 import { AiOutlineUserSwitch } from "react-icons/ai";
 import {
-  //   IoLockClosedOutline,
+    // IoLockClosedOutline,
   IoPersonOutline,
   IoPhonePortraitOutline,
 } from "react-icons/io5";
@@ -18,29 +18,35 @@ import SecondaryHeader from "../../../../components/Heading/SecondaryHeader";
 // import { DropdownField } from "../../../../components/Dropdown/DropdownField";
 import ModalComponentSuccess from "../../../../components/Modals/ModalComponentSuccess";
 import { useDisclosure } from "@chakra-ui/react";
+import { DropdownField } from "../../../../components/Dropdown/DropdownField";
+import { FaRegBuilding } from "react-icons/fa6";
 
 // const accoutnStatusDropDownOption = [
 //   { name: "Admin", value: true },
 //   { name: "User", value: false },
 // ];
-const AgentByIDAdmin = () => {
+// const contactMethod = [
+//   { name: "Mail", value: "mail" },
+//   { name: "Mobile", value: "Mobile" },
+// ];
+const CustomerByID = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = useNavigate();
   const token = useSelector((state) => state.auth.token);
   // console.log("token>>",token)
-  const [getAgentByIDAdmin, setAgentByIDAdmin] = useState();
-  //   console.log(getAgentByIDAdmin);
+  const [getcustomerByID, setCustomerByID] = useState();
+  console.log(getcustomerByID);
   const { id } = useParams();
-  const agentID = id.slice(1).trim();
+  const customerId = id.slice(1).trim();
+  console.log(">>customerId",customerId)
   // const [getDropdownData, setDropdownData] = useState(null);
   //   console.log("getDropdownData>>", getDropdownData?.value);
-  console.log(">>agentID",agentID)
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5000/api/admin/agent/${agentID}`,
+          `http://localhost:5000/api/admin/customer/${customerId}`,
           {
             method: "GET",
             headers: {
@@ -52,13 +58,13 @@ const AgentByIDAdmin = () => {
           throw new Error("Failed to fetch itid"); // Handle HTTP errors
         }
         const data = await response.json(); // Parse the JSON response
-        setAgentByIDAdmin(data);
+        setCustomerByID(data);
       } catch (err) {
         console.error(err.message); // Set error in case of a failure
       }
     };
     fetchData();
-  }, [token, agentID]);
+  }, [token, customerId]);
   //   const [getNewAgent, setNewAgent] = useState({
   //   });
   //   console.log("getNewAgent",getNewAgent)
@@ -67,8 +73,8 @@ const AgentByIDAdmin = () => {
     event.preventDefault();
     onOpen();
     // console.log("handel submit>>", getDropdownData?.value);
-    // console.log("agent ID>>", getAgentByIDAdmin?.user_unique_ID);
-    // if (getAgentByIDAdmin?.department === "IT") {
+    // console.log("agent ID>>", getcustomerByID?.user_unique_ID);
+    // if (getcustomerByID?.department === "IT") {
     //   if (getDropdownData?.value === true) {
     //     try {
     //       const response = await fetch(
@@ -96,7 +102,7 @@ const AgentByIDAdmin = () => {
     //   }
     //   try {
     //     const response = await fetch(
-    //       `http://localhost:5000/api/admin/updateAgentByIdIt/${getAgentByIDAdmin?.user_unique_ID}`,
+    //       `http://localhost:5000/api/admin/updateAgentByIdIt/${getcustomerByID?.user_unique_ID}`,
     //       {
     //         method: "PUT", // Use PUT to update
     //         headers: {
@@ -119,7 +125,7 @@ const AgentByIDAdmin = () => {
     //   } catch (error) {
     //     console.error("Error updating agent:", error.message);
     //   }
-    // } else if (getAgentByIDAdmin?.department === "SAP") {
+    // } else if (getcustomerByID?.department === "SAP") {
     //   if (getDropdownData?.value === true) {
     //     try {
     //       const response = await fetch(
@@ -148,7 +154,7 @@ const AgentByIDAdmin = () => {
     //   }
     //   try {
     //     const response = await fetch(
-    //       `http://localhost:5000/api/admin/updateAgentByIdSap/${getAgentByIDAdmin?.user_unique_ID}`,
+    //       `http://localhost:5000/api/admin/updateAgentByIdSap/${getcustomerByID?.user_unique_ID}`,
     //       {
     //         method: "PUT", // Use PUT to update
     //         headers: {
@@ -178,22 +184,75 @@ const AgentByIDAdmin = () => {
     navigate("/allagents");
     // Additional actions can be added here if needed
   };
+
+  //dropdown data store
+  // const [preferedContact, setPreferedContact] = useState({ name: "", value: "" });
+
+  // useEffect(() => {
+  //   if (getcustomerByID?.preferedcontactmethod) {
+  //     setPreferedContact({
+  //       name: getcustomerByID.preferedcontactmethod,
+  //       value: getcustomerByID.preferedcontactmethod
+  //     });
+  //   }
+  // }, [getcustomerByID]);
+  
+  console.log(">>dataPreferContact",  getcustomerByID?.preferedcontactmethod);
+  
+  
+
+
   return (
     <>
       <div className="mt-4 container createagent mb-4">
-        <Headings navigtepath="/allagents" headingname={`ID : ${getAgentByIDAdmin?.user_unique_ID}`} />
+        <Headings navigtepath="/allcustomer" headingname={`Customer`} />
         <form onSubmit={handleSubmit}>
           <Row>
-            <SecondaryHeader header="Aget Detials" />
+            <SecondaryHeader header="Customer Detials" />
             <Col xs={12} md={4} lg={4} className="my-2">
               <InputField
-                label="Full Name"
-                placeholder="Full Name"
-                name="fullname"
-                value={getAgentByIDAdmin?.fullname}
+                label="First Name"
+                placeholder="First Name"
+                name="firstname"
                 type="text"
+                value={getcustomerByID?.firstname||""}
+                // onChange={handleChange}
                 icon={<IoPersonOutline />}
                 disabled={true}
+                // error={errors.firstname}
+              />
+            </Col>
+            <Col xs={12} md={4} lg={4} className="my-2">
+              <InputField
+                label="Last Name"
+                placeholder="Last Name"
+                name="lastname"
+                type="text"
+                // onChange={handleChange}
+                value={getcustomerByID?.lastname||""}
+                icon={<IoPersonOutline />}
+                // error={errors.lastname}
+                disabled={true}
+              />
+            </Col>
+            <Col xs={12} md={4} lg={4} className="my-2">
+              <DropdownField
+                index={0}
+                id="preferedcontactmethod"
+                name="preferedcontactmethod"
+                label="Preferred Contact Method"
+                // placeholder="Preferred Contact Method"
+                // data={contactMethod} // Options for dropdown
+                setValue={
+                  getcustomerByID?.preferedcontactmethod
+                    ? { name: getcustomerByID.preferedcontactmethod, value: getcustomerByID.preferedcontactmethod }
+                    : null
+                } // Ensure it's a string
+                // getvalue={setPreferedContact} // Set dropdown data on change
+                disabled={true}
+                required={true}
+                // error={errors.preferedcontactmethod}
+                icon={<FaRegAddressCard />}
               />
             </Col>
             <Col xs={12} md={4} lg={4} className="my-2">
@@ -201,89 +260,97 @@ const AgentByIDAdmin = () => {
                 label="Email"
                 placeholder="Email"
                 name="email"
-                value={getAgentByIDAdmin?.email}
                 type="text"
+                value={getcustomerByID?.email||""}
+                // onChange={handleChange}
                 icon={<MdAlternateEmail />}
+                disabled={true}
+                // error={errors.email}
+              />
+            </Col>
+
+            <Col xs={12} md={4} lg={4} className="my-2">
+              <InputField
+                label="Secondary Email"
+                placeholder="Secondary Email"
+                name="secondaryemail"
+                type="text"
+                value={getcustomerByID?.secondaryemail||""}
+                // onChange={handleChange}
+                icon={<MdAlternateEmail />}
+                // error={errors.secondaryemail}
                 disabled={true}
               />
             </Col>
             <Col xs={12} md={4} lg={4} className="my-2">
               <InputField
-                label="Agent ID"
-                placeholder="Agent ID"
-                name="user_unique_ID"
-                value={getAgentByIDAdmin?.user_unique_ID}
+                label="Mobile"
+                placeholder="Mobile"
+                name="mobile"
                 type="text"
-                icon={<MdAlternateEmail />}
-                disabled={true}
-              />
-            </Col>
-            <Col xs={12} md={4} lg={4} className="my-2">
-              <InputField
-                label="Phone Number"
-                placeholder="Phone Number"
-                name="phoneNumber"
-                value={getAgentByIDAdmin?.phoneNumber}
-                type="text"
+                value={getcustomerByID?.mobile||""}
+                // onChange={handleChange}
                 icon={<IoPhonePortraitOutline />}
+                // error={errors.mobile}
                 disabled={true}
               />
             </Col>
             <Col xs={12} md={4} lg={4} className="my-2">
               <InputField
-                id="accountstatus"
-                name="accountstatus"
-                value={getAgentByIDAdmin?.accountStatus}
-                label="Account Status"
-                placeholder="Select account status"
+                label="Alternative Mobile"
+                placeholder="Alternative Mobile"
+                name="alternativemobile"
                 type="text"
-                icon={<AiOutlineUserSwitch />}
+                value={getcustomerByID?.alternativemobile||""}
+                // onChange={handleChange}
+                icon={<IoPhonePortraitOutline />}
+                // error={errors.alternativemobile}
                 disabled={true}
               />
             </Col>
+            {/* <Col xs={12} md={4} lg={4} className="my-2">
+              <InputField
+                label="Password"
+                placeholder="Password"
+                name="password"
+                type="text"
+                value={getcustomerByID?.password||""}
+                // onChange={handleChange}
+                icon={<IoLockClosedOutline />}
+                // error={errors.password}
+                disabled={true}
+              />
+            </Col> */}
             <Col xs={12} md={4} lg={4} className="my-2">
               <InputField
-                id="department"
-                name="department"
-                value={getAgentByIDAdmin?.department}
-                label="Department/Expertise"
-                placeholder="Department/Expertise"
+                label="Company/Orgnization Name"
+                placeholder="Company/Orgnization Name"
+                name="companyorgnizationname"
                 type="text"
-                icon={<FaRegAddressCard />}
+                value={getcustomerByID?.companyorgnizationname||""}
+                // onChange={handleChange}
+                icon={<FaRegBuilding />}
+                // error={errors.companyorgnizationname}
                 disabled={true}
               />
             </Col>
-            <Col xs={12} md={4} lg={4} className="my-2">
-              <InputField
-                id="group"
-                name="group"
-                value={getAgentByIDAdmin?.group}
-                label="team/group"
-                placeholder="team/group"
-                type="text"
-                icon={<FaRegAddressCard />}
-                disabled={true}
-              />
-            </Col>
-            {/* <Col xs={12} md={12} lg={12} className="my-2">
-              <SecondaryHeader header="Assign Agent Admin" />
-            </Col>
+
             <Col xs={12} md={4} lg={4} className="my-2">
               <DropdownField
                 index={0}
-                id="Agent Admin"
-                name="agentAdmin"
-                label="Agent Admin"
-                placeholder="Admin or User"
-                data={accoutnStatusDropDownOption} // Options for dropdown
-                setValue={getDropdownData?.value} // Pre-filled value
-                getvalue={setDropdownData} // Set dropdown data on change
-                disabled={false}
+                id="accountstatus"
+                name="accountstatus"
+                label="Account Status"
+                placeholder="Select account status"
+                // data={accoutnStatusDropDownOption} // Options for dropdown
+                setValue={getcustomerByID?.accountstatus||""} // Pre-filled value
+                // getvalue={setDropdownData} // Set dropdown data on change
+                disabled={true}
                 required={true}
-                //   error={errors.accountstatus}
-                icon={<FaRegAddressCard />}
+                // error={errors.accountstatus} // Display error if exists
+                icon={<AiOutlineUserSwitch />}
               />
-            </Col> */}
+            </Col>
           </Row>
           {/* <div className="mt-4">
             <ButtonStyle1 >Update</ButtonStyle1>
@@ -293,11 +360,11 @@ const AgentByIDAdmin = () => {
           isOpen={isOpen}
           onClose={onClose}
           title="Registration Successful"
-          bodyText={`${getAgentByIDAdmin?.fullname} is Know for ${getAgentByIDAdmin?.department} Department`}
+          bodyText={`${getcustomerByID?.fullname} is Know for ${getcustomerByID?.department} Department`}
           onOk={handleOk}
         />
       </div>
     </>
   );
 };
-export default AgentByIDAdmin;
+export default CustomerByID;

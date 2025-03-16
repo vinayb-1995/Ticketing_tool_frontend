@@ -30,13 +30,17 @@ export const DropdownField = ({
       'textDesc':description,
       'index':index,
       'status': selectedData?.name ? true : false,
-      'label':label
+      'label':label,
     }
     getvalue(obj);
     onChangeValue(index, name, selectedData?.name);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getvalue, selectedData]);
-
+  useEffect(() => {
+    if (setValue) {
+      setSelectedData(setValue);
+    }
+  }, [setValue]);
   return (
     <>
       <label className="ms-2">

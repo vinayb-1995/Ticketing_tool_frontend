@@ -176,7 +176,7 @@ const AdminHome = () => {
             onClick={handleAssignTickets}
             className="dashboardbutton"
           >
-            <p>Ticket Requests</p>
+            <p>Ticket Requests/New tickets</p>
           </Col>
           <Col
             xs={12}

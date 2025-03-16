@@ -395,7 +395,8 @@ const CreateAgent = () => {
               error={errors.group}
               icon={<FaRegAddressCard />}
             /> */}
-            <DropdownField
+            {getNewAgent.department && (
+              <DropdownField
               label="Designation"
               data={subModules}
               setValue={getNewAgent.group}
@@ -404,6 +405,9 @@ const CreateAgent = () => {
               disabled={!getNewAgent.department}
               icon={<FaRegAddressCard />}
             />
+
+            )}
+            
           </Col>
         </Row>
         <div className="mt-4">
