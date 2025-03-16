@@ -541,7 +541,7 @@ const CreateTickets = () => {
                 type="file"
                 onChange={handleChange} // Handle file input change
                 icon={<IoPersonOutline />}
-                disabled={false}
+                disabled={true}
               />
             </Col>
             <Col xs={12} md={8} lg={8} className="my-2">

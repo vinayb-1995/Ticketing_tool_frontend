@@ -1,12 +1,17 @@
 import Headings from "../../../components/Heading/Headings";
 import { useSelector } from "react-redux";
 import DataTable from "react-data-table-component";
+import { useNavigate } from "react-router-dom";
 
 const AllCustomer = () => {
+  const navigate=useNavigate()
   // const dispatch = useDispatch();
   const customerAllData = useSelector(
     (state) => state.allCustomer.customerData
   );
+  const handelNavigate = (id) => {
+    navigate(`/cutomerbyidadmin/:${id}`);
+  };
   const columns = [
     {
       name: "Customer ID",
@@ -14,7 +19,7 @@ const AllCustomer = () => {
         <div style={{ cursor: "pointer" }}>
           <p
             className="mb-0 fw-medium"
-            // onClick={() => handelNavigate(row?.user_unique_ID)}
+            onClick={() => handelNavigate(row?.user_unique_ID)}
           >
             {row?.user_unique_ID}
           </p>

@@ -16,6 +16,7 @@ import AllAgents from "../pages/Admin/AllAgents/AllAgents";
 import AgentByIDAdmin from "../pages/Admin/AllAgents/agentByID/AgentByIDAdmin";
 import AssignedTicketsTable from "../pages/Admin/AssignTickets/AssignedTicketsTable";
 import AllCustomer from "../pages/Admin/AllCustomer/AllCustomer";
+import CustomerByID from "../pages/Admin/AllCustomer/customerByID/CustomerByID";
 
 const AppRoute = () => {
   const { isAuthenticated, role } = useAuth();
@@ -50,6 +51,7 @@ const AppRoute = () => {
                 element={<AssignedTicketsTable />}
               />
               <Route path="/agentbyidadmin/:id" element={<AgentByIDAdmin />} />
+              <Route path="/cutomerbyidadmin/:id" element={<CustomerByID />} />
             </>
           )}
           {role === "customer" && (
