@@ -41,6 +41,7 @@ const TicketManagerPro = () => {
   const { id } = useParams(); // Get the ID from the URL
   const ticketID = id.slice(1).trim();
   const [getTicketData, setTicketData] = useState(null);
+  // console.log(">>getTicketData",getTicketData)
   const [getAllagents, setAllagents] = useState(null);
   const [geticketUpdate, seticketUpdate] = useState({
     plannedCost: "",
@@ -48,26 +49,43 @@ const TicketManagerPro = () => {
     plannedHrs: "",
     actualHrs: "",
     wricef: "",
-    agentId: "",
+    assignedTo: "",
     status: "",
     endDateAdnTime: "",
     adminDescription: "",
   });
-  // console.log("geticketUpdate>>", geticketUpdate);
-  // console.log("getTicketData>>", getTicketData);
+
+  // console.log(">>getTicketData", getTicketData);
   // console.log("getAllagents>>", getAllagents);
 
-  // console.log("getTicketData isAssigned >>", getTicketData?.adminAssigned?.isAssigned);
-  // console.log("getTicketData statu >>", getTicketData?.status);
-  const status = getTicketData?.status;
+  useEffect(() => {
+    if (getTicketData?.adminAssigned) {
+      seticketUpdate({
+        plannedCost: getTicketData.adminAssigned.plannedCost || "",
+        actualCost: getTicketData.adminAssigned.actualCost || "",
+        plannedHrs: getTicketData.adminAssigned.plannedHrs || "",
+        actualHrs: getTicketData.adminAssigned.actualHrs || "",
+        wricef: getTicketData.adminAssigned.wricef || "",
+        assignedTo: getTicketData.adminAssigned.assignedTo || "",
+        status: getTicketData?.status || "",
+        endDateAdnTime: getTicketData.adminAssigned.endDateAdnTime || "",
+        adminDescription: getTicketData.adminAssigned.adminDescription || "",
+      });
+    }
+  }, [getTicketData]);
+  // console.log(">>geticketUpdate", geticketUpdate);
+
+  // const status = getTicketData?.status;
   const isAssigned = getTicketData?.adminAssigned?.isAssigned;
   // console.log("getTicketData isAssigned >>", isAssigned);
-  const [gettogglefield, settogglefield] = useState();
+
+  //toggle  edit
+  const [gettogglefield, settogglefield] = useState(false);
+
   const handelEdit = () => {
-    settogglefield(!gettogglefield);
+    settogglefield((prev) => !prev);
   };
 
-  console.log("gettogglefield", gettogglefield);
   const agentUsersIT = getAllagents?.filter(
     (agent) => agent?.agentAdminIT === false && agent?.department === "IT"
   );
@@ -118,6 +136,7 @@ const TicketManagerPro = () => {
   }, [allAgentsData]);
 
   useEffect(() => {
+    // console.log(">>getDropdownData",getDropdownData)
     if (getDropdownData) {
       if (
         typeof getDropdownData === "object" &&
@@ -129,12 +148,13 @@ const TicketManagerPro = () => {
           [getDropdownData.textField]: getDropdownData.name,
         }));
         // Handle the case where getDropdownData is a simple string
-      } else {
+      } else if(getDropdownData?.textField==="assignedTo"){
         const isObject = typeof getDropdownData === "object";
         const result = isObject
           ? Object.values(getDropdownData).join("")
           : getDropdownData;
         const agentsid = result.split("").splice(0, 10).join("");
+        console.log(">>agentsid",agentsid)
         // Handle the case where getDropdownData is an object with textField and name
         seticketUpdate((prevState) => ({
           ...prevState,
@@ -143,7 +163,7 @@ const TicketManagerPro = () => {
       }
     }
   }, [getDropdownData, allAgentsData]);
-
+ 
   useEffect(() => {
     settogglefield(isAssigned);
   }, [isAssigned]);
@@ -153,8 +173,7 @@ const TicketManagerPro = () => {
   }, [dispatch]);
 
   const handleChange = (e) => {
-    const name = e.target.name;
-    const value = e.target.value;
+    const { name, value } = e.target;
     seticketUpdate({
       ...geticketUpdate,
       [name]: value,
@@ -164,7 +183,7 @@ const TicketManagerPro = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = geticketUpdate;
-    // console.log(">>data",data)
+    console.log(">>data", data);
     try {
       const response = await fetch(
         `http://localhost:5000/api/tickets/assignTickets/${ticketID}`,
@@ -234,7 +253,7 @@ const TicketManagerPro = () => {
             {/* <NavigationBackButton navigtepath={navigtepath} /> */}
             <Col xs={6} md={6} lg={6} className="d-flex justify-content-around">
               <button
-                className="navigation-button fs-6 me-2 mt-2" 
+                className="navigation-button fs-6 me-2 mt-2"
                 onClick={handelNavigateNewTickets}
               >
                 New{" "}
@@ -252,7 +271,7 @@ const TicketManagerPro = () => {
                 Pending{" "}
               </button>
             </Col>
-            <Col xs={6} md={6} lg={6} className="d-flex justify-content-around" >
+            <Col xs={6} md={6} lg={6} className="d-flex justify-content-around">
               <button
                 className="navigation-button fs-6 me-2 mt-2"
                 onClick={handleResolvedTicketsClick}
@@ -466,7 +485,7 @@ const TicketManagerPro = () => {
               icon={<IoPersonOutline />}
               disabled={false}
             /> */}
-            <DropdownField
+            {/* <DropdownField
               index={0}
               id="status"
               name="status"
@@ -474,12 +493,26 @@ const TicketManagerPro = () => {
               placeholder={status || "open"}
               data={accoutnStatusDropDownOption}
               setValue={(!isAssigned && status) || "open" || ""}
+              // setValue={geticketUpdate?.status || "open"}
               getvalue={setDropdownData} // Set dropdown data on change
               disabled={gettogglefield ? true : isAssigned ? false : true}
               required={true}
               // error={errors.accountstatus}
               icon={<AiOutlineUserSwitch />}
-            />
+            /> */}
+            <DropdownField
+        index={0}
+        id="status"
+        name="status"
+        label="Account Status"
+        // placeholder={geticketUpdate.status || "open"} // Use current state for placeholder
+        data={accoutnStatusDropDownOption} // Options for dropdown
+        setValue={getTicketData?.status} // Bind to geticketUpdate
+        getvalue={setDropdownData} // Set dropdown data on change
+        disabled={gettogglefield} // Simplified disabled logic
+        required={true}
+        icon={<AiOutlineUserSwitch />}
+      />
           </Col>
           <Col xs={12} md={4} lg={4} className="my-2">
             <InputField
@@ -492,13 +525,28 @@ const TicketManagerPro = () => {
               type={gettogglefield ? "text" : "datetime-local"}
               // type= "datetime"
               // value={customerData?.customerBody?.adminDetails?.username || ""}
+              value={geticketUpdate?.endDateAdnTime}
               onChange={handleChange}
               icon={<IoPersonOutline />}
               disabled={gettogglefield}
             />
           </Col>
           <Col xs={12} md={4} lg={4} className="my-2">
-            <DropdownField
+            {/* <InputField
+              label="End Date and Time"
+              // placeholder={
+              //   getTicketData?.adminAssigned?.endDateAdnTime ||
+              //   "End Date and Time"
+              // }
+              name="agentId"
+              // type={gettogglefield ? "text" : "datetime-local"}
+              // type= "datetime"
+              value={getTicketData?.adminAssigned?.assignedTo|| ""}
+              // onChange={handleChange}
+              icon={<IoPersonOutline />}
+              disabled={true}
+            /> */}
+            {/* <DropdownField
               index={0}
               id="agentId"
               name="agentId"
@@ -509,16 +557,45 @@ const TicketManagerPro = () => {
               data={
                 getTicketData?.department === "IT" ? agentsITID : agentsSAPId
               } // Options for dropdown
-              setValue={ getTicketData?.adminAssigned?.assignedTo||""} // Pre-filled value
+              // setValue={getTicketData?.adminAssigned?.assignedTo || ""} // Pre-filled value
+              setValue={geticketUpdate?.agentId}
               getvalue={setDropdownData} // Set dropdown data on change
               disabled={gettogglefield}
               required={true}
               // error={errors.accountstatus}
               icon={<AiOutlineUserSwitch />}
-            />
+            /> */}
+             <DropdownField
+        index={0}
+        id="assignedTo"
+        name="assignedTo"
+        label="Assign Agents"
+        data={
+          getTicketData?.department === "IT" ? agentsITID : agentsSAPId
+        } // Options for dropdown
+        setValue={geticketUpdate.assignedTo} // Bind to geticketUpdate
+        getvalue={setDropdownData} // Set dropdown data on change
+        disabled={false} // Replace with your logic for disabled state
+        required={true}
+        icon={<AiOutlineUserSwitch />}
+      />
+             
+            
           </Col>
           <Col xs={12} md={4} lg={4} className="my-2">
-            <DropdownField
+          <DropdownField
+        index={0}
+        id="wricef"
+        name="wricef"
+        label="WRICEF"
+        data={WRICEFTypes} // Options for dropdown
+        setValue={geticketUpdate?.wricef} // Bind to geticketUpdate
+        getvalue={setDropdownData} // Set dropdown data on change
+        disabled={gettogglefield} // Replace with your logic for disabled state
+        required={true}
+        icon={<AiOutlineUserSwitch />}
+      />
+            {/* <DropdownField
               index={0}
               id="wricef"
               name="wricef"
@@ -526,21 +603,22 @@ const TicketManagerPro = () => {
               // placeholder={getTicketData?.adminAssigned?.wricef || "WRICEF"}
               data={WRICEFTypes} // Options for dropdown
               setValue={getTicketData?.adminAssigned?.wricef} // Pre-filled value
+              // setValue={geticketUpdate?.wricef} // Pre-filled value
               getvalue={setDropdownData} // Set dropdown data on change
               disabled={gettogglefield}
               required={true}
               // error={errors.accountstatus}
               icon={<AiOutlineUserSwitch />}
-            />
+            /> */}
           </Col>
           <Col xs={12} md={4} lg={4} className="my-2">
             <InputField
               label="Actual hrs"
               // placeholder="1-24"
-              placeholder={getTicketData?.adminAssigned?.actualHrs || "1-24"}
+              // placeholder={getTicketData?.adminAssigned?.actualHrs || "1-24"}
               name="actualHrs"
-              type="text"
-              // value={getTicketData?.adminAssigned?.actualHrs || ""}
+              type="number"
+              value={geticketUpdate?.actualHrs}
               onChange={handleChange}
               icon={<IoPersonOutline />}
               disabled={gettogglefield}
@@ -549,10 +627,10 @@ const TicketManagerPro = () => {
           <Col xs={12} md={4} lg={4} className="my-2">
             <InputField
               label="Planed hrs"
-              placeholder={getTicketData?.adminAssigned?.plannedHrs || "1-24"}
+              // placeholder={getTicketData?.adminAssigned?.plannedHrs || "1-24"}
               name="plannedHrs"
-              type="text"
-              // value={getTicketData?.adminAssigned?.plannedHrs || ""}
+              type="number"
+              value={geticketUpdate?.plannedHrs}
               onChange={handleChange}
               icon={<IoPersonOutline />}
               disabled={gettogglefield}
@@ -562,12 +640,12 @@ const TicketManagerPro = () => {
             <InputField
               label="Actual cost "
               // placeholder="Actual cost"
-              placeholder={
-                getTicketData?.adminAssigned?.actualCost || "Actual cost"
-              }
+              // placeholder={
+              //   getTicketData?.adminAssigned?.actualCost || "Actual cost"
+              // }
               name="actualCost"
               type="text"
-              // value={getTicketData?.adminAssigned?.actualCost || ""}
+              value={geticketUpdate?.actualCost}
               onChange={handleChange}
               icon={<IoPersonOutline />}
               disabled={gettogglefield}
@@ -577,12 +655,12 @@ const TicketManagerPro = () => {
             <InputField
               label="planed  cost"
               // placeholder="planed  cost"
-              placeholder={
-                getTicketData?.adminAssigned?.plannedCost || "planed  cost"
-              }
+              // placeholder={
+              //   getTicketData?.adminAssigned?.plannedCost || "planed  cost"
+              // }
               name="plannedCost"
               type="text"
-              // value={getTicketData?.adminAssigned?.plannedCost || ""}
+              value={geticketUpdate?.plannedCost}
               onChange={handleChange}
               icon={<IoPersonOutline />}
               disabled={gettogglefield}
@@ -591,30 +669,32 @@ const TicketManagerPro = () => {
           <Col xs={12} md={4} lg={4} className="my-2">
             <TextAreaField
               label="Description of the Admin"
-              placeholder={
-                getTicketData?.adminAssigned?.adminDescription ||
-                "Description of the Admin"
-              }
+              placeholder="Description of the Admin"
               name="adminDescription"
               id="adminDescription"
-              disabled={gettogglefield}
-              // value={getTicketData?.adminAssigned?.adminDescription || ""}
+              value={geticketUpdate?.adminDescription} // Bind to geticketUpdate
+              onChange={handleChange} // Pass the handleChange function
+              disabled={false} // Replace with your logic for disabled state
+              icon={<IoPersonOutline />}
+            />
+            {/* <TextAreaField
+              label="Description of the Admin"
+              // placeholder={
+              //   getTicketData?.adminAssigned?.adminDescription ||
+              //   "Description of the Admin"
+              // }
+              name="adminDescription"
+              id="adminDescription"
+              type="text"
+              value={getTicketData?.adminAssigned?.adminDescription || ""}
               // placeholder="Describe your issue here..."
               onChange={handleChange}
               // error={errors.description}
+              disabled={gettogglefield}
               icon={<IoPersonOutline />}
               // required
               // maxLength={1000}
               // extraLabel="Please provide detailed information"
-            />
-            {/* <InputField
-              label="planed  cost"
-              placeholder="planed  cost"
-              name="plannedCost"
-              type="text"
-              onChange={handleChange}
-              icon={<IoPersonOutline />}
-              disabled={false}
             /> */}
           </Col>
         </Row>

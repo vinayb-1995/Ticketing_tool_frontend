@@ -185,27 +185,10 @@ const CustomerByID = () => {
     // Additional actions can be added here if needed
   };
 
-  //dropdown data store
-  // const [preferedContact, setPreferedContact] = useState({ name: "", value: "" });
-
-  // useEffect(() => {
-  //   if (getcustomerByID?.preferedcontactmethod) {
-  //     setPreferedContact({
-  //       name: getcustomerByID.preferedcontactmethod,
-  //       value: getcustomerByID.preferedcontactmethod
-  //     });
-  //   }
-  // }, [getcustomerByID]);
-  
-  console.log(">>dataPreferContact",  getcustomerByID?.preferedcontactmethod);
-  
-  
-
-
   return (
     <>
       <div className="mt-4 container createagent mb-4">
-        <Headings navigtepath="/allcustomer" headingname={`Customer`} />
+        <Headings navigtepath="/allcustomer" headingname={`ID : ${customerId}`} />
         <form onSubmit={handleSubmit}>
           <Row>
             <SecondaryHeader header="Customer Detials" />
