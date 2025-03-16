@@ -21,26 +21,54 @@ export const DropdownField = ({
   icon,
 }) => {
   const [selectedData, setSelectedData] = useState(setValue);
-  // console.log("error>>",error)
-  useEffect(() => {
-    let obj ={
-      ...selectedData,
-      'textField':name,
-      'textCode':code,
-      'textDesc':description,
-      'index':index,
-      'status': selectedData?.name ? true : false,
-      'label':label,
-    }
-    getvalue(obj);
-    onChangeValue(index, name, selectedData?.name);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [getvalue, selectedData]);
-  useEffect(() => {
-    if (setValue) {
+
+  // console.log(">>setValue",setValue)
+  // console.log(">>selectedData",selectedData)
+  // console.log(">>data",data)
+
+  // useEffect(() => {
+  //   if (setValue) {
+  //     setSelectedData(setValue);
+  //   }
+  // }, [setValue]);
+
+useEffect(() => {
+    if (!selectedData) {
       setSelectedData(setValue);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setValue]);
+
+  // console.log("error>>",error)
+  // useEffect(() => {
+  //   let obj ={
+  //     ...selectedData,
+  //     'textField':name,
+  //     'textCode':code,
+  //     'textDesc':description,
+  //     'index':index,
+  //     'status': selectedData?.name ? true : false,
+  //     'label':label,
+  //   }
+  //   getvalue(obj);
+  //   onChangeValue(index, name, selectedData?.name);
+  // // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [getvalue, selectedData]);
+  useEffect(() => {
+    let obj = {
+      ...selectedData,
+      textField: name,
+      textCode: code,
+      textDesc: description,
+      index: index,
+      status: !!selectedData?.name,
+      label: label,
+    };
+    getvalue(obj);
+    onChangeValue(index, name, selectedData?.name);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedData, index, name, code, description, label, getvalue, /* onChangeValue */]);
+
   return (
     <>
       <label className="ms-2">

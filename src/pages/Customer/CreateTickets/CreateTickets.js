@@ -78,7 +78,7 @@ const CreateTickets = () => {
   const [departments, setDepartments] = useState([]);
   const [subModules, setSubModules] = useState([]);
   const [issueTypes, setIssueTypes] = useState([]);
-  // console.log("departments>>",departments)
+  console.log("departments>>",departments)
   useEffect(() => {
     fetch("http://localhost:5000/api/dropdown/departments")
       .then((response) => response.json())
@@ -86,6 +86,7 @@ const CreateTickets = () => {
       .catch((error) => console.error("Error fetching departments:", error));
   }, []);
   const handleDepartmentChange = (value) => {
+    console.log(">>value",value)
     if (value !== getNewTicket.department) {
       setNewTicket((prev) => ({
         ...prev,
@@ -163,7 +164,7 @@ const CreateTickets = () => {
     e.preventDefault();
     const newErrors = validate();
     if (newErrors) {
-      // console.log("getNewTicket", getNewTicket);
+      console.log("getNewTicket", getNewTicket);
       // setFormData(getNewCustomer); // Save the data for modal display
       if (getNewTicket.department === "IT") {
         try {
@@ -470,8 +471,12 @@ const CreateTickets = () => {
               <DropdownField
                 label="Department"
                 data={departments}
-                setValue={getNewTicket.department}
-                onChangeValue={(_, __, value) => handleDepartmentChange(value)}
+                setValue={getNewTicket?.department}                
+                // onChangeValue={(_, __, value) => handleDepartmentChange(value)}
+                onChangeValue={(id, name, selectedValue) => {
+                  console.log("Dropdown selected:", selectedValue); // Debug log
+                  handleDepartmentChange(selectedValue);
+                }}
                 placeholder="Select Department"
               />
             </Col>
@@ -523,8 +528,8 @@ const CreateTickets = () => {
                 disabled={!getNewTicket.subModule}
               />
             </Col>
-            <Col xs={12} md={4} lg={4} className="my-2">
-              {/*   <InputField
+            {/* <Col xs={12} md={4} lg={4} className="my-2">
+                <InputField
                 label="Upload Image"
                 placeholder="Upload Image"
                 name="uploadImage"
@@ -533,7 +538,7 @@ const CreateTickets = () => {
                 // onChange={handleChange}
                 icon={<IoPersonOutline />}
                 disabled={false}
-              />*/}
+              />
               <InputField
                 label="Upload Image"
                 placeholder="Upload Image"
@@ -543,7 +548,7 @@ const CreateTickets = () => {
                 icon={<IoPersonOutline />}
                 disabled={true}
               />
-            </Col>
+            </Col> */}
             <Col xs={12} md={8} lg={8} className="my-2">
               <TextAreaField
                 label="Description of the Issue"
