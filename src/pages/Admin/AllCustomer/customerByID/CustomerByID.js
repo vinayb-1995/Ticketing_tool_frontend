@@ -7,7 +7,7 @@ import { InputField } from "../../../../components/InputField/InputField";
 import { FaRegAddressCard } from "react-icons/fa";
 import { AiOutlineUserSwitch } from "react-icons/ai";
 import {
-    // IoLockClosedOutline,
+  // IoLockClosedOutline,
   IoPersonOutline,
   IoPhonePortraitOutline,
 } from "react-icons/io5";
@@ -38,7 +38,7 @@ const CustomerByID = () => {
   console.log(getcustomerByID);
   const { id } = useParams();
   const customerId = id.slice(1).trim();
-  console.log(">>customerId",customerId)
+  console.log(">>customerId", customerId);
   // const [getDropdownData, setDropdownData] = useState(null);
   //   console.log("getDropdownData>>", getDropdownData?.value);
 
@@ -188,7 +188,10 @@ const CustomerByID = () => {
   return (
     <>
       <div className="mt-4 container createagent mb-4">
-        <Headings navigtepath="/allcustomer" headingname={`ID : ${customerId}`} />
+        <Headings
+          navigtepath="/allcustomer"
+          headingname={`ID : ${customerId}`}
+        />
         <form onSubmit={handleSubmit}>
           <Row>
             <SecondaryHeader header="Customer Detials" />
@@ -198,7 +201,7 @@ const CustomerByID = () => {
                 placeholder="First Name"
                 name="firstname"
                 type="text"
-                value={getcustomerByID?.firstname||""}
+                value={getcustomerByID?.firstname || ""}
                 // onChange={handleChange}
                 icon={<IoPersonOutline />}
                 disabled={true}
@@ -212,7 +215,7 @@ const CustomerByID = () => {
                 name="lastname"
                 type="text"
                 // onChange={handleChange}
-                value={getcustomerByID?.lastname||""}
+                value={getcustomerByID?.lastname || ""}
                 icon={<IoPersonOutline />}
                 // error={errors.lastname}
                 disabled={true}
@@ -228,7 +231,10 @@ const CustomerByID = () => {
                 // data={contactMethod} // Options for dropdown
                 setValue={
                   getcustomerByID?.preferedcontactmethod
-                    ? { name: getcustomerByID.preferedcontactmethod, value: getcustomerByID.preferedcontactmethod }
+                    ? {
+                        name: getcustomerByID.preferedcontactmethod,
+                        value: getcustomerByID.preferedcontactmethod,
+                      }
                     : null
                 } // Ensure it's a string
                 // getvalue={setPreferedContact} // Set dropdown data on change
@@ -244,7 +250,7 @@ const CustomerByID = () => {
                 placeholder="Email"
                 name="email"
                 type="text"
-                value={getcustomerByID?.email||""}
+                value={getcustomerByID?.email || ""}
                 // onChange={handleChange}
                 icon={<MdAlternateEmail />}
                 disabled={true}
@@ -258,7 +264,7 @@ const CustomerByID = () => {
                 placeholder="Secondary Email"
                 name="secondaryemail"
                 type="text"
-                value={getcustomerByID?.secondaryemail||""}
+                value={getcustomerByID?.secondaryemail || ""}
                 // onChange={handleChange}
                 icon={<MdAlternateEmail />}
                 // error={errors.secondaryemail}
@@ -271,7 +277,7 @@ const CustomerByID = () => {
                 placeholder="Mobile"
                 name="mobile"
                 type="text"
-                value={getcustomerByID?.mobile||""}
+                value={getcustomerByID?.mobile || ""}
                 // onChange={handleChange}
                 icon={<IoPhonePortraitOutline />}
                 // error={errors.mobile}
@@ -284,7 +290,7 @@ const CustomerByID = () => {
                 placeholder="Alternative Mobile"
                 name="alternativemobile"
                 type="text"
-                value={getcustomerByID?.alternativemobile||""}
+                value={getcustomerByID?.alternativemobile || ""}
                 // onChange={handleChange}
                 icon={<IoPhonePortraitOutline />}
                 // error={errors.alternativemobile}
@@ -310,7 +316,7 @@ const CustomerByID = () => {
                 placeholder="Company/Orgnization Name"
                 name="companyorgnizationname"
                 type="text"
-                value={getcustomerByID?.companyorgnizationname||""}
+                value={getcustomerByID?.companyorgnizationname || ""}
                 // onChange={handleChange}
                 icon={<FaRegBuilding />}
                 // error={errors.companyorgnizationname}
@@ -326,7 +332,7 @@ const CustomerByID = () => {
                 label="Account Status"
                 placeholder="Select account status"
                 // data={accoutnStatusDropDownOption} // Options for dropdown
-                setValue={getcustomerByID?.accountstatus||""} // Pre-filled value
+                setValue={getcustomerByID?.accountstatus || ""} // Pre-filled value
                 // getvalue={setDropdownData} // Set dropdown data on change
                 disabled={true}
                 required={true}

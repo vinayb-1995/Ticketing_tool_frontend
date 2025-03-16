@@ -78,7 +78,7 @@ const CreateTickets = () => {
   const [departments, setDepartments] = useState([]);
   const [subModules, setSubModules] = useState([]);
   const [issueTypes, setIssueTypes] = useState([]);
-  console.log("departments>>",departments)
+  console.log("departments>>", departments);
   useEffect(() => {
     fetch("http://localhost:5000/api/dropdown/departments")
       .then((response) => response.json())
@@ -86,7 +86,7 @@ const CreateTickets = () => {
       .catch((error) => console.error("Error fetching departments:", error));
   }, []);
   const handleDepartmentChange = (value) => {
-    console.log(">>value",value)
+    console.log(">>value", value);
     if (value !== getNewTicket.department) {
       setNewTicket((prev) => ({
         ...prev,
@@ -471,7 +471,7 @@ const CreateTickets = () => {
               <DropdownField
                 label="Department"
                 data={departments}
-                setValue={getNewTicket?.department}                
+                setValue={getNewTicket?.department}
                 // onChangeValue={(_, __, value) => handleDepartmentChange(value)}
                 onChangeValue={(id, name, selectedValue) => {
                   console.log("Dropdown selected:", selectedValue); // Debug log
